@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--配置和设定执行器，SIMPLE 执行器执行其它语句。REUSE 执行器可能重复使用prepared statements 语句，BATCH执行器可以重复执行语句和批量更新。-->
+        <setting name="defaultExecutorType"
+                 value="REUSE"/>
+    </settings>
+    <!--别名-->
+    <typeAliases>
+
+    </typeAliases>
+
+    <!--
+    <mappers>
+       <mapper resource="mapper/StudentMapper.xml"/>
+    </mappers>
+    -->
+    <!--
+    <plugins>
+      <plugin interceptor="net.wenyifan.common.mybatis.plugin.PageInterceptor">
+      </plugin>
+    </plugins>
+    -->
+</configuration>

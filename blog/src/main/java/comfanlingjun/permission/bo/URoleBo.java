@@ -1,0 +1,41 @@
+package comfanlingjun.permission.bo;
+
+
+import comfanlingjun.commons.model.URole;
+import comfanlingjun.commons.utils.StringUtils;
+
+import java.io.Serializable;
+
+public class URoleBo extends URole implements Serializable {
+
+	private static final long serialVersionUID = 7258437279853892475L;
+	/**
+	 * 用户ID (用String， 考虑多个ID，现在只有一个ID)
+	 */
+	private String userId;
+	/**
+	 * 是否勾选
+	 */
+	private String marker;
+
+	public boolean isCheck() {
+		return StringUtils.equals(userId, marker);
+	}
+
+	public String getMarker() {
+		return marker;
+	}
+
+	public void setMarker(String marker) {
+		this.marker = marker;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+}
