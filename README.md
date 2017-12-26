@@ -1,2 +1,3 @@
 # blog
-个人博客 纯练手
+转载：http://www.sojson.com/shiro
+练习
