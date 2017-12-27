@@ -76,8 +76,7 @@ public class SampleRealm extends AuthorizingRealm {
 	 */
 	public void clearCachedAuthorizationInfo() {
 		PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
-		SimplePrincipalCollection principals = new SimplePrincipalCollection(
-				principalCollection, getName());
+		SimplePrincipalCollection principals = new SimplePrincipalCollection(principalCollection, getName());
 		super.clearCachedAuthorizationInfo(principals);
 	}
 
@@ -85,8 +84,7 @@ public class SampleRealm extends AuthorizingRealm {
 	 * 指定principalCollection 清除
 	 */
 	public void clearCachedAuthorizationInfo(PrincipalCollection principalCollection) {
-		SimplePrincipalCollection principals = new SimplePrincipalCollection(
-				principalCollection, getName());
+		SimplePrincipalCollection principals = new SimplePrincipalCollection(principalCollection, getName());
 		super.clearCachedAuthorizationInfo(principals);
 	}
 }

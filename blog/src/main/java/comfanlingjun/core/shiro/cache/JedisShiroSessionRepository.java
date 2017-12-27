@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Session 管理 CRUD
+ * Jedis Session 管理 CRUD
  */
 public class JedisShiroSessionRepository implements ShiroSessionRepository {
 

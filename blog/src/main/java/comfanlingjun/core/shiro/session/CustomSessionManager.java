@@ -15,18 +15,17 @@ import java.util.*;
 /**
  * 用户Session 手动管理
  */
-
 public class CustomSessionManager {
 
 	public static final String SESSION_STATUS = "sojson-online-status";
 
-	ShiroSessionRepository shiroSessionRepository;
-	CustomShiroSessionDAO customShiroSessionDAO;
+	//set注入 JedisShiroSessionRepository  Session操作 CRUD
+	public ShiroSessionRepository shiroSessionRepository;
+	//set注入 CustomShiroSessionDAO 中注入了 ShiroSessionRepository 进行CRUD 操作
+	public CustomShiroSessionDAO customShiroSessionDAO;
 
 	/**
 	 * 获取所有的有效Session用户
-	 *
-	 * @return
 	 */
 	public List<UserOnlineBo> getAllUser() {
 		//获取所有session
@@ -43,9 +42,6 @@ public class CustomSessionManager {
 
 	/**
 	 * 根据ID查询 SimplePrincipalCollection
-	 *
-	 * @param userIds 用户ID
-	 * @return
 	 */
 	public List<SimplePrincipalCollection> getSimplePrincipalCollectionByUserId(Long... userIds) {
 		//把userIds 转成Set，好判断
@@ -76,9 +72,6 @@ public class CustomSessionManager {
 
 	/**
 	 * 获取单个Session
-	 *
-	 * @param sessionId
-	 * @return
 	 */
 	public UserOnlineBo getSession(String sessionId) {
 		Session session = shiroSessionRepository.getSession(sessionId);
@@ -86,6 +79,9 @@ public class CustomSessionManager {
 		return bo;
 	}
 
+	/**
+	 * 获取实体 UserOnlineBo
+	 */
 	private UserOnlineBo getSessionBo(Session session) {
 		//获取session登录信息。
 		Object obj = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
@@ -131,9 +127,7 @@ public class CustomSessionManager {
 	/**
 	 * 改变Session状态
 	 *
-	 * @param status    {true:踢出,false:激活}
-	 * @param sessionId
-	 * @return
+	 * @param status {true:踢出,false:激活}
 	 */
 	public Map<String, Object> changeSessionStatus(Boolean status, String sessionIds) {
 		Map<String, Object> map = new HashMap<String, Object>();

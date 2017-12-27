@@ -14,6 +14,7 @@ import java.util.Set;
 
 /**
  * Redis Manager Utils
+ * 用于注入 JedisShiroCacheManager Jedis管理
  */
 public class JedisManager {
 
@@ -22,8 +23,6 @@ public class JedisManager {
 
 	/**
 	 * 获得Jedis
-	 *
-	 * @return
 	 */
 	public Jedis getJedis() {
 		Jedis jedis = null;
@@ -45,9 +44,6 @@ public class JedisManager {
 
 	/**
 	 * 关闭
-	 *
-	 * @param jedis
-	 * @param isBroken
 	 */
 	public void returnResource(Jedis jedis, boolean isBroken) {
 		if (jedis == null) {
@@ -67,11 +63,6 @@ public class JedisManager {
 
 	/**
 	 * 查询
-	 *
-	 * @param dbIndex
-	 * @param key
-	 * @return
-	 * @throws Exception
 	 */
 	public byte[] getValueByKey(int dbIndex, byte[] key) throws Exception {
 		Jedis jedis = null;
@@ -92,10 +83,6 @@ public class JedisManager {
 
 	/**
 	 * 删除
-	 *
-	 * @param dbIndex
-	 * @param key
-	 * @throws Exception
 	 */
 	public void deleteByKey(int dbIndex, byte[] key) throws Exception {
 		Jedis jedis = null;
@@ -115,12 +102,6 @@ public class JedisManager {
 
 	/**
 	 * 保存
-	 *
-	 * @param dbIndex
-	 * @param key
-	 * @param value
-	 * @param expireTime
-	 * @throws Exception
 	 */
 	public void saveValueByKey(int dbIndex, byte[] key, byte[] value, int expireTime)
 			throws Exception {
@@ -139,14 +120,6 @@ public class JedisManager {
 		} finally {
 			returnResource(jedis, isBroken);
 		}
-	}
-
-	public JedisPool getJedisPool() {
-		return jedisPool;
-	}
-
-	public void setJedisPool(JedisPool jedisPool) {
-		this.jedisPool = jedisPool;
 	}
 
 	/**
@@ -176,5 +149,13 @@ public class JedisManager {
 			returnResource(jedis, isBroken);
 		}
 		return sessions;
+	}
+
+	public JedisPool getJedisPool() {
+		return jedisPool;
+	}
+
+	public void setJedisPool(JedisPool jedisPool) {
+		this.jedisPool = jedisPool;
 	}
 }

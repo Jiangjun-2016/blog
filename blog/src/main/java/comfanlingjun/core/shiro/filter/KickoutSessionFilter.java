@@ -24,16 +24,21 @@ import java.util.Map;
  * 相同帐号登录控制
  */
 public class KickoutSessionFilter extends AccessControlFilter {
-	//静态注入
-	static String kickoutUrl;
-	//在线用户
-	final static String ONLINE_USER = KickoutSessionFilter.class.getCanonicalName() + "_online_user";
-	//踢出状态，true标示踢出
-	final static String KICKOUT_STATUS = KickoutSessionFilter.class.getCanonicalName() + "_kickout_status";
-	static VCache cache;
-	//session获取
-	static ShiroSessionRepository shiroSessionRepository;
 
+	//静态注入
+	public static String kickoutUrl;
+	//在线用户
+	public final static String ONLINE_USER = KickoutSessionFilter.class.getCanonicalName() + "_online_user";
+	//踢出状态，true标示踢出
+	public final static String KICKOUT_STATUS = KickoutSessionFilter.class.getCanonicalName() + "_kickout_status";
+	//Redis操作类
+	public static VCache cache;
+	//Session操作类 CRUD
+	public static ShiroSessionRepository shiroSessionRepository;
+
+	/**
+	 * 表示是否允许访问
+	 */
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
 
@@ -67,7 +72,7 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		//从缓存获取用户-Session信息 <UserId,SessionId>
 		LinkedHashMap<Long, Serializable> infoMap = cache.get(ONLINE_USER, LinkedHashMap.class);
 		//如果不存在，创建一个新的
-		infoMap = null == infoMap ? new LinkedHashMap<Long, Serializable>() : infoMap;
+		infoMap = (null == infoMap ? new LinkedHashMap<Long, Serializable>() : infoMap);
 		//获取tokenId
 		Long userId = TokenManager.getUserId();
 		//如果已经包含当前Session，并且是同一个用户，跳过。
@@ -98,7 +103,6 @@ public class KickoutSessionFilter extends AccessControlFilter {
 			}
 			return Boolean.TRUE;
 		}
-
 		if (!infoMap.containsKey(userId) && !infoMap.containsValue(sessionId)) {
 			infoMap.put(userId, sessionId);
 			//存储到缓存1个小时（这个时间最好和session的有效期一致或者大于session的有效期）
@@ -107,6 +111,9 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		return Boolean.TRUE;
 	}
 
+	/**
+	 * 表示当访问拒绝时是否已经处理了
+	 */
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		//先退出
@@ -118,6 +125,9 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		return false;
 	}
 
+	/**
+	 * 页面输出操作
+	 */
 	private void out(ServletResponse hresponse, Map<String, String> resultMap) throws IOException {
 		try {
 			hresponse.setCharacterEncoding("UTF-8");
@@ -142,5 +152,4 @@ public class KickoutSessionFilter extends AccessControlFilter {
 	public static void setKickoutUrl(String kickoutUrl) {
 		KickoutSessionFilter.kickoutUrl = kickoutUrl;
 	}
-
 }

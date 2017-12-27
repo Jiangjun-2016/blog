@@ -30,11 +30,8 @@ public class TokenManager {
 		return token;
 	}
 
-
 	/**
 	 * 获取当前用户的Session
-	 *
-	 * @return
 	 */
 	public static Session getSession() {
 		return SecurityUtils.getSubject().getSession();
@@ -42,8 +39,6 @@ public class TokenManager {
 
 	/**
 	 * 获取当前用户NAME
-	 *
-	 * @return
 	 */
 	public static String getNickname() {
 		return getToken().getNickname();
@@ -51,8 +46,6 @@ public class TokenManager {
 
 	/**
 	 * 获取当前用户ID
-	 *
-	 * @return
 	 */
 	public static Long getUserId() {
 		return getToken() == null ? null : getToken().getId();
@@ -83,10 +76,6 @@ public class TokenManager {
 
 	/**
 	 * 登录
-	 *
-	 * @param user
-	 * @param rememberMe
-	 * @return
 	 */
 	public static UUser login(UUser user, Boolean rememberMe) {
 		ShiroToken token = new ShiroToken(user.getEmail(), user.getPswd());
@@ -97,8 +86,6 @@ public class TokenManager {
 
 	/**
 	 * 判断是否登录
-	 *
-	 * @return
 	 */
 	public static boolean isLogin() {
 		return null != SecurityUtils.getSubject().getPrincipal();
@@ -113,8 +100,10 @@ public class TokenManager {
 
 	/**
 	 * 清空当前用户权限信息。
-	 * 目的：为了在判断权限的时候，再次会再次 <code>doGetAuthorizationInfo(...)  </code>方法。
-	 * ps：	当然你可以手动调用  <code> doGetAuthorizationInfo(...)  </code>方法。
+	 * 目的：
+	 * 为了在判断权限的时候，再次会再次 <code>doGetAuthorizationInfo(...)  </code>方法。
+	 * ps：
+	 * 当然你可以手动调用  <code> doGetAuthorizationInfo(...)  </code>方法。
 	 * 这里只是说明下这个逻辑，当你清空了权限，<code> doGetAuthorizationInfo(...)  </code>就会被再次调用。
 	 */
 	public static void clearNowUserAuth() {
@@ -152,8 +141,6 @@ public class TokenManager {
 
 	/**
 	 * 方法重载
-	 *
-	 * @param userIds
 	 */
 	public static void clearUserAuthByUserId(List<Long> userIds) {
 		if (null == userIds || userIds.size() == 0) {

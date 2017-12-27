@@ -7,9 +7,11 @@ import org.apache.shiro.cache.Cache;
 
 /**
  * JRedis管理
+ * 用于注入 CustomShiroCacheManager 用户缓存
  */
 public class JedisShiroCacheManager implements ShiroCacheManager {
 
+	//set注入 Redis操作
 	private JedisManager jedisManager;
 
 	@Override

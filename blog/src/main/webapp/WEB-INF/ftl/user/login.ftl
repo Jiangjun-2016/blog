@@ -170,11 +170,9 @@
                    href="http://jq.qq.com/?_wv=1027&k=YpqCNd">各种不会 QQ群：259217951</a>
             </p>
         </div>
-
         <div class="error"><span>+</span></div>
     </form>
 </div>
-<!-- Javascript -->
 <script src="${basePath}/js/common/jquery/jquery1.8.3.min.js"></script>
 <script src="${basePath}/js/common/MD5.js"></script>
 <script src="${basePath}/js/common/supersized.3.2.7.min.js"></script>
@@ -200,7 +198,6 @@
 
         //登录操作
         $('#login').click(function () {
-
             var username = $('.username').val();
             var password = $('.password').val();
             if (username == '') {
@@ -264,5 +261,4 @@
     });
 </script>
 </body>
-
 </html>

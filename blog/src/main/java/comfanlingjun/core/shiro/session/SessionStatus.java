@@ -28,5 +28,4 @@ public class SessionStatus implements Serializable {
 		this.onlineStatus = onlineStatus;
 	}
 
-
 }

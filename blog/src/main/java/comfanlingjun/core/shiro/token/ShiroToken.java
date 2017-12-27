@@ -14,9 +14,7 @@ public class ShiroToken extends UsernamePasswordToken implements java.io.Seriali
 		this.pswd = pswd;
 	}
 
-	/**
-	 * 登录密码[字符串类型] 因为父类是char[] ]
-	 **/
+	//登录密码[字符串类型] 因为父类是char[] ]
 	private String pswd;
 
 	public String getPswd() {
@@ -26,5 +24,4 @@ public class ShiroToken extends UsernamePasswordToken implements java.io.Seriali
 	public void setPswd(String pswd) {
 		this.pswd = pswd;
 	}
-
 }

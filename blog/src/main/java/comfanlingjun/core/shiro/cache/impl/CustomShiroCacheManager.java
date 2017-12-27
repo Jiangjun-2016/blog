@@ -7,10 +7,12 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.util.Destroyable;
 
 /**
- * shiro Custom Cache
+ * 用户缓存
+ * 用于注入 securityManager 安全管理器
  */
 public class CustomShiroCacheManager implements CacheManager, Destroyable {
 
+	//set注入 JedisShiroCacheManager
 	private ShiroCacheManager shiroCacheManager;
 
 	@Override

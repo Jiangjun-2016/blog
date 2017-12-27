@@ -10,20 +10,15 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Session 操作 CRUD
+ * 重写实现增删改查方法
+ * <p>
+ * 通过重写AbstractSessionDAO ，来实现 Session共享。
+ * 再重写 Session  的时候（其实也不算重写），因为和HttpSession 没有任何实现或者继承关系。
  */
 public class CustomShiroSessionDAO extends AbstractSessionDAO {
 
+	//set注入 JedisShiroSessionRepository  Session操作 CRUD
 	private ShiroSessionRepository shiroSessionRepository;
-
-	public ShiroSessionRepository getShiroSessionRepository() {
-		return shiroSessionRepository;
-	}
-
-	public void setShiroSessionRepository(
-			ShiroSessionRepository shiroSessionRepository) {
-		this.shiroSessionRepository = shiroSessionRepository;
-	}
 
 	@Override
 	public void update(Session session) throws UnknownSessionException {
@@ -57,5 +52,13 @@ public class CustomShiroSessionDAO extends AbstractSessionDAO {
 	@Override
 	protected Session doReadSession(Serializable sessionId) {
 		return getShiroSessionRepository().getSession(sessionId);
+	}
+
+	public ShiroSessionRepository getShiroSessionRepository() {
+		return shiroSessionRepository;
+	}
+
+	public void setShiroSessionRepository(ShiroSessionRepository shiroSessionRepository) {
+		this.shiroSessionRepository = shiroSessionRepository;
 	}
 }

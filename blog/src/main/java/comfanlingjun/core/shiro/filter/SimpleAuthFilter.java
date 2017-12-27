@@ -22,6 +22,9 @@ import java.util.Map;
  */
 public class SimpleAuthFilter extends AccessControlFilter {
 
+	/**
+	 * 表示是否允许访问
+	 */
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
 		HttpServletRequest httpRequest = ((HttpServletRequest) request);
@@ -46,21 +49,26 @@ public class SimpleAuthFilter extends AccessControlFilter {
 		return Boolean.TRUE;
 	}
 
+	/**
+	 * 表示当访问拒绝时是否已经处理了
+	 */
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-
 		//先退出
 		Subject subject = getSubject(request, response);
 		subject.logout();
 		/**
 		 * 保存Request，用来保存当前Request，然后登录后可以跳转到当前浏览的页面。
 		 * 比如：
-		 * 我要访问一个URL地址，/admin/index.html，这个页面是要登录。然后要跳转到登录页面，但是登录后要跳转回来到/admin/index.html这个地址，怎么办？
+		 * 我要访问一个URL地址，/admin/index.html，这个页面是要登录。
+		 * 然后要跳转到登录页面，但是登录后要跳转回来到/admin/index.html这个地址，怎么办？
 		 * 传统的解决方法是变成/user/login.shtml?redirectUrl=/admin/index.html。
 		 * shiro的解决办法不是这样的。
-		 * 需要：<code>WebUtils.getSavedRequest(request);</code>
-		 * 然后：{@link UserLoginController.submitLogin(...)}中的
-		 * <code>String url = WebUtils.getSavedRequest(request).getRequestUrl();</code>
+		 * 需要：
+		 * WebUtils.getSavedRequest(request);
+		 * 然后：
+		 * UserLoginController.submitLogin(...)
+		 * String url = WebUtils.getSavedRequest(request).getRequestUrl();
 		 */
 		WebUtils.saveRequest(request);
 		//再重定向
@@ -68,8 +76,10 @@ public class SimpleAuthFilter extends AccessControlFilter {
 		return false;
 	}
 
-	private void out(ServletResponse hresponse, Map<String, String> resultMap)
-			throws IOException {
+	/**
+	 * 页面输出操作
+	 */
+	private void out(ServletResponse hresponse, Map<String, String> resultMap) throws IOException {
 		hresponse.setCharacterEncoding("UTF-8");
 		PrintWriter out = hresponse.getWriter();
 		out.println(JSONObject.fromObject(resultMap).toString());

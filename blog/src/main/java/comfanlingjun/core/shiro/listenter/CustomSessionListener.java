@@ -10,6 +10,7 @@ import org.apache.shiro.session.SessionListener;
  */
 public class CustomSessionListener implements SessionListener {
 
+	//set注入 JedisShiroSessionRepository  Session操作 CRUD
 	private ShiroSessionRepository shiroSessionRepository;
 
 	/**
