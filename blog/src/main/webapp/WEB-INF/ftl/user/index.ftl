@@ -31,17 +31,15 @@
                 </tr>
                 <tr>
                     <th>创建时间</th>
-                    <td>${token.createTime?string('yyyy-MM-dd HH:mm')}</td>
+                    <td>${(token.createTime?string('yyyy-MM-dd HH:mm'))!""}</td>
                 </tr>
                 <tr>
                     <th>最后登录时间</th>
-                    <td>${token.lastLoginTime?string('yyyy-MM-dd HH:mm')}</td>
+                    <td>${(token.lastLoginTime?string('yyyy-MM-dd HH:mm'))!""}</td>
                 </tr>
             </table>
         </div>
     </div>
-<#--/row-->
 </div>
-
 </body>
 </html>

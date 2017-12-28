@@ -117,6 +117,7 @@
                 <!--<prop key="number_format">0.######</prop>-->
                 <prop key="number_format">#</prop>
                 <prop key="whitespace_stripping">true</prop>
+                <prop key="classic_compatible">true</prop><!--解决为空报错异常-->
                 <prop key="auto_import">
                     <!-- 自动装载，引入Freemarker，用于Freemarker Macro引入 -->
                     /common/config/top.ftl as _top,
