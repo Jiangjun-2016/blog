@@ -29,6 +29,8 @@ public class ShiroManagerImpl implements ShiroManager {
 	public String loadFilterChainDefinitions() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(getFixedAuthRule());//固定权限，采用读取配置文件
+		System.out.println("shiro权限：");
+		System.out.println(sb.toString());
 		return sb.toString();
 	}
 

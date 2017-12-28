@@ -13,20 +13,14 @@ public class CustomSessionListener implements SessionListener {
 	//set注入 JedisShiroSessionRepository  Session操作 CRUD
 	private ShiroSessionRepository shiroSessionRepository;
 
-	/**
-	 * 一个回话的生命周期开始
-	 */
+	// 一个回话的生命周期开始
 	@Override
 	public void onStart(Session session) {
-		System.out.println("on start");
 	}
 
-	/**
-	 * 一个回话的生命周期结束
-	 */
+	//一个回话的生命周期结束
 	@Override
 	public void onStop(Session session) {
-		System.out.println("on stop");
 	}
 
 	@Override
