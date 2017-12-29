@@ -1,5 +1,4 @@
 <%@ page pageEncoding="utf-8" %>
-<%--shiro 标签 --%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%

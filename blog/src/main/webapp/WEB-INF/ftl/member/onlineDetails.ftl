@@ -4,8 +4,8 @@
 		<meta charset="utf-8" />
 		<title>Session详情 — SSM + Shiro Demo</title>
 		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
-		<link   rel="icon" href="${basePath}/favicon.ico" type="image/x-icon" />
-		<link   rel="shortcut icon" href="${basePath}/favicon.ico" />
+		<link rel="icon" href="${basePath}/jun.ico" type="image/x-icon" />
+		<link   rel="shortcut icon" href="${basePath}/jun.ico" />
 		<link href="${basePath}/js/common/bootstrap/3.3.5/css/bootstrap.min.css?${_v}" rel="stylesheet"/>
 		<link href="${basePath}/css/common/base.css?${_v}" rel="stylesheet"/>
 		<script  src="${basePath}/js/common/jquery/jquery1.8.3.min.js"></script>

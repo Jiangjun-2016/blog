@@ -17,15 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 public class CommonController extends BaseController {
 
 	/**
-	 * 首页
-	 */
-	@RequestMapping("home")
-	public ModelAndView index(HttpServletRequest request) {
-		ModelAndView view = new ModelAndView("common/home");
-		return view;
-	}
-
-	/**
 	 * 404错误
 	 */
 	@RequestMapping("404")

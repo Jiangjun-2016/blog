@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Shiro Demo | 登录</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-    <link rel="icon" href="${basePath}/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="${basePath}/favicon.ico"/>
+    <link rel="icon" href="${basePath}/jun.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${basePath}/jun.ico"/>
     <!-- CSS -->
     <link rel="stylesheet" href="${basePath}/css/login/reset.css"/>
     <link rel="stylesheet" href="${basePath}/css/login/supersized.css"/>
