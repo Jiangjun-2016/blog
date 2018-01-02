@@ -15,7 +15,7 @@
     <base href="<%=basePath%>"/>
     <title>用户角色分配 - 权限管理</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-    <link rel="shortcut icon" href="<%=basePath%>/jun.ico"/>
+    <link rel="shortcut icon" href="<%=basePath%>/imgs/jun.ico"/>
     <link href="<%=basePath%>/js/common/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="<%=basePath%>/css/common/base.css" rel="stylesheet"/>
     <script src="<%=basePath%>/js/common/jquery/jquery1.8.3.min.js"></script>
