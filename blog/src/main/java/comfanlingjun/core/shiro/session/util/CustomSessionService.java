@@ -1,10 +1,12 @@
-package comfanlingjun.core.shiro.session;
+package comfanlingjun.core.shiro.session.util;
 
 
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.StringUtils;
-import comfanlingjun.core.shiro.CustomShiroSessionDAO;
+import comfanlingjun.core.shiro.session.ShiroSessionDao;
+import comfanlingjun.core.shiro.session.core.BlogShiroSessionCycle;
+import comfanlingjun.core.shiro.utils.vo.SessionStatus;
 import comfanlingjun.user.bo.UserOnlineBo;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
@@ -15,21 +17,22 @@ import java.util.*;
 /**
  * 用户Session 手动管理
  */
-public class CustomSessionManager {
+public class CustomSessionService {
 
 	public static final String SESSION_STATUS = "sojson-online-status";
 
-	//set注入 JedisShiroSessionRepository  Session操作 CRUD
-	public ShiroSessionRepository shiroSessionRepository;
-	//set注入 CustomShiroSessionDAO 中注入了 ShiroSessionRepository 进行CRUD 操作
-	public CustomShiroSessionDAO customShiroSessionDAO;
+	//注入 ShiroSessionRepositoryJedisImpl对Session增删改查
+	public ShiroSessionDao shiroSessionDao;
+
+	//注入 BlogShiroSessionCycle(此类也注入了ShiroSessionRepositoryJedisImpl类增删改查)
+	public BlogShiroSessionCycle blogShiroSessionCycle;
 
 	/**
 	 * 获取所有的有效Session用户
 	 */
 	public List<UserOnlineBo> getAllUser() {
 		//获取所有session
-		Collection<Session> sessions = customShiroSessionDAO.getActiveSessions();
+		Collection<Session> sessions = blogShiroSessionCycle.getActiveSessions();
 		List<UserOnlineBo> list = new ArrayList<UserOnlineBo>();
 		for (Session session : sessions) {
 			UserOnlineBo bo = getSessionBo(session);
@@ -47,7 +50,7 @@ public class CustomSessionManager {
 		//把userIds 转成Set，好判断
 		Set<Long> idset = (Set<Long>) StringUtils.array2Set(userIds);
 		//获取所有session
-		Collection<Session> sessions = customShiroSessionDAO.getActiveSessions();
+		Collection<Session> sessions = blogShiroSessionCycle.getActiveSessions();
 		//定义返回
 		List<SimplePrincipalCollection> list = new ArrayList<SimplePrincipalCollection>();
 		for (Session session : sessions) {
@@ -74,7 +77,7 @@ public class CustomSessionManager {
 	 * 获取单个Session
 	 */
 	public UserOnlineBo getSession(String sessionId) {
-		Session session = shiroSessionRepository.getSession(sessionId);
+		Session session = shiroSessionDao.getSession(sessionId);
 		UserOnlineBo bo = getSessionBo(session);
 		return bo;
 	}
@@ -139,11 +142,11 @@ public class CustomSessionManager {
 				sessionIdArray = sessionIds.split(",");
 			}
 			for (String id : sessionIdArray) {
-				Session session = shiroSessionRepository.getSession(id);
+				Session session = shiroSessionDao.getSession(id);
 				SessionStatus sessionStatus = new SessionStatus();
 				sessionStatus.setOnlineStatus(status);
 				session.setAttribute(SESSION_STATUS, sessionStatus);
-				customShiroSessionDAO.update(session);
+				blogShiroSessionCycle.update(session);
 			}
 			map.put("status", 200);
 			map.put("sessionStatus", status ? 1 : 0);
@@ -170,23 +173,23 @@ public class CustomSessionManager {
 			//匹配用户ID
 			if (userId.equals(id)) {
 				//获取用户Session
-				Session session = shiroSessionRepository.getSession(bo.getSessionId());
+				Session session = shiroSessionDao.getSession(bo.getSessionId());
 				//标记用户Session
 				SessionStatus sessionStatus = (SessionStatus) session.getAttribute(SESSION_STATUS);
 				//是否踢出 true:有效，false：踢出。
 				sessionStatus.setOnlineStatus(status.intValue() == 1);
 				//更新Session
-				customShiroSessionDAO.update(session);
+				blogShiroSessionCycle.update(session);
 			}
 		}
 	}
 
-	public void setShiroSessionRepository(
-			ShiroSessionRepository shiroSessionRepository) {
-		this.shiroSessionRepository = shiroSessionRepository;
+	public void setShiroSessionDao(
+			ShiroSessionDao shiroSessionDao) {
+		this.shiroSessionDao = shiroSessionDao;
 	}
 
-	public void setCustomShiroSessionDAO(CustomShiroSessionDAO customShiroSessionDAO) {
-		this.customShiroSessionDAO = customShiroSessionDAO;
+	public void setBlogShiroSessionCycle(BlogShiroSessionCycle blogShiroSessionCycle) {
+		this.blogShiroSessionCycle = blogShiroSessionCycle;
 	}
 }

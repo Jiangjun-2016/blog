@@ -3,7 +3,6 @@ package comfanlingjun.core.shiro.token;
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.permission.service.PermissionService;
 import comfanlingjun.permission.service.RoleService;
-import comfanlingjun.core.shiro.token.manager.TokenManager;
 import comfanlingjun.user.service.UUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -63,7 +62,7 @@ public class SampleRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		Long userId = TokenManager.getUserId();
+		Long userId = TokenService.getUserId();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		//根据用户ID查询角色（role），放入到Authorization里。
 		Set<String> roles = roleService.findRoleByUserId(userId);

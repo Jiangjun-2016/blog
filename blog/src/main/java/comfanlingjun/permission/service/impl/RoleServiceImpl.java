@@ -9,7 +9,7 @@ import comfanlingjun.core.mybatis.BaseMybatisDao;
 import comfanlingjun.core.mybatis.page.Pagination;
 import comfanlingjun.permission.bo.RolePermissionAllocationBo;
 import comfanlingjun.permission.service.RoleService;
-import comfanlingjun.core.shiro.token.manager.TokenManager;
+import comfanlingjun.core.shiro.token.TokenService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -114,7 +114,7 @@ public class RoleServiceImpl extends BaseMybatisDao<URoleMapper> implements Role
 	@Override
 	public List<URole> findNowAllPermission() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", TokenManager.getUserId());
+		map.put("userId", TokenService.getUserId());
 		return roleMapper.findNowAllPermission(map);
 	}
 

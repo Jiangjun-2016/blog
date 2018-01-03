@@ -1,8 +1,7 @@
-package comfanlingjun.core.shiro.service.impl;
+package comfanlingjun.core.shiro.utils.ini;
 
 import comfanlingjun.commons.utils.INI4j;
 import comfanlingjun.commons.utils.LoggerUtils;
-import comfanlingjun.core.shiro.service.ShiroManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
@@ -17,7 +16,7 @@ import java.util.Set;
 /**
  * 动态加载权限 Service
  */
-public class ShiroManagerImpl implements ShiroManager {
+public class ShiroINIServiceImpl implements ShiroINIService {
 
 	// 注意/r/n前不能有空格
 	private static final String CRLF = "\r\n";

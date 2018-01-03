@@ -3,7 +3,7 @@ package comfanlingjun.user.controller;
 import comfanlingjun.commons.controller.BaseController;
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.commons.utils.LoggerUtils;
-import comfanlingjun.core.shiro.token.manager.TokenManager;
+import comfanlingjun.core.shiro.token.TokenService;
 import comfanlingjun.user.manager.UserManager;
 import comfanlingjun.user.service.UUserService;
 import net.sf.json.JSONObject;
@@ -58,7 +58,7 @@ public class UserCoreController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> updatePswd(String pswd, String newPswd) {
 		//根据当前登录的用户帐号 + 老密码，查询。
-		String email = TokenManager.getToken().getEmail();
+		String email = TokenService.getToken().getEmail();
 		pswd = UserManager.md5Pswd(email, pswd);
 		UUser user = userService.login(email, pswd);
 
@@ -80,7 +80,7 @@ public class UserCoreController extends BaseController {
 			resultMap.put("status", 200);
 			resultMap.put("message", "修改成功!");
 			//重新登录一次
-			TokenManager.login(user, Boolean.TRUE);
+			TokenService.login(user, Boolean.TRUE);
 		}
 		return resultMap;
 	}

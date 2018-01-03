@@ -7,10 +7,10 @@ import comfanlingjun.commons.model.UUserRole;
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.core.mybatis.BaseMybatisDao;
 import comfanlingjun.core.mybatis.page.Pagination;
+import comfanlingjun.core.shiro.token.TokenService;
 import comfanlingjun.permission.bo.URoleBo;
 import comfanlingjun.permission.bo.UserRoleAllocationBo;
-import comfanlingjun.core.shiro.session.CustomSessionManager;
-import comfanlingjun.core.shiro.token.manager.TokenManager;
+import comfanlingjun.core.shiro.session.util.CustomSessionService;
 import comfanlingjun.user.service.UUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 	 * 用户手动操作Session
 	 */
 	@Resource
-	CustomSessionManager customSessionManager;
+	CustomSessionService customSessionService;
 	@Resource
 	UUserMapper userMapper;
 	@Resource
@@ -118,7 +118,7 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 			user.setStatus(status);
 			updateByPrimaryKeySelective(user);
 			//如果当前用户在线，需要标记并且踢出
-			customSessionManager.forbidUserById(id, status);
+			customSessionService.forbidUserById(id, status);
 			resultMap.put("status", 200);
 		} catch (Exception e) {
 			resultMap.put("status", 500);
@@ -172,7 +172,7 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 			resultMap.put("message", "操作失败，请重试！");
 		}
 		//清空用户的权限，迫使再次获取权限的时候，得重新加载
-		TokenManager.clearUserAuthByUserId(userId);
+		TokenService.clearUserAuthByUserId(userId);
 		resultMap.put("count", count);
 		return resultMap;
 	}

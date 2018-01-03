@@ -1,7 +1,8 @@
-package comfanlingjun.core.shiro.cache;
+package comfanlingjun.core.shiro.cache.util;
 
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.SerializeUtil;
+import comfanlingjun.core.shiro.utils.redis.JedisService;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 
@@ -10,9 +11,9 @@ import java.util.Set;
 
 /**
  * 缓存获取Manager
- * 用于 JedisShiroCacheManager 类
+ * 用于 ShiroCacheServiceImpl 类
  */
-public class JedisShiroCache<K, V> implements Cache<K, V> {
+public class ShiroCacheJedis<K, V> implements Cache<K, V> {
 
 	//为了不和其他的缓存混淆，采用追加前缀方式以作区分
 	private static final String REDIS_SHIRO_CACHE = "shiro-demo-cache:";
@@ -20,11 +21,11 @@ public class JedisShiroCache<K, V> implements Cache<K, V> {
 	private static final int DB_INDEX = 1;
 
 	private String name;
-	private JedisManager jedisManager;
+	private JedisService jedisService;
 
-	public JedisShiroCache(String name, JedisManager jedisManager) {
+	public ShiroCacheJedis(String name, JedisService jedisService) {
 		this.name = name;
-		this.jedisManager = jedisManager;
+		this.jedisService = jedisService;
 	}
 
 	@Override
@@ -32,9 +33,9 @@ public class JedisShiroCache<K, V> implements Cache<K, V> {
 		byte[] byteKey = SerializeUtil.serialize(buildCacheKey(key));
 		byte[] byteValue = new byte[0];
 		try {
-			byteValue = jedisManager.getValueByKey(DB_INDEX, byteKey);
+			byteValue = jedisService.getValueByKey(DB_INDEX, byteKey);
 		} catch (Exception e) {
-			LoggerUtils.error(JedisShiroCache.class, "get value by cache throw exception", e);
+			LoggerUtils.error(ShiroCacheJedis.class, "get value by cache throw exception", e);
 		}
 		return (V) SerializeUtil.deserialize(byteValue);
 	}
@@ -43,9 +44,9 @@ public class JedisShiroCache<K, V> implements Cache<K, V> {
 	public V put(K key, V value) throws CacheException {
 		V previos = get(key);
 		try {
-			jedisManager.saveValueByKey(DB_INDEX, SerializeUtil.serialize(buildCacheKey(key)), SerializeUtil.serialize(value), -1);
+			jedisService.saveValueByKey(DB_INDEX, SerializeUtil.serialize(buildCacheKey(key)), SerializeUtil.serialize(value), -1);
 		} catch (Exception e) {
-			LoggerUtils.error(JedisShiroCache.class, "put cache throw exception", e);
+			LoggerUtils.error(ShiroCacheJedis.class, "put cache throw exception", e);
 		}
 		return previos;
 	}
@@ -54,9 +55,9 @@ public class JedisShiroCache<K, V> implements Cache<K, V> {
 	public V remove(K key) throws CacheException {
 		V previos = get(key);
 		try {
-			jedisManager.deleteByKey(DB_INDEX, SerializeUtil.serialize(buildCacheKey(key)));
+			jedisService.deleteByKey(DB_INDEX, SerializeUtil.serialize(buildCacheKey(key)));
 		} catch (Exception e) {
-			LoggerUtils.error(JedisShiroCache.class, "remove cache  throw exception", e);
+			LoggerUtils.error(ShiroCacheJedis.class, "remove cache  throw exception", e);
 		}
 		return previos;
 	}

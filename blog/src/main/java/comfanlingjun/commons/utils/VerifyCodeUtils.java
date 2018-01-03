@@ -1,6 +1,6 @@
 package comfanlingjun.commons.utils;
 
-import comfanlingjun.core.shiro.token.manager.TokenManager;
+import comfanlingjun.core.shiro.token.TokenService;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -76,14 +76,14 @@ public class VerifyCodeUtils {
 	 * 清除验证码
 	 */
 	public static void clearVerifyCode() {
-		TokenManager.getSession().removeAttribute(V_CODE);
+		TokenService.getSession().removeAttribute(V_CODE);
 	}
 
 	/**
 	 * 对比验证码
 	 */
 	public static boolean verifyCode(String code) {
-		String v = (String) TokenManager.getVal2Session(V_CODE);
+		String v = (String) TokenService.getVal2Session(V_CODE);
 		return StringUtils.equals(v, StringUtils.lowerCase(code));
 	}
 

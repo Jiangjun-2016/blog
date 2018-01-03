@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * Session操作 CRUD
  */
-public interface ShiroSessionRepository {
+public interface ShiroSessionDao {
 
 	/**
 	 * 存储Session

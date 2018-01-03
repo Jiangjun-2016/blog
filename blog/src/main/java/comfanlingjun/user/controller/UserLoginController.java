@@ -5,7 +5,7 @@ import comfanlingjun.commons.model.UUser;
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.StringUtils;
 import comfanlingjun.commons.utils.VerifyCodeUtils;
-import comfanlingjun.core.shiro.token.manager.TokenManager;
+import comfanlingjun.core.shiro.token.TokenService;
 import comfanlingjun.user.manager.UserManager;
 import comfanlingjun.user.service.UUserService;
 import net.sf.json.JSONObject;
@@ -86,7 +86,7 @@ public class UserLoginController extends BaseController {
 			//记录日志
 			LoggerUtils.fmtDebug(getClass(), "注册插入完毕！", JSONObject.fromObject(entity).toString());
 			//TODO shiro操作
-			entity = TokenManager.login(entity, Boolean.TRUE);
+			entity = TokenService.login(entity, Boolean.TRUE);
 			//记录日志
 			LoggerUtils.fmtDebug(getClass(), "注册后，登录完毕！", JSONObject.fromObject(entity).toString());
 			//修改默认状态为200
@@ -111,7 +111,7 @@ public class UserLoginController extends BaseController {
 	public Map<String, Object> submitLogin(UUser entity, Boolean rememberMe, HttpServletRequest request) {
 		try {
 			//生成Token实体
-			entity = TokenManager.login(entity, rememberMe);
+			entity = TokenService.login(entity, rememberMe);
 			// shiro 获取登录之前的地址
 			SavedRequest savedRequest = WebUtils.getSavedRequest(request);
 			String url = null;
@@ -147,7 +147,7 @@ public class UserLoginController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> logout() {
 		try {
-			TokenManager.logout();
+			TokenService.logout();
 			resultMap.put("status", 200);
 		} catch (Exception e) {
 			resultMap.put("status", 500);

@@ -41,7 +41,7 @@
     </bean>
 
     <!-- redis 的缓存 -->
-    <bean id="jedisManager" class="comfanlingjun.core.shiro.cache.JedisManager">
+    <bean id="jedisService" class="comfanlingjun.core.shiro.utils.redis.JedisService">
         <property name="jedisPool" ref="jedisPool"/>
     </bean>
 
@@ -49,34 +49,34 @@
     <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
 
     <!-- session 创建、删除、查询 -->
-    <bean id="jedisShiroSessionRepository" class="comfanlingjun.core.shiro.cache.JedisShiroSessionRepository">
-        <property name="jedisManager" ref="jedisManager"/>
+    <bean id="shiroSessionDaoImpl" class="comfanlingjun.core.shiro.session.impl.ShiroSessionDaoImpl">
+        <property name="jedisService" ref="jedisService"/>
     </bean>
 
     <!-- Session  的监听生命周期 -->
-    <bean id="customShiroSessionDAO" class="comfanlingjun.core.shiro.CustomShiroSessionDAO">
-        <property name="shiroSessionRepository" ref="jedisShiroSessionRepository"/>
+    <bean id="blogShiroSessionCycle" class="comfanlingjun.core.shiro.session.core.BlogShiroSessionCycle">
+        <property name="shiroSessionDao" ref="shiroSessionDaoImpl"/>
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
     </bean>
 
     <!-- shiro session 监听器 -->
-    <bean id="customSessionListener" class="comfanlingjun.core.shiro.listenter.CustomSessionListener">
-        <property name="shiroSessionRepository" ref="jedisShiroSessionRepository"/>
+    <bean id="BlogSessionListener" class="comfanlingjun.core.shiro.session.util.BlogSessionListener">
+        <property name="shiroSessionDao" ref="shiroSessionDaoImpl"/>
     </bean>
 
     <!-- 手动操作Session，管理Session -->
-    <bean id="customSessionManager" class="comfanlingjun.core.shiro.session.CustomSessionManager">
-        <property name="shiroSessionRepository" ref="jedisShiroSessionRepository"/>
-        <property name="customShiroSessionDAO" ref="customShiroSessionDAO"/>
+    <bean id="customSessionService" class="comfanlingjun.core.shiro.session.util.CustomSessionService">
+        <property name="shiroSessionDao" ref="shiroSessionDaoImpl"/>
+        <property name="blogShiroSessionCycle" ref="blogShiroSessionCycle"/>
     </bean>
 
     <!-- shiro 缓存实现，对ShiroCacheManager 采用redis的实现 -->
-    <bean id="jedisShiroCacheManager" class="comfanlingjun.core.shiro.cache.impl.JedisShiroCacheManager">
-        <property name="jedisManager" ref="jedisManager"/>
+    <bean id="shiroCacheServiceImpl" class="comfanlingjun.core.shiro.cache.impl.ShiroCacheServiceImpl">
+        <property name="jedisService" ref="jedisService"/>
     </bean>
     <!-- 用户缓存 -->
-    <bean id="customShiroCacheManager" class="comfanlingjun.core.shiro.cache.impl.CustomShiroCacheManager">
-        <property name="shiroCacheManager" ref="jedisShiroCacheManager"/>
+    <bean id="customShiroCacheService" class="comfanlingjun.core.shiro.cache.core.CustomShiroCacheService">
+        <property name="shiroCacheService" ref="shiroCacheServiceImpl"/>
     </bean>
 
     <!-- Session Manager -->
@@ -85,11 +85,11 @@
         <property name="sessionValidationInterval" value="1800000"/>
         <!-- session 有效时间为半小时 （毫秒单位）-->
         <property name="globalSessionTimeout" value="1800000"/>
-        <property name="sessionDAO" ref="customShiroSessionDAO"/>
+        <property name="sessionDAO" ref="blogShiroSessionCycle"/>
         <!-- session 监听，可以多个。 -->
         <property name="sessionListeners">
             <list>
-                <ref bean="customSessionListener"/>
+                <ref bean="BlogSessionListener"/>
             </list>
         </property>
         <!-- 间隔多少时间检查，不配置是60分钟 -->
@@ -118,7 +118,7 @@
         <property name="realm" ref="sampleRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="rememberMeManager" ref="rememberMeManager"/>
-        <property name="cacheManager" ref="customShiroCacheManager"/>
+        <property name="cacheManager" ref="customShiroCacheService"/>
     </bean>
 
     <!-- 静态注入，相当于调用SecurityUtils.setSecurityManager(securityManager) -->
@@ -136,13 +136,13 @@
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod"
                   value="comfanlingjun.core.shiro.filter.KickoutSessionFilter.setShiroSessionRepository"/>
-        <property name="arguments" ref="jedisShiroSessionRepository"/>
+        <property name="arguments" ref="shiroSessionDaoImpl"/>
     </bean>
 
     <!--自定义角色过滤器 支持多个角色可以访问同一个资源 eg:/home.jsp = authc,roleOR[admin,user]
         用户有admin或者user角色 就可以访问-->
     <!-- 认证数据库存储-->
-    <bean id="shiroManager" class="comfanlingjun.core.shiro.service.impl.ShiroManagerImpl"/>
+    <bean id="shiroManager" class="comfanlingjun.core.shiro.utils.ini.ShiroINIServiceImpl"/>
     <bean id="login" class="comfanlingjun.core.shiro.filter.LoginFilter"/>
     <bean id="role" class="comfanlingjun.core.shiro.filter.RoleFilter"/>
     <bean id="permission" class="comfanlingjun.core.shiro.filter.PermissionFilter"/>

@@ -1,8 +1,8 @@
 package comfanlingjun.core.shiro.filter;
 
 import comfanlingjun.commons.utils.LoggerUtils;
-import comfanlingjun.core.shiro.session.CustomSessionManager;
-import comfanlingjun.core.shiro.session.SessionStatus;
+import comfanlingjun.core.shiro.session.util.CustomSessionService;
+import comfanlingjun.core.shiro.utils.vo.SessionStatus;
 import net.sf.json.JSONObject;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -35,7 +35,7 @@ public class SimpleAuthFilter extends AccessControlFilter {
 		Subject subject = getSubject(request, response);
 		Session session = subject.getSession();
 		Map<String, String> resultMap = new HashMap<String, String>();
-		SessionStatus sessionStatus = (SessionStatus) session.getAttribute(CustomSessionManager.SESSION_STATUS);
+		SessionStatus sessionStatus = (SessionStatus) session.getAttribute(CustomSessionService.SESSION_STATUS);
 		if (null != sessionStatus && !sessionStatus.isOnlineStatus()) {
 			//判断是不是Ajax请求
 			if (ShiroFilterUtils.isAjax(request)) {

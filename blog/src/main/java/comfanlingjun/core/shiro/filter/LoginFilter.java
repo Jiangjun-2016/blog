@@ -2,7 +2,7 @@ package comfanlingjun.core.shiro.filter;
 
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.commons.utils.LoggerUtils;
-import comfanlingjun.core.shiro.token.manager.TokenManager;
+import comfanlingjun.core.shiro.token.TokenService;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.ServletRequest;
@@ -23,7 +23,7 @@ public class LoginFilter extends AccessControlFilter {
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
 		//调用TokenManager类，用来获取Token实体
-		UUser token = TokenManager.getToken();
+		UUser token = TokenService.getToken();
 		// && isEnabled()
 		if (null != token || isLoginRequest(request, response)) {
 			return Boolean.TRUE;

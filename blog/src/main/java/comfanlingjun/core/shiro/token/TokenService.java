@@ -1,10 +1,8 @@
-package comfanlingjun.core.shiro.token.manager;
+package comfanlingjun.core.shiro.token;
 
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.commons.utils.SpringContextUtil;
-import comfanlingjun.core.shiro.session.CustomSessionManager;
-import comfanlingjun.core.shiro.token.SampleRealm;
-import comfanlingjun.core.shiro.token.ShiroToken;
+import comfanlingjun.core.shiro.session.util.CustomSessionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
@@ -17,12 +15,12 @@ import java.util.List;
  * 在过滤器中调用TokenManager类，用来获取Token实体
  * 如果用户登录，则在SampleRealm进行认证时生成Token实体
  */
-public class TokenManager {
+public class TokenService {
 
 	//用户登录管理
 	public static final SampleRealm realm = SpringContextUtil.getBean("sampleRealm", SampleRealm.class);
 	//用户session管理
-	public static final CustomSessionManager customSessionManager = SpringContextUtil.getBean("customSessionManager", CustomSessionManager.class);
+	public static final CustomSessionService CUSTOM_SESSION_SERVICE = SpringContextUtil.getBean("CUSTOM_SESSION_SERVICE", CustomSessionService.class);
 
 	/**
 	 * 用户登录操作时生成此Token实体,方便SampleRealm取出信息认证
@@ -134,7 +132,7 @@ public class TokenManager {
 	 */
 	public static void clearUserAuthByUserId(Long... userIds) {
 		if (null == userIds || userIds.length == 0) return;
-		List<SimplePrincipalCollection> result = customSessionManager.getSimplePrincipalCollectionByUserId(userIds);
+		List<SimplePrincipalCollection> result = CUSTOM_SESSION_SERVICE.getSimplePrincipalCollectionByUserId(userIds);
 		for (SimplePrincipalCollection simplePrincipalCollection : result) {
 			realm.clearCachedAuthorizationInfo(simplePrincipalCollection);
 		}

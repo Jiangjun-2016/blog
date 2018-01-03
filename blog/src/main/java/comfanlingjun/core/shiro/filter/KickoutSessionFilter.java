@@ -1,9 +1,9 @@
 package comfanlingjun.core.shiro.filter;
 
 import comfanlingjun.commons.utils.LoggerUtils;
-import comfanlingjun.core.shiro.cache.VCache;
-import comfanlingjun.core.shiro.session.ShiroSessionRepository;
-import comfanlingjun.core.shiro.token.manager.TokenManager;
+import comfanlingjun.core.shiro.session.ShiroSessionDao;
+import comfanlingjun.core.shiro.token.TokenService;
+import comfanlingjun.core.shiro.utils.redis.SimpleJedisService;
 import net.sf.json.JSONObject;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -33,9 +33,9 @@ public class KickoutSessionFilter extends AccessControlFilter {
 	//踢出状态，true标示踢出
 	public final static String KICKOUT_STATUS = KickoutSessionFilter.class.getCanonicalName() + "_kickout_status";
 	//Redis操作类
-	public static VCache cache;
+	public static SimpleJedisService cache;
 	//Session操作类 CRUD
-	public static ShiroSessionRepository shiroSessionRepository;
+	public static ShiroSessionDao shiroSessionDao;
 
 	/**
 	 * 表示是否允许访问
@@ -75,7 +75,7 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		//如果不存在，创建一个新的
 		infoMap = (null == infoMap ? new LinkedHashMap<Long, Serializable>() : infoMap);
 		//获取tokenId
-		Long userId = TokenManager.getUserId();
+		Long userId = TokenService.getUserId();
 		//如果已经包含当前Session，并且是同一个用户，跳过。
 		if (infoMap.containsKey(userId) && infoMap.containsValue(sessionId)) {
 			//更新存储到缓存1个小时（这个时间最好和session的有效期一致或者大于session的有效期）
@@ -90,14 +90,14 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		 */
 		if (infoMap.containsKey(userId) && !infoMap.containsValue(sessionId)) {
 			Serializable oldSessionId = infoMap.get(userId);
-			Session oldSession = shiroSessionRepository.getSession(oldSessionId);
+			Session oldSession = shiroSessionDao.getSession(oldSessionId);
 			if (null != oldSession) {
 				//标记session已经踢出
 				oldSession.setAttribute(KICKOUT_STATUS, Boolean.TRUE);
-				shiroSessionRepository.saveSession(oldSession);//更新session
+				shiroSessionDao.saveSession(oldSession);//更新session
 				LoggerUtils.fmtDebug(getClass(), "kickout old session success,oldId[%s]", oldSessionId);
 			} else {
-				shiroSessionRepository.deleteSession(oldSessionId);
+				shiroSessionDao.deleteSession(oldSessionId);
 				infoMap.remove(userId);
 				//存储到缓存1个小时（这个时间最好和session的有效期一致或者大于session的有效期）
 				cache.setex(ONLINE_USER, infoMap, 3600);
@@ -141,9 +141,9 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		}
 	}
 
-	public static void setShiroSessionRepository(
-			ShiroSessionRepository shiroSessionRepository) {
-		KickoutSessionFilter.shiroSessionRepository = shiroSessionRepository;
+	public static void setShiroSessionDao(
+			ShiroSessionDao shiroSessionDao) {
+		KickoutSessionFilter.shiroSessionDao = shiroSessionDao;
 	}
 
 	public static String getKickoutUrl() {

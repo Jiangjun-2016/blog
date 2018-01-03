@@ -10,9 +10,9 @@ import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.StringUtils;
 import comfanlingjun.core.mybatis.BaseMybatisDao;
 import comfanlingjun.core.mybatis.page.Pagination;
+import comfanlingjun.core.shiro.token.TokenService;
 import comfanlingjun.permission.bo.UPermissionBo;
 import comfanlingjun.permission.service.PermissionService;
-import comfanlingjun.core.shiro.token.manager.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -162,7 +162,7 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 		//清空拥有角色Id为：roleId 的用户权限已加载数据，让权限数据重新加载
 		List<Long> userIds = userRoleMapper.findUserIdByRoleId(roleId);
 		
-		TokenManager.clearUserAuthByUserId(userIds);
+		TokenService.clearUserAuthByUserId(userIds);
 		resultMap.put("count", count);
 		return resultMap;
 		

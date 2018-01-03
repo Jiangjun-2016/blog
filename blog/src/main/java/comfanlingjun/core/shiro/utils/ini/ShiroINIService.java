@@ -1,9 +1,9 @@
-package comfanlingjun.core.shiro.service;
+package comfanlingjun.core.shiro.utils.ini;
 
 /**
  * shiro动态加载ini权限文件
  */
-public interface ShiroManager {
+public interface ShiroINIService {
 
 	/**
 	 * 加载过滤配置信息

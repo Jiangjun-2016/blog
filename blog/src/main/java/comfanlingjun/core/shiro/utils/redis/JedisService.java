@@ -1,8 +1,9 @@
-package comfanlingjun.core.shiro.cache;
+package comfanlingjun.core.shiro.utils.redis;
 
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.SerializeUtil;
 import comfanlingjun.commons.utils.StringUtils;
+import comfanlingjun.core.shiro.session.impl.ShiroSessionDaoImpl;
 import org.apache.shiro.session.Session;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -14,52 +15,15 @@ import java.util.Set;
 
 /**
  * Redis Manager Utils
- * 用于注入 JedisShiroCacheManager Jedis管理
+ * 注入 ShiroCacheServiceImpl Jedis管理
+ * 对Redis进行操作
+ * <p>
+ * 在JedisShiroSessionRepository(也就是对Shiro的Session进行监听操作中)，调用此管理类，对Redis数据库进行操作
  */
-public class JedisManager {
+public class JedisService {
 
-	//JedisPool是一个线程安全的网络连接池
+	//JedisPool 线程安全 网络连接池
 	private JedisPool jedisPool;
-
-	/**
-	 * 获得Jedis
-	 */
-	public Jedis getJedis() {
-		Jedis jedis = null;
-		try {
-			jedis = getJedisPool().getResource();
-		} catch (JedisConnectionException e) {
-			String message = StringUtils.trim(e.getMessage());
-			if ("Could not get a resource from the pool".equalsIgnoreCase(message)) {
-				System.out.println("请检查你的redis服务");
-				System.out.println("项目退出中....生产环境中--来自JedisManage");
-				System.exit(0);//停止项目
-			}
-			throw new JedisConnectionException(e);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return jedis;
-	}
-
-	/**
-	 * 关闭
-	 */
-	public void returnResource(Jedis jedis, boolean isBroken) {
-		if (jedis == null) {
-			return;
-		}
-		/**
-		 * @deprecated starting from Jedis 3.0 this method will not be exposed.
-		 * Resource cleanup should be done using @see {@link Jedis#close()}
-		 */
-		// if (isBroken){
-		// getJedisPool().returnBrokenResource(jedis);
-		// }else{
-		// getJedisPool().returnResource(jedis);
-		// }
-		jedis.close();
-	}
 
 	/**
 	 * 查询
@@ -132,7 +96,7 @@ public class JedisManager {
 		try {
 			jedis = getJedis();
 			jedis.select(dbIndex);
-			Set<byte[]> byteKeys = jedis.keys((JedisShiroSessionRepository.REDIS_SHIRO_ALL).getBytes());
+			Set<byte[]> byteKeys = jedis.keys((ShiroSessionDaoImpl.REDIS_SHIRO_ALL).getBytes());
 			if (byteKeys != null && byteKeys.size() > 0) {
 				for (byte[] bs : byteKeys) {
 					Session obj = SerializeUtil.deserialize(jedis.get(bs),
@@ -149,6 +113,46 @@ public class JedisManager {
 			returnResource(jedis, isBroken);
 		}
 		return sessions;
+	}
+
+	/**
+	 * 获得Jedis
+	 */
+	public Jedis getJedis() {
+		Jedis jedis = null;
+		try {
+			jedis = getJedisPool().getResource();
+		} catch (JedisConnectionException e) {
+			String message = StringUtils.trim(e.getMessage());
+			if ("Could not get a resource from the pool".equalsIgnoreCase(message)) {
+				System.out.println("请检查你的redis服务");
+				System.out.println("项目退出中....生产环境中--来自JedisManage");
+				System.exit(0);//停止项目
+			}
+			throw new JedisConnectionException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return jedis;
+	}
+
+	/**
+	 * 关闭
+	 */
+	public void returnResource(Jedis jedis, boolean isBroken) {
+		if (jedis == null) {
+			return;
+		}
+		/**
+		 * @deprecated starting from Jedis 3.0 this method will not be exposed.
+		 * Resource cleanup should be done using @see {@link Jedis#close()}
+		 */
+		// if (isBroken){
+		// getJedisPool().returnBrokenResource(jedis);
+		// }else{
+		// getJedisPool().returnResource(jedis);
+		// }
+		jedis.close();
 	}
 
 	public JedisPool getJedisPool() {

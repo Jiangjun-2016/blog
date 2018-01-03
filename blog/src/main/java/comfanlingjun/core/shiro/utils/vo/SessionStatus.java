@@ -1,4 +1,4 @@
-package comfanlingjun.core.shiro.session;
+package comfanlingjun.core.shiro.utils.vo;
 
 import java.io.Serializable;
 

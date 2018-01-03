@@ -1,7 +1,7 @@
-package comfanlingjun.core.shiro;
+package comfanlingjun.core.shiro.session.core;
 
 import comfanlingjun.commons.utils.LoggerUtils;
-import comfanlingjun.core.shiro.session.ShiroSessionRepository;
+import comfanlingjun.core.shiro.session.ShiroSessionDao;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
@@ -19,16 +19,16 @@ import java.util.Collection;
  * <p>
  * 在进入SampleRealm进行认证前，
  * 先进入CustomShiroSessionDAO 进行 Session 的监听生命周期
- * CustomShiroSessionDAO 注入 JedisShiroSessionRepository 进行 Session 的CRUD
+ * BlogShiroSessionCycle 注入 ShiroSessionDaoImpl 进行 Session 的CRUD
  */
-public class CustomShiroSessionDAO extends AbstractSessionDAO {
+public class BlogShiroSessionCycle extends AbstractSessionDAO {
 
-	//set注入 JedisShiroSessionRepository  Session操作 CRUD
-	private ShiroSessionRepository shiroSessionRepository;
+	//set注入 ShiroSessionDaoImpl  Session操作 CRUD
+	private ShiroSessionDao shiroSessionDao;
 
 	@Override
 	public void update(Session session) throws UnknownSessionException {
-		getShiroSessionRepository().saveSession(session);
+		getShiroSessionDao().saveSession(session);
 	}
 
 	@Override
@@ -39,32 +39,32 @@ public class CustomShiroSessionDAO extends AbstractSessionDAO {
 		}
 		Serializable id = session.getId();
 		if (id != null)
-			getShiroSessionRepository().deleteSession(id);
+			getShiroSessionDao().deleteSession(id);
 	}
 
 	@Override
 	public Collection<Session> getActiveSessions() {
-		return getShiroSessionRepository().getAllSessions();
+		return getShiroSessionDao().getAllSessions();
 	}
 
 	@Override
 	protected Serializable doCreate(Session session) {
 		Serializable sessionId = this.generateSessionId(session);
 		this.assignSessionId(session, sessionId);
-		getShiroSessionRepository().saveSession(session);
+		getShiroSessionDao().saveSession(session);
 		return sessionId;
 	}
 
 	@Override
 	protected Session doReadSession(Serializable sessionId) {
-		return getShiroSessionRepository().getSession(sessionId);
+		return getShiroSessionDao().getSession(sessionId);
 	}
 
-	public ShiroSessionRepository getShiroSessionRepository() {
-		return shiroSessionRepository;
+	public ShiroSessionDao getShiroSessionDao() {
+		return shiroSessionDao;
 	}
 
-	public void setShiroSessionRepository(ShiroSessionRepository shiroSessionRepository) {
-		this.shiroSessionRepository = shiroSessionRepository;
+	public void setShiroSessionDao(ShiroSessionDao shiroSessionDao) {
+		this.shiroSessionDao = shiroSessionDao;
 	}
 }
