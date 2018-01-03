@@ -12,6 +12,7 @@ import java.util.Collection;
 
 /**
  * Jedis Session 管理 CRUD
+ * 在进入SampleRealm进行认证前，先进入JedisShiroSessionRepository进行Session管理
  */
 public class JedisShiroSessionRepository implements ShiroSessionRepository {
 

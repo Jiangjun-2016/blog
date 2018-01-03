@@ -118,7 +118,7 @@
             <div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4>敬请期待!</h4>
-                <strong>Hello!</strong> 彻底完工遥遥无期，哈哈哈。
+                <strong>Hello!</strong> 暂定2018彻底完工，哈哈哈。
             </div>
         </div>
     </div>

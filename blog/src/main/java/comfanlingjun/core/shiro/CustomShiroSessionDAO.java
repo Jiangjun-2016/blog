@@ -10,10 +10,16 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
+ * 监听Shiro——Session的生命周期
+ * <p>
  * 重写实现增删改查方法
  * <p>
  * 通过重写AbstractSessionDAO ，来实现 Session共享。
  * 再重写 Session  的时候（其实也不算重写），因为和HttpSession 没有任何实现或者继承关系。
+ * <p>
+ * 在进入SampleRealm进行认证前，
+ * 先进入CustomShiroSessionDAO 进行 Session 的监听生命周期
+ * CustomShiroSessionDAO 注入 JedisShiroSessionRepository 进行 Session 的CRUD
  */
 public class CustomShiroSessionDAO extends AbstractSessionDAO {
 
