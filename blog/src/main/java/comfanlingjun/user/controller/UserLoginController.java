@@ -121,7 +121,7 @@ public class UserLoginController extends BaseController {
 			//平常用的获取上一个请求的方式，在Session不一致的情况下是获取不到的
 			//String url = (String) request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE);
 			LoggerUtils.fmtDebug(getClass(), "获取登录之前的URL:[%s]", url);
-			//如果登录之前没有地址，那么就跳转到首页。
+			//如果登录之前没有地址，那么就跳转到个人首页。
 			if (StringUtils.isBlank(url)) {
 				url = request.getContextPath() + "/user/index.shtml";
 			}

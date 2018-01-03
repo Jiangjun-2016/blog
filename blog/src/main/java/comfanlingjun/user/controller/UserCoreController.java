@@ -31,8 +31,6 @@ public class UserCoreController extends BaseController {
 
 	/**
 	 * 个人资料
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "index", method = RequestMethod.GET)
 	public ModelAndView userIndex() {

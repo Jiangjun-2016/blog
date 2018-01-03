@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<%@page contentType="text/html;charset=UTF-8" %>
+<%@page pageEncoding="utf-8" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
@@ -24,7 +26,7 @@
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <a class="navbar-brand" href="#">灵均</a>
@@ -104,8 +106,8 @@
                         <button type="submit" class="btn btn-default">搜索</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                        <li><a href="/u/register.shtml"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                        <li><a href="/u/login.shtml"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
                     </ul>
                 </div>
             </nav>

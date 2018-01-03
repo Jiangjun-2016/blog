@@ -22,6 +22,7 @@ import java.util.Map;
 
 /**
  * 相同帐号登录控制
+ * 如果是登录操作，则先进入SampleRealm类进行认证，然后进行过滤器操作，最后再进入SampleRealm类进行授权操作
  */
 public class KickoutSessionFilter extends AccessControlFilter {
 

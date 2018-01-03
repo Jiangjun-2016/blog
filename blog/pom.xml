@@ -243,6 +243,13 @@
         </dependency>
         <!-- /Spring 升级4+ 依赖的JSON包 -->
 
+        <!-- jstl -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>blog</finalName>
@@ -256,7 +263,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -268,6 +274,5 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
-
     </build>
 </project>

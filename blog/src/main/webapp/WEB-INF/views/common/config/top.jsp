@@ -5,7 +5,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
 %>
-<script baseUrl="<%=basePath%>" src="<%=basePath%>/js/user.login.js"></script>
+<script baseUrl="<%=basePath%>" src="<%=basePath%>/js/user/user.login.js"></script>
 <div class="navbar navbar-inverse navbar-fixed-top animated fadeInDown" style="z-index: 101;height: 41px;">
     <div class="container" style="padding-left: 0px; padding-right: 0px;">
         <div class="navbar-header">

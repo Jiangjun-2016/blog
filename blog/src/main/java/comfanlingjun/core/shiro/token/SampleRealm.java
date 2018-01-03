@@ -20,6 +20,7 @@ import java.util.Set;
 
 /**
  * shiro 认证 + 授权   重写
+ * 登录操作在进入过滤器前，先SampleRealm进行认证,然后进行过滤器操作，最后再进入SampleRealm类进行授权操作
  */
 public class SampleRealm extends AuthorizingRealm {
 

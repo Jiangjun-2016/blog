@@ -7,6 +7,7 @@ import org.apache.shiro.session.SessionListener;
 
 /**
  * shiro 会话 监听
+ * 容器启动，加载此类
  */
 public class CustomSessionListener implements SessionListener {
 

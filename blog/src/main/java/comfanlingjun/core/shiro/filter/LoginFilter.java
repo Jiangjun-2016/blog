@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 登录过滤器
+ * 是否允许登录
  */
 public class LoginFilter extends AccessControlFilter {
 

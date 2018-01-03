@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 判断是否踢出
+ * 是否踢出
  */
 public class SimpleAuthFilter extends AccessControlFilter {
 

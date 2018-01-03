@@ -218,8 +218,8 @@
                 });
                 return false;
             }
-            var pswd = MD5(username + "#" + password),
-                    data = {pswd: pswd, email: username, rememberMe: $("#rememberMe").is(':checked')};
+            var pswd = MD5(username + "#" + password);
+            var data = {pswd: pswd, email: username, rememberMe: $("#rememberMe").is(':checked')};
             var load = layer.load();
 
             $.ajax({
