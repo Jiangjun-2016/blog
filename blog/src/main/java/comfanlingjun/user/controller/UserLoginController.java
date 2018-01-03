@@ -110,7 +110,7 @@ public class UserLoginController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> submitLogin(UUser entity, Boolean rememberMe, HttpServletRequest request) {
 		try {
-			//TODO shiro操作
+			//生成Token实体
 			entity = TokenManager.login(entity, rememberMe);
 			// shiro 获取登录之前的地址
 			SavedRequest savedRequest = WebUtils.getSavedRequest(request);

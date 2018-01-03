@@ -1,7 +1,7 @@
 package comfanlingjun.core.shiro.service;
 
 /**
- * shiro接口
+ * shiro动态加载ini权限文件
  */
 public interface ShiroManager {
 

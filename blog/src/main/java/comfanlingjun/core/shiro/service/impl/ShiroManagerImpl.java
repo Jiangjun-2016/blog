@@ -59,6 +59,8 @@ public class ShiroManagerImpl implements ShiroManager {
 
 	/**
 	 * 此方法加同步锁
+	 * 重新构建权限过滤器
+	 * 一般在修改了用户角色、用户等信息时，需要再次调用该方法
 	 */
 	@Override
 	public synchronized void reCreateFilterChains() {

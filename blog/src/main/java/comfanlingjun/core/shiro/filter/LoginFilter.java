@@ -12,6 +12,8 @@ import java.util.Map;
 
 /**
  * 是否允许登录
+ * 运行过滤器前在SampleRealm先进行认证
+ * SampleRealm认证，会取出在登录时候生成的Token实体信息
  */
 public class LoginFilter extends AccessControlFilter {
 
@@ -20,6 +22,7 @@ public class LoginFilter extends AccessControlFilter {
 	 */
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
+		//调用TokenManager类，用来获取Token实体
 		UUser token = TokenManager.getToken();
 		// && isEnabled()
 		if (null != token || isLoginRequest(request, response)) {

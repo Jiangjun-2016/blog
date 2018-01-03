@@ -21,6 +21,7 @@ import java.util.Set;
 /**
  * shiro 认证 + 授权   重写
  * 登录操作在进入过滤器前，先SampleRealm进行认证,然后进行过滤器操作，最后再进入SampleRealm类进行授权操作
+ * 在SampleRealm认证前，会在登录Controller生成Token实体,方便SampleRealm取出信息认证
  */
 public class SampleRealm extends AuthorizingRealm {
 
@@ -39,6 +40,7 @@ public class SampleRealm extends AuthorizingRealm {
 	 * 认证信息，主要针对用户登录，
 	 */
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
+		//取出在登录Controller生成的Token实体信息
 		ShiroToken token = (ShiroToken) authcToken;
 		UUser user = userService.login(token.getUsername(), token.getPswd());
 		if (null == user) {

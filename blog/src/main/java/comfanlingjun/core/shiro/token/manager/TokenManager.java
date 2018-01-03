@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Shiro管理下的Token工具类
+ * 在过滤器中调用TokenManager类，用来获取Token实体
+ * 如果用户登录，则在SampleRealm进行认证时生成Token实体
  */
 public class TokenManager {
 
@@ -21,6 +23,16 @@ public class TokenManager {
 	public static final SampleRealm realm = SpringContextUtil.getBean("sampleRealm", SampleRealm.class);
 	//用户session管理
 	public static final CustomSessionManager customSessionManager = SpringContextUtil.getBean("customSessionManager", CustomSessionManager.class);
+
+	/**
+	 * 用户登录操作时生成此Token实体,方便SampleRealm取出信息认证
+	 */
+	public static UUser login(UUser user, Boolean rememberMe) {
+		ShiroToken token = new ShiroToken(user.getEmail(), user.getPswd());
+		token.setRememberMe(rememberMe);
+		SecurityUtils.getSubject().login(token);
+		return getToken();
+	}
 
 	/**
 	 * 获取当前登录的用户User对象
@@ -72,16 +84,6 @@ public class TokenManager {
 		String code = (String) getSession().getAttribute("CODE");
 		getSession().removeAttribute("CODE");
 		return code;
-	}
-
-	/**
-	 * 登录
-	 */
-	public static UUser login(UUser user, Boolean rememberMe) {
-		ShiroToken token = new ShiroToken(user.getEmail(), user.getPswd());
-		token.setRememberMe(rememberMe);
-		SecurityUtils.getSubject().login(token);
-		return getToken();
 	}
 
 	/**
