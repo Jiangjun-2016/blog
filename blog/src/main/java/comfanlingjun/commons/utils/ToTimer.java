@@ -1,4 +1,4 @@
-package comfanlingjun.commons.timer;
+package comfanlingjun.commons.utils;
 
 import comfanlingjun.permission.service.RoleService;
 import org.springframework.scheduling.annotation.Scheduled;
