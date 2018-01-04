@@ -12,8 +12,7 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
 >
     <!-- 自动扫描(自动注入) -->
-    <context:component-scan base-package="comfanlingjun.*.core;comfanlingjun.*.*.core"/>
-    <context:component-scan base-package="comfanlingjun.commons.timer"/>
+    <context:component-scan base-package="comfanlingjun.*.service;comfanlingjun.*.*.core"/>
 
     <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
         <property name="resultSetLogEnabled" value="true"/>
