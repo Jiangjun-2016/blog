@@ -2,12 +2,13 @@ package comfanlingjun.core.shiro.session.impl;
 
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.SerializeUtil;
-import comfanlingjun.core.shiro.session.util.CustomSessionService;
+import comfanlingjun.core.shiro.session.core.CustomShiroSessionService;
 import comfanlingjun.core.shiro.utils.redis.JedisService;
 import comfanlingjun.core.shiro.session.ShiroSessionDao;
 import comfanlingjun.core.shiro.utils.vo.SessionStatus;
 import org.apache.shiro.session.Session;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -32,7 +33,7 @@ public class ShiroSessionDaoImpl implements ShiroSessionDao {
 	private static final int SESSION_VAL_TIME_SPAN = 18000;
 	private static final int DB_INDEX = 1;
 
-	//redis数据库操作类，用过Jedis
+	@Resource
 	private JedisService jedisService;
 
 	@Override
@@ -42,10 +43,10 @@ public class ShiroSessionDaoImpl implements ShiroSessionDao {
 		try {
 			byte[] key = SerializeUtil.serialize(buildRedisSessionKey(session.getId()));
 			//不存在才添加。
-			if (null == session.getAttribute(CustomSessionService.SESSION_STATUS)) {
+			if (null == session.getAttribute(CustomShiroSessionService.SESSION_STATUS)) {
 				//Session 踢出自存存储。
 				SessionStatus sessionStatus = new SessionStatus();
-				session.setAttribute(CustomSessionService.SESSION_STATUS, sessionStatus);
+				session.setAttribute(CustomShiroSessionService.SESSION_STATUS, sessionStatus);
 			}
 			byte[] value = SerializeUtil.serialize(session);
 			/**这里是我犯下的一个严重问题，但是也不会是致命，
@@ -62,7 +63,7 @@ public class ShiroSessionDaoImpl implements ShiroSessionDao {
 			/*
 			直接使用 (int) (session.getTimeout() / 1000) 的话，session失效和redis的TTL 同时生效
              */
-			getJedisService().saveValueByKey(DB_INDEX, key, value, (int) (session.getTimeout() / 1000));
+			jedisService.saveValueByKey(DB_INDEX, key, value, (int) (session.getTimeout() / 1000));
 		} catch (Exception e) {
 			LoggerUtils.fmtError(getClass(), e, "save session error，id:[%s]", session.getId());
 		}
@@ -74,7 +75,7 @@ public class ShiroSessionDaoImpl implements ShiroSessionDao {
 			throw new NullPointerException("session id is empty");
 		}
 		try {
-			getJedisService().deleteByKey(DB_INDEX,
+			jedisService.deleteByKey(DB_INDEX,
 					SerializeUtil.serialize(buildRedisSessionKey(id)));
 		} catch (Exception e) {
 			LoggerUtils.fmtError(getClass(), e, "删除session出现异常，id:[%s]", id);
@@ -87,7 +88,7 @@ public class ShiroSessionDaoImpl implements ShiroSessionDao {
 			throw new NullPointerException("session id is empty");
 		Session session = null;
 		try {
-			byte[] value = getJedisService().getValueByKey(DB_INDEX, SerializeUtil
+			byte[] value = jedisService.getValueByKey(DB_INDEX, SerializeUtil
 					.serialize(buildRedisSessionKey(id)));
 			session = SerializeUtil.deserialize(value, Session.class);
 		} catch (Exception e) {
@@ -100,7 +101,7 @@ public class ShiroSessionDaoImpl implements ShiroSessionDao {
 	public Collection<Session> getAllSessions() {
 		Collection<Session> sessions = null;
 		try {
-			sessions = getJedisService().AllSession(DB_INDEX, REDIS_SHIRO_SESSION);
+			sessions = jedisService.AllSession(DB_INDEX, REDIS_SHIRO_SESSION);
 		} catch (Exception e) {
 			LoggerUtils.fmtError(getClass(), e, "获取全部session异常");
 		}
@@ -112,11 +113,4 @@ public class ShiroSessionDaoImpl implements ShiroSessionDao {
 		return REDIS_SHIRO_SESSION + sessionId;
 	}
 
-	public JedisService getJedisService() {
-		return jedisService;
-	}
-
-	public void setJedisService(JedisService jedisService) {
-		this.jedisService = jedisService;
-	}
 }

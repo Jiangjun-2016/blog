@@ -1,4 +1,4 @@
-package comfanlingjun.core.shiro.session.core;
+package comfanlingjun.core.shiro.session.lifecycle;
 
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.core.shiro.session.ShiroSessionDao;
@@ -6,10 +6,13 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.Collection;
 
 /**
+ * 核心类
+ * <p>
  * 监听Shiro——Session的生命周期
  * <p>
  * 重写实现增删改查方法
@@ -23,12 +26,13 @@ import java.util.Collection;
  */
 public class BlogShiroSessionCycle extends AbstractSessionDAO {
 
-	//set注入 ShiroSessionDaoImpl  Session操作 CRUD
+	@Resource
 	private ShiroSessionDao shiroSessionDao;
 
+	//web端操作均通过此方法
 	@Override
 	public void update(Session session) throws UnknownSessionException {
-		getShiroSessionDao().saveSession(session);
+		shiroSessionDao.saveSession(session);
 	}
 
 	@Override
@@ -39,32 +43,25 @@ public class BlogShiroSessionCycle extends AbstractSessionDAO {
 		}
 		Serializable id = session.getId();
 		if (id != null)
-			getShiroSessionDao().deleteSession(id);
+			shiroSessionDao.deleteSession(id);
 	}
 
 	@Override
 	public Collection<Session> getActiveSessions() {
-		return getShiroSessionDao().getAllSessions();
+		return shiroSessionDao.getAllSessions();
 	}
 
 	@Override
 	protected Serializable doCreate(Session session) {
 		Serializable sessionId = this.generateSessionId(session);
 		this.assignSessionId(session, sessionId);
-		getShiroSessionDao().saveSession(session);
+		shiroSessionDao.saveSession(session);
 		return sessionId;
 	}
 
 	@Override
 	protected Session doReadSession(Serializable sessionId) {
-		return getShiroSessionDao().getSession(sessionId);
+		return shiroSessionDao.getSession(sessionId);
 	}
 
-	public ShiroSessionDao getShiroSessionDao() {
-		return shiroSessionDao;
-	}
-
-	public void setShiroSessionDao(ShiroSessionDao shiroSessionDao) {
-		this.shiroSessionDao = shiroSessionDao;
-	}
 }

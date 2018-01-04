@@ -7,14 +7,14 @@ import java.util.Calendar;
  */
 public interface Constant {
 
-	static final String CONTEXT_PATH = "contextPath";/***项目根路径*/
+	/**
+	 * 项目根路径
+	 */
+	static final String CONTEXT_PATH = "contextPath";
 
 	/***Freemarker 使用的变量 begin**/
-
 	static final String TARGET = "target";//标签使用目标
-
 	static final String OUT_TAG_NAME = "outTagName";//输出标签Name
-
 	/***Freemarker 使用的变量 end**/
 
 
@@ -63,14 +63,12 @@ public interface Constant {
 	 **/
 	static final int NOW_YEAY = Calendar.getInstance().get(Calendar.YEAR);
 
-
 	/**
 	 * 地址
 	 **/
 	static final String DOMAIN_WWW = IConfig.get("domain.www");//前端域名
 	static final String DOMAIN_CDN = IConfig.get("domain.cdn");//静态资源域名
 	static String VERSION = String.valueOf(System.currentTimeMillis());//版本号，重启的时间
-
 
 	//存储到缓存，标识用户的禁止状态，解决在线用户踢出的问题
 	final static String EXECUTE_CHANGE_USER = "SOJSON_EXECUTE_CHANGE_USER";

@@ -3,7 +3,7 @@ package comfanlingjun.user.controller;
 import comfanlingjun.commons.controller.BaseController;
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.core.mybatis.page.Pagination;
-import comfanlingjun.core.shiro.session.util.CustomSessionService;
+import comfanlingjun.core.shiro.session.core.CustomShiroSessionService;
 import comfanlingjun.user.bo.UserOnlineBo;
 import comfanlingjun.user.service.UUserService;
 import org.springframework.context.annotation.Scope;
@@ -31,7 +31,7 @@ public class MemberController extends BaseController {
 	 * 用户手动操作Session
 	 * */
 	@Resource
-	CustomSessionService customSessionService;
+	CustomShiroSessionService customShiroSessionService;
 	@Resource
 	UUserService userService;
 
@@ -55,7 +55,7 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "online")
 	public ModelAndView online() {
-		List<UserOnlineBo> list = customSessionService.getAllUser();
+		List<UserOnlineBo> list = customShiroSessionService.getAllUser();
 		return new ModelAndView("member/online", "list", list);
 	}
 
@@ -66,7 +66,7 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "onlineDetails/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView onlineDetails(@PathVariable("sessionId") String sessionId) {
-		UserOnlineBo bo = customSessionService.getSession(sessionId);
+		UserOnlineBo bo = customShiroSessionService.getSession(sessionId);
 		return new ModelAndView("member/onlineDetails", "bo", bo);
 	}
 
@@ -80,7 +80,7 @@ public class MemberController extends BaseController {
 	@RequestMapping(value = "changeSessionStatus", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> changeSessionStatus(Boolean status, String sessionIds) {
-		return customSessionService.changeSessionStatus(status, sessionIds);
+		return customShiroSessionService.changeSessionStatus(status, sessionIds);
 	}
 
 	/**

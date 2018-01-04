@@ -7,8 +7,6 @@ public interface ShiroINIService {
 
 	/**
 	 * 加载过滤配置信息
-	 *
-	 * @return
 	 */
 	String loadFilterChainDefinitions();
 

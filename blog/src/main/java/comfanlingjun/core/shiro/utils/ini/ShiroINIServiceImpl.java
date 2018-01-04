@@ -90,8 +90,4 @@ public class ShiroINIServiceImpl implements ShiroINIService {
 			manager.createChain(url, chainDefinition);
 		}
 	}
-
-	public void setShiroFilterFactoryBean(ShiroFilterFactoryBean shiroFilterFactoryBean) {
-		this.shiroFilterFactoryBean = shiroFilterFactoryBean;
-	}
 }

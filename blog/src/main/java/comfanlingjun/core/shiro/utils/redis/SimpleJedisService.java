@@ -10,13 +10,16 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * 简单封装的Cache
- * 这个VCache和 {@link JedisService} 有什么区别，
- * 没啥区别，我只是想把shiro的操作 和 业务Cache的操作分开
+ * SimpleJedisService 简单封装 Cache
+ * <p>
+ * SimpleJedisService和 JedisService 没有区别，
+ * 单纯的利用JedisService获取jedis实例(jedisService.getJedis();),对Redis直接进行操作
+ * <p>
+ * 把 shiro的操作 和 业务Cache操作 分开
  */
 public class SimpleJedisService {
 
-	public final static JedisService JEDIS_SERVICE = SpringContextUtil.getBean("JEDIS_SERVICE", JedisService.class);
+	public final static JedisService jedisService = SpringContextUtil.getBean("jedisService", JedisService.class);
 
 	private SimpleJedisService() {
 	}
@@ -28,7 +31,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] skey = SerializeUtil.serialize(key);
 			return SerializeUtil.deserialize(jds.get(skey), requiredType);
@@ -48,7 +51,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] skey = SerializeUtil.serialize(key);
 			byte[] svalue = SerializeUtil.serialize(value);
@@ -68,7 +71,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] skey = SerializeUtil.serialize(key);
 			byte[] svalue = SerializeUtil.serialize(value);
@@ -93,7 +96,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] mkey = SerializeUtil.serialize(mapkey);
 			byte[] skey = SerializeUtil.serialize(key);
@@ -121,7 +124,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] mkey = SerializeUtil.serialize(mapkey);
 			byte[] skey = SerializeUtil.serialize(key);
@@ -142,7 +145,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[][] dx = new byte[dkey.length][];
 			for (int i = 0; i < dkey.length; i++) {
@@ -167,7 +170,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] lkey = SerializeUtil.serialize(setKey);
 			Set<T> set = new TreeSet<T>();
@@ -193,7 +196,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			Long result = jds.scard(setKey);
 			return result;
@@ -213,7 +216,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			Long result = 0L;
 			if (null == dkey) {
@@ -238,7 +241,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			String result = jds.srandmember(key);
 			return result;
@@ -258,7 +261,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			jds.sadd(setKey, value);
 		} catch (Exception e) {
@@ -276,7 +279,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			Set<String> result = jds.smembers(key);
 			return result;
@@ -297,7 +300,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] lkey = SerializeUtil.serialize(listKey);
 			byte[] svalue = SerializeUtil.serialize(value);
@@ -317,7 +320,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] lkey = SerializeUtil.serialize(listKey);
 			List<T> list = new ArrayList<T>();
@@ -343,7 +346,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] lkey = SerializeUtil.serialize(listKey);
 			Long result = jds.llen(lkey);
@@ -364,7 +367,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[][] dx = new byte[dkey.length][];
 			for (int i = 0; i < dkey.length; i++) {
@@ -388,7 +391,7 @@ public class SimpleJedisService {
 		Jedis jds = null;
 		boolean isBroken = false;
 		try {
-			jds = JEDIS_SERVICE.getJedis();
+			jds = jedisService.getJedis();
 			jds.select(0);
 			byte[] lkey = SerializeUtil.serialize(existskey);
 			return jds.exists(lkey);
@@ -408,9 +411,9 @@ public class SimpleJedisService {
 		if (jedis == null)
 			return;
 		// if (isBroken)
-		//     JEDIS_SERVICE.getJedisPool().returnBrokenResource(jedis);
+		//     jedisService.getJedisPool().returnBrokenResource(jedis);
 		// else
-		// 	JEDIS_SERVICE.getJedisPool().returnResource(jedis);
+		// 	jedisService.getJedisPool().returnResource(jedis);
 		// 版本问题
 		jedis.close();
 	}

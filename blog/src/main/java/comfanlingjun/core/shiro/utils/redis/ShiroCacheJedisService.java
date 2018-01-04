@@ -1,8 +1,7 @@
-package comfanlingjun.core.shiro.cache.util;
+package comfanlingjun.core.shiro.utils.redis;
 
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.SerializeUtil;
-import comfanlingjun.core.shiro.utils.redis.JedisService;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 
@@ -13,17 +12,17 @@ import java.util.Set;
  * 缓存获取Manager
  * 用于 ShiroCacheServiceImpl 类
  */
-public class ShiroCacheJedis<K, V> implements Cache<K, V> {
+public class ShiroCacheJedisService<K, V> implements Cache<K, V> {
 
 	//为了不和其他的缓存混淆，采用追加前缀方式以作区分
-	private static final String REDIS_SHIRO_CACHE = "shiro-demo-cache:";
+	private static final String REDIS_SHIRO_CACHE = "shiro-demo-simpleJedisService:";
 	//Redis 分片(分区)，也可以在配置文件中配置
 	private static final int DB_INDEX = 1;
 
 	private String name;
 	private JedisService jedisService;
 
-	public ShiroCacheJedis(String name, JedisService jedisService) {
+	public ShiroCacheJedisService(String name, JedisService jedisService) {
 		this.name = name;
 		this.jedisService = jedisService;
 	}
@@ -35,7 +34,7 @@ public class ShiroCacheJedis<K, V> implements Cache<K, V> {
 		try {
 			byteValue = jedisService.getValueByKey(DB_INDEX, byteKey);
 		} catch (Exception e) {
-			LoggerUtils.error(ShiroCacheJedis.class, "get value by cache throw exception", e);
+			LoggerUtils.error(ShiroCacheJedisService.class, "get value by simpleJedisService throw exception", e);
 		}
 		return (V) SerializeUtil.deserialize(byteValue);
 	}
@@ -46,7 +45,7 @@ public class ShiroCacheJedis<K, V> implements Cache<K, V> {
 		try {
 			jedisService.saveValueByKey(DB_INDEX, SerializeUtil.serialize(buildCacheKey(key)), SerializeUtil.serialize(value), -1);
 		} catch (Exception e) {
-			LoggerUtils.error(ShiroCacheJedis.class, "put cache throw exception", e);
+			LoggerUtils.error(ShiroCacheJedisService.class, "put simpleJedisService throw exception", e);
 		}
 		return previos;
 	}
@@ -57,7 +56,7 @@ public class ShiroCacheJedis<K, V> implements Cache<K, V> {
 		try {
 			jedisService.deleteByKey(DB_INDEX, SerializeUtil.serialize(buildCacheKey(key)));
 		} catch (Exception e) {
-			LoggerUtils.error(ShiroCacheJedis.class, "remove cache  throw exception", e);
+			LoggerUtils.error(ShiroCacheJedisService.class, "remove simpleJedisService  throw exception", e);
 		}
 		return previos;
 	}

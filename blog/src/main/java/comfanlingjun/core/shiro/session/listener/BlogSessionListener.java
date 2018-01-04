@@ -1,9 +1,11 @@
-package comfanlingjun.core.shiro.session.util;
+package comfanlingjun.core.shiro.session.listener;
 
 
 import comfanlingjun.core.shiro.session.ShiroSessionDao;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;
+
+import javax.annotation.Resource;
 
 /**
  * shiro 会话 监听
@@ -11,7 +13,7 @@ import org.apache.shiro.session.SessionListener;
  */
 public class BlogSessionListener implements SessionListener {
 
-	//注入 ShiroSessionDaoImpl
+	@Resource
 	private ShiroSessionDao shiroSessionDao;
 
 	@Override
@@ -27,11 +29,4 @@ public class BlogSessionListener implements SessionListener {
 		shiroSessionDao.deleteSession(session.getId());
 	}
 
-	public ShiroSessionDao getShiroSessionDao() {
-		return shiroSessionDao;
-	}
-
-	public void setShiroSessionDao(ShiroSessionDao shiroSessionDao) {
-		this.shiroSessionDao = shiroSessionDao;
-	}
 }

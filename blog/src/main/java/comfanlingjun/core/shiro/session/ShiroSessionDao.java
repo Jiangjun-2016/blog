@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Session操作 CRUD
+ * Session操作
  */
 public interface ShiroSessionDao {
 

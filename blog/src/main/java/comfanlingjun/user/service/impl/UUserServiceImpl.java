@@ -10,7 +10,7 @@ import comfanlingjun.core.mybatis.page.Pagination;
 import comfanlingjun.core.shiro.token.TokenService;
 import comfanlingjun.permission.bo.URoleBo;
 import comfanlingjun.permission.bo.UserRoleAllocationBo;
-import comfanlingjun.core.shiro.session.util.CustomSessionService;
+import comfanlingjun.core.shiro.session.core.CustomShiroSessionService;
 import comfanlingjun.user.service.UUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 	 * 用户手动操作Session
 	 */
 	@Resource
-	CustomSessionService customSessionService;
+	CustomShiroSessionService customShiroSessionService;
 	@Resource
 	UUserMapper userMapper;
 	@Resource
@@ -118,7 +118,7 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 			user.setStatus(status);
 			updateByPrimaryKeySelective(user);
 			//如果当前用户在线，需要标记并且踢出
-			customSessionService.forbidUserById(id, status);
+			customShiroSessionService.forbidUserById(id, status);
 			resultMap.put("status", 200);
 		} catch (Exception e) {
 			resultMap.put("status", 500);

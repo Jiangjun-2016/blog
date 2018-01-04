@@ -16,11 +16,17 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Set;
 
-
 /**
- * shiro 认证 + 授权   重写
- * 登录操作在进入过滤器前，先SampleRealm进行认证,然后进行过滤器操作，最后再进入SampleRealm类进行授权操作
- * 在SampleRealm认证前，会在登录Controller生成Token实体,方便SampleRealm取出信息认证
+ * 重写
+ * shiro 认证 + 授权
+ * <p>
+ * 登录操作在进入过滤器前，
+ * 先SampleRealm调用doGetAuthenticationInfo认证方法,
+ * 然后进入相应过滤器，
+ * 最后返回SampleRealm调用doGetAuthorizationInfo授权方法
+ * <p>
+ * 在SampleRealm认证前
+ * 在登录Controller第一步生成Token实体,SampleRealm通过此Token信息进行认证
  */
 public class SampleRealm extends AuthorizingRealm {
 

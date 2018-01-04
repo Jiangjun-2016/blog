@@ -1,30 +1,31 @@
-package comfanlingjun.core.shiro.session.util;
+package comfanlingjun.core.shiro.session.core;
 
 
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.StringUtils;
 import comfanlingjun.core.shiro.session.ShiroSessionDao;
-import comfanlingjun.core.shiro.session.core.BlogShiroSessionCycle;
+import comfanlingjun.core.shiro.session.lifecycle.BlogShiroSessionCycle;
 import comfanlingjun.core.shiro.utils.vo.SessionStatus;
 import comfanlingjun.user.bo.UserOnlineBo;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
  * 用户Session 手动管理
  */
-public class CustomSessionService {
+public class CustomShiroSessionService {
 
-	public static final String SESSION_STATUS = "sojson-online-status";
+	public static final String SESSION_STATUS = "fanlingjun-online-status";
 
-	//注入 ShiroSessionRepositoryJedisImpl对Session增删改查
+	@Resource
 	public ShiroSessionDao shiroSessionDao;
 
-	//注入 BlogShiroSessionCycle(此类也注入了ShiroSessionRepositoryJedisImpl类增删改查)
+	@Resource
 	public BlogShiroSessionCycle blogShiroSessionCycle;
 
 	/**
@@ -182,14 +183,5 @@ public class CustomSessionService {
 				blogShiroSessionCycle.update(session);
 			}
 		}
-	}
-
-	public void setShiroSessionDao(
-			ShiroSessionDao shiroSessionDao) {
-		this.shiroSessionDao = shiroSessionDao;
-	}
-
-	public void setBlogShiroSessionCycle(BlogShiroSessionCycle blogShiroSessionCycle) {
-		this.blogShiroSessionCycle = blogShiroSessionCycle;
 	}
 }

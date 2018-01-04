@@ -1,5 +1,6 @@
 package comfanlingjun.core.shiro.filter;
 
+import comfanlingjun.commons.utils.IConfig;
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.core.shiro.session.ShiroSessionDao;
 import comfanlingjun.core.shiro.token.TokenService;
@@ -26,15 +27,13 @@ import java.util.Map;
  */
 public class KickoutSessionFilter extends AccessControlFilter {
 
-	//静态注入
-	public static String kickoutUrl;
 	//在线用户
 	public final static String ONLINE_USER = KickoutSessionFilter.class.getCanonicalName() + "_online_user";
 	//踢出状态，true标示踢出
 	public final static String KICKOUT_STATUS = KickoutSessionFilter.class.getCanonicalName() + "_kickout_status";
-	//Redis操作类
-	public static SimpleJedisService cache;
-	//Session操作类 CRUD
+	//对Redis操作
+	public static SimpleJedisService simpleJedisService;
+	//对Session操作
 	public static ShiroSessionDao shiroSessionDao;
 
 	/**
@@ -71,7 +70,7 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		}
 
 		//从缓存获取用户-Session信息 <UserId,SessionId>
-		LinkedHashMap<Long, Serializable> infoMap = cache.get(ONLINE_USER, LinkedHashMap.class);
+		LinkedHashMap<Long, Serializable> infoMap = simpleJedisService.get(ONLINE_USER, LinkedHashMap.class);
 		//如果不存在，创建一个新的
 		infoMap = (null == infoMap ? new LinkedHashMap<Long, Serializable>() : infoMap);
 		//获取tokenId
@@ -79,7 +78,7 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		//如果已经包含当前Session，并且是同一个用户，跳过。
 		if (infoMap.containsKey(userId) && infoMap.containsValue(sessionId)) {
 			//更新存储到缓存1个小时（这个时间最好和session的有效期一致或者大于session的有效期）
-			cache.setex(ONLINE_USER, infoMap, 3600);
+			simpleJedisService.setex(ONLINE_USER, infoMap, 3600);
 			return Boolean.TRUE;
 		}
 		//如果用户相同，Session不相同，那么就要处理了
@@ -100,14 +99,14 @@ public class KickoutSessionFilter extends AccessControlFilter {
 				shiroSessionDao.deleteSession(oldSessionId);
 				infoMap.remove(userId);
 				//存储到缓存1个小时（这个时间最好和session的有效期一致或者大于session的有效期）
-				cache.setex(ONLINE_USER, infoMap, 3600);
+				simpleJedisService.setex(ONLINE_USER, infoMap, 3600);
 			}
 			return Boolean.TRUE;
 		}
 		if (!infoMap.containsKey(userId) && !infoMap.containsValue(sessionId)) {
 			infoMap.put(userId, sessionId);
 			//存储到缓存1个小时（这个时间最好和session的有效期一致或者大于session的有效期）
-			cache.setex(ONLINE_USER, infoMap, 3600);
+			simpleJedisService.setex(ONLINE_USER, infoMap, 3600);
 		}
 		return Boolean.TRUE;
 	}
@@ -117,6 +116,8 @@ public class KickoutSessionFilter extends AccessControlFilter {
 	 */
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+		//读取配置文件，重定向页面 /u/login.shtml?kickout
+		String kickoutUrl = IConfig.get("kickoutUrl");
 		//先退出
 		Subject subject = getSubject(request, response);
 		subject.logout();
@@ -146,11 +147,4 @@ public class KickoutSessionFilter extends AccessControlFilter {
 		KickoutSessionFilter.shiroSessionDao = shiroSessionDao;
 	}
 
-	public static String getKickoutUrl() {
-		return kickoutUrl;
-	}
-
-	public static void setKickoutUrl(String kickoutUrl) {
-		KickoutSessionFilter.kickoutUrl = kickoutUrl;
-	}
 }

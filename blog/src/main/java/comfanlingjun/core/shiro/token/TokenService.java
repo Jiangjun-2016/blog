@@ -2,25 +2,40 @@ package comfanlingjun.core.shiro.token;
 
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.commons.utils.SpringContextUtil;
-import comfanlingjun.core.shiro.session.util.CustomSessionService;
+import comfanlingjun.core.shiro.session.core.CustomShiroSessionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 
 import java.util.List;
 
-
 /**
- * Shiro管理下的Token工具类
- * 在过滤器中调用TokenManager类，用来获取Token实体
- * 如果用户登录，则在SampleRealm进行认证时生成Token实体
+ * Shiro Token服务
+ * <p>
+ * 在过滤器中会调用TokenService类
+ * 用来获取Token实体进行逻辑判断
  */
 public class TokenService {
 
 	//用户登录管理
-	public static final SampleRealm realm = SpringContextUtil.getBean("sampleRealm", SampleRealm.class);
+	public static final SampleRealm sampleRealm = SpringContextUtil.getBean("sampleRealm", SampleRealm.class);
 	//用户session管理
-	public static final CustomSessionService CUSTOM_SESSION_SERVICE = SpringContextUtil.getBean("CUSTOM_SESSION_SERVICE", CustomSessionService.class);
+	public static final CustomShiroSessionService CUSTOM_SESSION_SERVICE = SpringContextUtil.getBean("customShiroSessionService", CustomShiroSessionService.class);
+
+	/**
+	 * 获取当前登录的用户User对象
+	 */
+	public static UUser getToken() {
+		UUser token = (UUser) SecurityUtils.getSubject().getPrincipal();
+		return token;
+	}
+
+	/**
+	 * 获取当前用户ID
+	 */
+	public static Long getUserId() {
+		return getToken() == null ? null : getToken().getId();
+	}
 
 	/**
 	 * 用户登录操作时生成此Token实体,方便SampleRealm取出信息认证
@@ -30,14 +45,6 @@ public class TokenService {
 		token.setRememberMe(rememberMe);
 		SecurityUtils.getSubject().login(token);
 		return getToken();
-	}
-
-	/**
-	 * 获取当前登录的用户User对象
-	 */
-	public static UUser getToken() {
-		UUser token = (UUser) SecurityUtils.getSubject().getPrincipal();
-		return token;
 	}
 
 	/**
@@ -52,13 +59,6 @@ public class TokenService {
 	 */
 	public static String getNickname() {
 		return getToken().getNickname();
-	}
-
-	/**
-	 * 获取当前用户ID
-	 */
-	public static Long getUserId() {
-		return getToken() == null ? null : getToken().getId();
 	}
 
 	/**
@@ -116,12 +116,12 @@ public class TokenService {
 		 * 获取到的时候是一个集合。Collection<Realm> 
 		 RealmSecurityManager securityManager =
 		 (RealmSecurityManager) SecurityUtils.getSecurityManager();
-		 SampleRealm realm = (SampleRealm)securityManager.getRealms().iterator().next();
+		 SampleRealm sampleRealm = (SampleRealm)securityManager.getRealms().iterator().next();
 		 */
 		/**
 		 * 方法二、通过ApplicationContext 从Spring容器里获取实列化对象。
 		 */
-		realm.clearCachedAuthorizationInfo();
+		sampleRealm.clearCachedAuthorizationInfo();
 		/**
 		 * 当然还有很多直接或者间接的方法，此处不纠结。
 		 */
@@ -134,10 +134,9 @@ public class TokenService {
 		if (null == userIds || userIds.length == 0) return;
 		List<SimplePrincipalCollection> result = CUSTOM_SESSION_SERVICE.getSimplePrincipalCollectionByUserId(userIds);
 		for (SimplePrincipalCollection simplePrincipalCollection : result) {
-			realm.clearCachedAuthorizationInfo(simplePrincipalCollection);
+			sampleRealm.clearCachedAuthorizationInfo(simplePrincipalCollection);
 		}
 	}
-
 
 	/**
 	 * 方法重载

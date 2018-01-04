@@ -14,8 +14,8 @@
 
     <!-- 会话Cookie模板 -->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-        <!--cookie的name，我故意取名叫xxxxbaidu -->
-        <constructor-arg value="v_v-s-baidu"/>
+        <!--cookie的name-->
+        <constructor-arg value="s_fanlingjun"/>
         <property name="httpOnly" value="true"/>
         <!--cookie的有效时间 -->
         <property name="maxAge" value="-1"/>
@@ -25,7 +25,7 @@
     </bean>
     <!-- 用户信息记住我功能的相关配置 -->
     <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-        <constructor-arg value="v_v-re-baidu"/>
+        <constructor-arg value="re_fanlingjun"/>
         <property name="httpOnly" value="true"/>
         <!-- 配置存储rememberMe Cookie的domain为 一级域名
         <property name="domain" value=".itboy.net"/>
@@ -35,49 +35,35 @@
     <!-- rememberMe管理器 -->
     <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
         <!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）-->
-        <property name="cipherKey"
-                  value="#{T(org.apache.shiro.codec.Base64).decode('3AvVhmFLUs0KTA3Kprsdag==')}"/>
+        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('3AvVhmFLUs0KTA3Kprsdag==')}"/>
         <property name="cookie" ref="rememberMeCookie"/>
     </bean>
 
     <!-- redis 的缓存 -->
-    <bean id="jedisService" class="comfanlingjun.core.shiro.utils.redis.JedisService">
-        <property name="jedisPool" ref="jedisPool"/>
-    </bean>
+    <bean id="jedisService" class="comfanlingjun.core.shiro.utils.redis.JedisService"/>
 
     <!-- Session  的每个回话的ID 生成器，我们用JavaUuidSessionIdGenerator （UUID 规则）。 -->
     <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
 
     <!-- session 创建、删除、查询 -->
-    <bean id="shiroSessionDaoImpl" class="comfanlingjun.core.shiro.session.impl.ShiroSessionDaoImpl">
-        <property name="jedisService" ref="jedisService"/>
-    </bean>
+    <bean id="shiroSessionDao" class="comfanlingjun.core.shiro.session.impl.ShiroSessionDaoImpl"/>
 
     <!-- Session  的监听生命周期 -->
-    <bean id="blogShiroSessionCycle" class="comfanlingjun.core.shiro.session.core.BlogShiroSessionCycle">
-        <property name="shiroSessionDao" ref="shiroSessionDaoImpl"/>
+    <bean id="blogShiroSessionCycle" class="comfanlingjun.core.shiro.session.lifecycle.BlogShiroSessionCycle">
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
     </bean>
 
     <!-- shiro session 监听器 -->
-    <bean id="BlogSessionListener" class="comfanlingjun.core.shiro.session.util.BlogSessionListener">
-        <property name="shiroSessionDao" ref="shiroSessionDaoImpl"/>
-    </bean>
+    <bean id="BlogSessionListener" class="comfanlingjun.core.shiro.session.listener.BlogSessionListener"/>
 
-    <!-- 手动操作Session，管理Session -->
-    <bean id="customSessionService" class="comfanlingjun.core.shiro.session.util.CustomSessionService">
-        <property name="shiroSessionDao" ref="shiroSessionDaoImpl"/>
-        <property name="blogShiroSessionCycle" ref="blogShiroSessionCycle"/>
-    </bean>
+    <!-- shrio Session 操作 -->
+    <bean id="customShiroSessionService" class="comfanlingjun.core.shiro.session.core.CustomShiroSessionService"/>
 
-    <!-- shiro 缓存实现，对ShiroCacheManager 采用redis的实现 -->
-    <bean id="shiroCacheServiceImpl" class="comfanlingjun.core.shiro.cache.impl.ShiroCacheServiceImpl">
-        <property name="jedisService" ref="jedisService"/>
-    </bean>
-    <!-- 用户缓存 -->
-    <bean id="customShiroCacheService" class="comfanlingjun.core.shiro.cache.core.CustomShiroCacheService">
-        <property name="shiroCacheService" ref="shiroCacheServiceImpl"/>
-    </bean>
+    <!-- shiro cache 操作 -->
+    <bean id="customShiroCacheService" class="comfanlingjun.core.shiro.cache.CustomShiroCacheService"/>
+
+    <!-- 授权 认证 -->
+    <bean id="sampleRealm" class="comfanlingjun.core.shiro.token.SampleRealm"></bean>
 
     <!-- Session Manager -->
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
@@ -110,9 +96,6 @@
         <property name="sessionManager" ref="sessionManager"/>
     </bean>
 
-    <!-- 授权 认证 -->
-    <bean id="sampleRealm" class="comfanlingjun.core.shiro.token.SampleRealm"></bean>
-
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="sampleRealm"/>
@@ -127,49 +110,30 @@
         <property name="arguments" ref="securityManager"/>
     </bean>
 
-    <!-- session 校验单个用户是否多次登录 -->
-    <bean id="kickoutSessionFilter" class="comfanlingjun.core.shiro.filter.KickoutSessionFilter">
-        <property name="kickoutUrl" value="/u/login.shtml?kickout"/>
-    </bean>
-
     <!-- 静态注入 jedisShiroSessionRepository-->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod"
-                  value="comfanlingjun.core.shiro.filter.KickoutSessionFilter.setShiroSessionRepository"/>
-        <property name="arguments" ref="shiroSessionDaoImpl"/>
+                  value="comfanlingjun.core.shiro.filter.KickoutSessionFilter.setShiroSessionDao"/>
+        <property name="arguments" ref="shiroSessionDao"/>
     </bean>
 
-    <!--自定义角色过滤器 支持多个角色可以访问同一个资源 eg:/home.jsp = authc,roleOR[admin,user]
-        用户有admin或者user角色 就可以访问-->
+    <!--自定义角色过滤器 支持多个角色可以访问同一个资源 eg:/home.jsp = authc,roleOR[admin,user] 用户有admin或者user角色 就可以访问-->
     <!-- 认证数据库存储-->
-    <bean id="shiroManager" class="comfanlingjun.core.shiro.utils.ini.ShiroINIServiceImpl"/>
+    <bean id="shiroINIService" class="comfanlingjun.core.shiro.utils.ini.ShiroINIServiceImpl"/>
     <bean id="login" class="comfanlingjun.core.shiro.filter.LoginFilter"/>
     <bean id="role" class="comfanlingjun.core.shiro.filter.RoleFilter"/>
     <bean id="permission" class="comfanlingjun.core.shiro.filter.PermissionFilter"/>
     <bean id="simple" class="comfanlingjun.core.shiro.filter.SimpleAuthFilter"/>
+    <!-- session 校验单个用户是否多次登录 -->
+    <bean id="kickoutSessionFilter" class="comfanlingjun.core.shiro.filter.KickoutSessionFilter"/>
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/u/login.shtml"/>
-        <!--TODO 待提取-->
         <property name="successUrl" value="/"/>
         <property name="unauthorizedUrl" value="/?login"/>
-        <!--xml配置权限内容
-         		<property name="filterChainDefinitions" >
-         			<value>
-         				/** = anon
-         				/page/login.jsp = anon
-         				/page/register/* = anon
-         				/page/index.jsp = authc
-         				/page/addItem* = authc,roles[数据管理员]
-         				/page/file* = authc,roleOR[普通用户,数据管理员]
-         				/page/listItems* = authc,roleOR[数据管理员,普通用户]
-         				/page/showItem* = authc,roleOR[数据管理员,普通用户]
-         				/page/updateItem*=authc,roles[数据管理员]
-                     </value>
-                </property> -->
         <!-- ini文件配置权限内容-->
-        <property name="filterChainDefinitions" value="#{shiroManager.loadFilterChainDefinitions()}"/>
+        <property name="filterChainDefinitions" value="#{shiroINIService.loadFilterChainDefinitions()}"/>
         <property name="filters">
             <util:map>
                 <entry key="login" value-ref="login"></entry>

@@ -9,20 +9,17 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Redis Manager Utils
- * 注入 ShiroCacheServiceImpl Jedis管理
- * 对Redis进行操作
- * <p>
- * 在JedisShiroSessionRepository(也就是对Shiro的Session进行监听操作中)，调用此管理类，对Redis数据库进行操作
+ * 对Redis操作
  */
 public class JedisService {
 
-	//JedisPool 线程安全 网络连接池
+	@Resource
 	private JedisPool jedisPool;
 
 	/**
@@ -121,7 +118,7 @@ public class JedisService {
 	public Jedis getJedis() {
 		Jedis jedis = null;
 		try {
-			jedis = getJedisPool().getResource();
+			jedis = jedisPool.getResource();
 		} catch (JedisConnectionException e) {
 			String message = StringUtils.trim(e.getMessage());
 			if ("Could not get a resource from the pool".equalsIgnoreCase(message)) {
@@ -153,13 +150,5 @@ public class JedisService {
 		// getJedisPool().returnResource(jedis);
 		// }
 		jedis.close();
-	}
-
-	public JedisPool getJedisPool() {
-		return jedisPool;
-	}
-
-	public void setJedisPool(JedisPool jedisPool) {
-		this.jedisPool = jedisPool;
 	}
 }
