@@ -1,11 +1,11 @@
-package comfanlingjun.permission.bo;
+package comfanlingjun.permission.vo;
 
 import java.io.Serializable;
 
 /**
  * 权限分配 查询列表BO
  */
-public class RolePermissionAllocationBo implements Serializable {
+public class RolePermissionAllocationVO implements Serializable {
 
 	private static final long serialVersionUID = 6804555638288026649L;
 

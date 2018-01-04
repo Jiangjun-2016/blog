@@ -1,4 +1,4 @@
-package comfanlingjun.permission.bo;
+package comfanlingjun.permission.vo;
 
 import comfanlingjun.commons.model.UUser;
 
@@ -9,7 +9,8 @@ import java.io.Serializable;
  *
  * @author zhou-baicheng
  */
-public class UserRoleAllocationBo extends UUser implements Serializable {
+public class UserRoleAllocationVO extends UUser implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	//Role Name列转行，以,分割

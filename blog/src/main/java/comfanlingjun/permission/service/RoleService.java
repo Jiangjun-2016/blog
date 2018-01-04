@@ -2,7 +2,7 @@ package comfanlingjun.permission.service;
 
 import comfanlingjun.commons.model.URole;
 import comfanlingjun.core.mybatis.page.Pagination;
-import comfanlingjun.permission.bo.RolePermissionAllocationBo;
+import comfanlingjun.permission.vo.RolePermissionAllocationVO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,7 @@ public interface RoleService {
 
 	Map<String, Object> deleteRoleById(String ids);
 
-	Pagination<RolePermissionAllocationBo> findRoleAndPermissionPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize);
+	Pagination<RolePermissionAllocationVO> findRoleAndPermissionPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize);
 
 	//根据用户ID查询角色（role），放入到Authorization里。
 	Set<String> findRoleByUserId(Long userId);

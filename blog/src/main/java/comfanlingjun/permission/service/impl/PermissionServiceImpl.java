@@ -11,11 +11,11 @@ import comfanlingjun.commons.utils.StringUtils;
 import comfanlingjun.core.mybatis.BaseMybatisDao;
 import comfanlingjun.core.mybatis.page.Pagination;
 import comfanlingjun.core.shiro.token.TokenService;
-import comfanlingjun.permission.bo.UPermissionBo;
 import comfanlingjun.permission.service.PermissionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import comfanlingjun.permission.vo.UPermissionVO;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,15 +24,15 @@ import java.util.Set;
 @Service
 public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> implements PermissionService {
 
-	@Autowired
+	@Resource
 	UPermissionMapper permissionMapper;
-	@Autowired
+	@Resource
 	UUserMapper userMapper;
-	@Autowired
+	@Resource
 	URolePermissionMapper rolePermissionMapper;
-	@Autowired
+	@Resource
 	UUserRoleMapper userRoleMapper;
-	
+
 	@Override
 	public int deleteByPrimaryKey(Long id) {
 		return permissionMapper.deleteByPrimaryKey(id);
@@ -70,31 +70,30 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 
 	@Override
 	public Map<String, Object> deletePermissionById(String ids) {
-		Map<String,Object> resultMap = new HashMap<String,Object>();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-			int successCount=0,errorCount=0;
-			String resultMsg ="删除%s条，失败%s条";
+			int successCount = 0, errorCount = 0;
+			String resultMsg = "删除%s条，失败%s条";
 			String[] idArray = new String[]{};
-			if(StringUtils.contains(ids, ",")){
+			if (StringUtils.contains(ids, ",")) {
 				idArray = ids.split(",");
-			}else{
+			} else {
 				idArray = new String[]{ids};
 			}
 			for (String idx : idArray) {
 				Long id = new Long(idx);
-				
-				List<URolePermission> rolePermissions= rolePermissionMapper.findRolePermissionByPid(id);
-				if(null != rolePermissions && rolePermissions.size() > 0){
+				List<URolePermission> rolePermissions = rolePermissionMapper.findRolePermissionByPid(id);
+				if (null != rolePermissions && rolePermissions.size() > 0) {
 					errorCount += rolePermissions.size();
-				}else{
-					successCount+=this.deleteByPrimaryKey(id);
+				} else {
+					successCount += this.deleteByPrimaryKey(id);
 				}
 			}
 			resultMap.put("status", 200);
 			//如果有成功的，也有失败的，提示清楚。
-			if(errorCount > 0){
-				resultMsg = String.format(resultMsg, successCount,errorCount);
-			}else{
+			if (errorCount > 0) {
+				resultMsg = String.format(resultMsg, successCount, errorCount);
+			} else {
 				resultMsg = "操作成功";
 			}
 			resultMap.put("resultMsg", resultMsg);
@@ -108,13 +107,12 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pagination<UPermission> findPage(Map<String,Object> resultMap, Integer pageNo,
-											Integer pageSize) {
+	public Pagination<UPermission> findPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize) {
 		return super.findPage(resultMap, pageNo, pageSize);
 	}
 
 	@Override
-	public List<UPermissionBo> selectPermissionById(Long id) {
+	public List<UPermissionVO> selectPermissionById(Long id) {
 		return permissionMapper.selectPermissionById(id);
 	}
 
@@ -124,31 +122,28 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 		rolePermissionMapper.deleteByRid(roleId);
 		return executePermission(roleId, ids);
 	}
+
 	/**
-	 * 处理权限 
-	 * @param roleId
-	 * @param ids
-	 * @return
+	 * 处理权限
 	 */
-	private Map<String, Object> executePermission(Long roleId, String ids){
-		Map<String,Object> resultMap = new HashMap<String, Object>();
+	private Map<String, Object> executePermission(Long roleId, String ids) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		int count = 0;
 		try {
 			//如果ids,permission 的id 有值，那么就添加。没值象征着：把这个角色（roleId）所有权限取消。
-			if(StringUtils.isNotBlank(ids)){
+			if (StringUtils.isNotBlank(ids)) {
 				String[] idArray = null;
-				
 				//这里有的人习惯，直接ids.split(",") 都可以，我习惯这么写。清楚明了。
-				if(StringUtils.contains(ids, ",")){
+				if (StringUtils.contains(ids, ",")) {
 					idArray = ids.split(",");
-				}else{
+				} else {
 					idArray = new String[]{ids};
 				}
 				//添加新的。
 				for (String pid : idArray) {
 					//这里严谨点可以判断，也可以不判断。这个{@link StringUtils 我是重写了的} 
-					if(StringUtils.isNotBlank(pid)){
-						URolePermission entity = new URolePermission(roleId,new Long(pid));
+					if (StringUtils.isNotBlank(pid)) {
+						URolePermission entity = new URolePermission(roleId, new Long(pid));
 						count += rolePermissionMapper.insertSelective(entity);
 					}
 				}
@@ -161,16 +156,14 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 		}
 		//清空拥有角色Id为：roleId 的用户权限已加载数据，让权限数据重新加载
 		List<Long> userIds = userRoleMapper.findUserIdByRoleId(roleId);
-		
 		TokenService.clearUserAuthByUserId(userIds);
 		resultMap.put("count", count);
 		return resultMap;
-		
 	}
 
 	@Override
 	public Map<String, Object> deleteByRids(String roleIds) {
-		Map<String,Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			resultMap.put("roleIds", roleIds);
 			rolePermissionMapper.deleteByRids(resultMap);
@@ -187,5 +180,4 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 	public Set<String> findPermissionByUserId(Long userId) {
 		return permissionMapper.findPermissionByUserId(userId);
 	}
-
 }

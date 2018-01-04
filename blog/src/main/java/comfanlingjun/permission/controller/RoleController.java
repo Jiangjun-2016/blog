@@ -6,7 +6,6 @@ import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.core.mybatis.page.Pagination;
 import comfanlingjun.permission.service.RoleService;
 import comfanlingjun.user.manager.UserManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,8 +31,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 角色列表
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "index")
 	public ModelAndView index(String findContent, ModelMap modelMap) {
@@ -44,9 +41,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 角色添加
-	 *
-	 * @param role
-	 * @return
 	 */
 	@RequestMapping(value = "addRole", method = RequestMethod.POST)
 	@ResponseBody
@@ -65,9 +59,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 删除角色，根据ID，但是删除角色的时候，需要查询是否有赋予给用户，如果有用户在使用，那么就不能删除。
-	 *
-	 * @param id
-	 * @return
 	 */
 	@RequestMapping(value = "deleteRoleById", method = RequestMethod.POST)
 	@ResponseBody
@@ -77,8 +68,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 我的权限页面
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "mypermission", method = RequestMethod.GET)
 	public ModelAndView mypermission() {
@@ -87,8 +76,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 我的权限 bootstrap tree data
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "getPermissionTree", method = RequestMethod.POST)
 	@ResponseBody

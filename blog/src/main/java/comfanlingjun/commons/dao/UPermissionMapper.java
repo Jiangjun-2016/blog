@@ -2,7 +2,7 @@ package comfanlingjun.commons.dao;
 
 
 import comfanlingjun.commons.model.UPermission;
-import comfanlingjun.permission.bo.UPermissionBo;
+import comfanlingjun.permission.vo.UPermissionVO;
 
 import java.util.List;
 import java.util.Set;
@@ -20,7 +20,7 @@ public interface UPermissionMapper {
 
 	int updateByPrimaryKey(UPermission record);
 
-	List<UPermissionBo> selectPermissionById(Long id);
+	List<UPermissionVO> selectPermissionById(Long id);
 
 	//根据用户ID获取权限的Set集合
 	Set<String> findPermissionByUserId(Long id);

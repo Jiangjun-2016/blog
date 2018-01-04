@@ -50,7 +50,7 @@
     </select>
 
     <!-- 选择角色给用户 ，checkbox 列表-->
-    <select id="selectRoleByUserId" resultType="comfanlingjun.permission.bo.URoleBo">
+    <select id="selectRoleByUserId" resultType="comfanlingjun.permission.vo.URoleVO">
         <!--
       select ur.id,ur.name,ur.type,ifnull(uu.id,0)marker from u_role ur
       left join u_user_role uur on uur.uid = ur.id
@@ -62,7 +62,7 @@
     </select>
 
     <!-- 权限分配的分页查询 -->
-    <select id="findRoleAndPermission" resultType="comfanlingjun.permission.bo.RolePermissionAllocationBo">
+    <select id="findRoleAndPermission" resultType="comfanlingjun.permission.vo.RolePermissionAllocationVO">
         select ur.id,ur.type,ur.name,group_concat(up.name) permissionNames,group_concat(up.id)permissionIds from
         u_role ur
         left join u_role_permission urp on urp.rid = ur.id

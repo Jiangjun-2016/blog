@@ -2,7 +2,7 @@ package comfanlingjun.permission.service;
 
 import comfanlingjun.commons.model.UPermission;
 import comfanlingjun.core.mybatis.page.Pagination;
-import comfanlingjun.permission.bo.UPermissionBo;
+import comfanlingjun.permission.vo.UPermissionVO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,7 @@ public interface PermissionService {
 
 	Pagination<UPermission> findPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize);
 
-	List<UPermissionBo> selectPermissionById(Long id);
+	List<UPermissionVO> selectPermissionById(Long id);
 
 	Map<String, Object> addPermission2Role(Long roleId, String ids);
 

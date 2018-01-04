@@ -7,7 +7,7 @@ import comfanlingjun.commons.utils.StringUtils;
 import comfanlingjun.core.shiro.session.ShiroSessionDao;
 import comfanlingjun.core.shiro.session.lifecycle.BlogShiroSessionCycle;
 import comfanlingjun.core.shiro.utils.vo.SessionStatus;
-import comfanlingjun.user.bo.UserOnlineBo;
+import comfanlingjun.user.vo.UserOnlineVO;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
@@ -31,12 +31,12 @@ public class CustomShiroSessionService {
 	/**
 	 * 获取所有的有效Session用户
 	 */
-	public List<UserOnlineBo> getAllUser() {
+	public List<UserOnlineVO> getAllUser() {
 		//获取所有session
 		Collection<Session> sessions = blogShiroSessionCycle.getActiveSessions();
-		List<UserOnlineBo> list = new ArrayList<UserOnlineBo>();
+		List<UserOnlineVO> list = new ArrayList<UserOnlineVO>();
 		for (Session session : sessions) {
-			UserOnlineBo bo = getSessionBo(session);
+			UserOnlineVO bo = getSessionBo(session);
 			if (null != bo) {
 				list.add(bo);
 			}
@@ -77,16 +77,16 @@ public class CustomShiroSessionService {
 	/**
 	 * 获取单个Session
 	 */
-	public UserOnlineBo getSession(String sessionId) {
+	public UserOnlineVO getSession(String sessionId) {
 		Session session = shiroSessionDao.getSession(sessionId);
-		UserOnlineBo bo = getSessionBo(session);
+		UserOnlineVO bo = getSessionBo(session);
 		return bo;
 	}
 
 	/**
-	 * 获取实体 UserOnlineBo
+	 * 获取实体 UserOnlineVO
 	 */
-	private UserOnlineBo getSessionBo(Session session) {
+	private UserOnlineVO getSessionBo(Session session) {
 		//获取session登录信息。
 		Object obj = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
 		if (null == obj) {
@@ -102,7 +102,7 @@ public class CustomShiroSessionService {
 			obj = spc.getPrimaryPrincipal();
 			if (null != obj && obj instanceof UUser) {
 				//存储session + user 综合信息
-				UserOnlineBo userBo = new UserOnlineBo((UUser) obj);
+				UserOnlineVO userBo = new UserOnlineVO((UUser) obj);
 				//最后一次和系统交互的时间
 				userBo.setLastAccess(session.getLastAccessTime());
 				//主机的ip地址
@@ -169,7 +169,7 @@ public class CustomShiroSessionService {
 	 */
 	public void forbidUserById(Long id, Long status) {
 		//获取所有在线用户
-		for (UserOnlineBo bo : getAllUser()) {
+		for (UserOnlineVO bo : getAllUser()) {
 			Long userId = bo.getId();
 			//匹配用户ID
 			if (userId.equals(id)) {

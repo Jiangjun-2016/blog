@@ -1,7 +1,7 @@
 package comfanlingjun.commons.dao;
 
 import comfanlingjun.commons.model.UUser;
-import comfanlingjun.permission.bo.URoleBo;
+import comfanlingjun.permission.vo.URoleVO;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +23,6 @@ public interface UUserMapper {
 
 	UUser findUserByEmail(String email);
 
-	List<URoleBo> selectRoleByUserId(Long id);
+	List<URoleVO> selectRoleByUserId(Long id);
 
 }

@@ -8,8 +8,8 @@ import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.core.mybatis.BaseMybatisDao;
 import comfanlingjun.core.mybatis.page.Pagination;
 import comfanlingjun.core.shiro.token.TokenService;
-import comfanlingjun.permission.bo.URoleBo;
-import comfanlingjun.permission.bo.UserRoleAllocationBo;
+import comfanlingjun.permission.vo.URoleVO;
+import comfanlingjun.permission.vo.UserRoleAllocationVO;
 import comfanlingjun.core.shiro.session.core.CustomShiroSessionService;
 import comfanlingjun.user.service.UUserService;
 import org.apache.commons.lang.StringUtils;
@@ -130,12 +130,12 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pagination<UserRoleAllocationBo> findUserAndRole(ModelMap modelMap, Integer pageNo, Integer pageSize) {
+	public Pagination<UserRoleAllocationVO> findUserAndRole(ModelMap modelMap, Integer pageNo, Integer pageSize) {
 		return super.findPage("findUserAndRole", "findCount", modelMap, pageNo, pageSize);
 	}
 
 	@Override
-	public List<URoleBo> selectRoleByUserId(Long id) {
+	public List<URoleVO> selectRoleByUserId(Long id) {
 		return userMapper.selectRoleByUserId(id);
 	}
 

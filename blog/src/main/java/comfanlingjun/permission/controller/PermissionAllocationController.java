@@ -2,8 +2,8 @@ package comfanlingjun.permission.controller;
 
 import comfanlingjun.commons.controller.BaseController;
 import comfanlingjun.core.mybatis.page.Pagination;
-import comfanlingjun.permission.bo.RolePermissionAllocationBo;
-import comfanlingjun.permission.bo.UPermissionBo;
+import comfanlingjun.permission.vo.RolePermissionAllocationVO;
+import comfanlingjun.permission.vo.UPermissionVO;
 import comfanlingjun.permission.service.PermissionService;
 import comfanlingjun.permission.service.RoleService;
 import org.springframework.context.annotation.Scope;
@@ -32,30 +32,22 @@ public class PermissionAllocationController extends BaseController {
 
 	/**
 	 * 权限分配
-	 *
-	 * @param modelMap
-	 * @param pageNo
-	 * @param findContent
-	 * @return
 	 */
 	@RequestMapping(value = "allocation")
 	public ModelAndView allocation(ModelMap modelMap, Integer pageNo, String findContent) {
 		modelMap.put("findContent", findContent);
-		Pagination<RolePermissionAllocationBo> boPage = roleService.findRoleAndPermissionPage(modelMap, pageNo, pageSize);
+		Pagination<RolePermissionAllocationVO> boPage = roleService.findRoleAndPermissionPage(modelMap, pageNo, pageSize);
 		modelMap.put("page", boPage);
 		return new ModelAndView("permission/allocation");
 	}
 
 	/**
 	 * 根据角色ID查询权限
-	 *
-	 * @param id
-	 * @return
 	 */
 	@RequestMapping(value = "selectPermissionById")
 	@ResponseBody
-	public List<UPermissionBo> selectPermissionById(Long id) {
-		List<UPermissionBo> permissionBos = permissionService.selectPermissionById(id);
+	public List<UPermissionVO> selectPermissionById(Long id) {
+		List<UPermissionVO> permissionBos = permissionService.selectPermissionById(id);
 		return permissionBos;
 	}
 

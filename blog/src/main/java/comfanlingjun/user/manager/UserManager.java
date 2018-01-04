@@ -14,9 +14,6 @@ public class UserManager {
 
 	/**
 	 * 加工密码，和登录一致。
-	 *
-	 * @param user
-	 * @return
 	 */
 	public static UUser md5Pswd(UUser user) {
 		//密码为   email + '#' + pswd，然后MD5
@@ -26,10 +23,6 @@ public class UserManager {
 
 	/**
 	 * 字符串返回值
-	 *
-	 * @param email
-	 * @param pswd
-	 * @return
 	 */
 	public static String md5Pswd(String email, String pswd) {
 		pswd = String.format("%s#%s", email, pswd);
@@ -39,9 +32,6 @@ public class UserManager {
 
 	/**
 	 * 把查询出来的roles 转换成bootstarp 的 tree数据
-	 *
-	 * @param roles
-	 * @return
 	 */
 	public static List<Map<String, Object>> toTreeData(List<URole> roles) {
 		List<Map<String, Object>> resultData = new LinkedList<Map<String, Object>>();

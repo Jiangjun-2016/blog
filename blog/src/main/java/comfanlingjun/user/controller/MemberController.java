@@ -4,7 +4,7 @@ import comfanlingjun.commons.controller.BaseController;
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.core.mybatis.page.Pagination;
 import comfanlingjun.core.shiro.session.core.CustomShiroSessionService;
-import comfanlingjun.user.bo.UserOnlineBo;
+import comfanlingjun.user.vo.UserOnlineVO;
 import comfanlingjun.user.service.UUserService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -55,7 +55,7 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "online")
 	public ModelAndView online() {
-		List<UserOnlineBo> list = customShiroSessionService.getAllUser();
+		List<UserOnlineVO> list = customShiroSessionService.getAllUser();
 		return new ModelAndView("member/online", "list", list);
 	}
 
@@ -66,7 +66,7 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value = "onlineDetails/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView onlineDetails(@PathVariable("sessionId") String sessionId) {
-		UserOnlineBo bo = customShiroSessionService.getSession(sessionId);
+		UserOnlineVO bo = customShiroSessionService.getSession(sessionId);
 		return new ModelAndView("member/onlineDetails", "bo", bo);
 	}
 

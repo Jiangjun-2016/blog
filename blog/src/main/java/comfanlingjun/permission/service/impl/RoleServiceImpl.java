@@ -7,7 +7,7 @@ import comfanlingjun.commons.model.URole;
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.core.mybatis.BaseMybatisDao;
 import comfanlingjun.core.mybatis.page.Pagination;
-import comfanlingjun.permission.bo.RolePermissionAllocationBo;
+import comfanlingjun.permission.vo.RolePermissionAllocationVO;
 import comfanlingjun.permission.service.RoleService;
 import comfanlingjun.core.shiro.token.TokenService;
 import org.apache.commons.lang.StringUtils;
@@ -59,15 +59,13 @@ public class RoleServiceImpl extends BaseMybatisDao<URoleMapper> implements Role
 		return roleMapper.updateByPrimaryKeySelective(record);
 	}
 
-
 	@Override
-	public Pagination<URole> findPage(Map<String, Object> resultMap,
-									  Integer pageNo, Integer pageSize) {
+	public Pagination<URole> findPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize) {
 		return super.findPage(resultMap, pageNo, pageSize);
 	}
 
 	@Override
-	public Pagination<RolePermissionAllocationBo> findRoleAndPermissionPage(
+	public Pagination<RolePermissionAllocationVO> findRoleAndPermissionPage(
 			Map<String, Object> resultMap, Integer pageNo, Integer pageSize) {
 		return super.findPage("findRoleAndPermission", "findCount", resultMap, pageNo, pageSize);
 	}
@@ -84,7 +82,6 @@ public class RoleServiceImpl extends BaseMybatisDao<URoleMapper> implements Role
 			} else {
 				idArray = new String[]{ids};
 			}
-
 			c:
 			for (String idx : idArray) {
 				Long id = new Long(idx);
@@ -125,5 +122,4 @@ public class RoleServiceImpl extends BaseMybatisDao<URoleMapper> implements Role
 	public void initData() {
 		roleMapper.initData();
 	}
-
 }

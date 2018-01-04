@@ -1,4 +1,4 @@
-package comfanlingjun.permission.bo;
+package comfanlingjun.permission.vo;
 
 
 import comfanlingjun.commons.model.UPermission;
@@ -9,13 +9,15 @@ import java.io.Serializable;
 /**
  * 权限选择
  */
-public class UPermissionBo extends UPermission implements Serializable {
+public class UPermissionVO extends UPermission implements Serializable {
 
 	private static final long serialVersionUID = 5595282310632066245L;
+
 	/**
 	 * 是否勾选
 	 */
 	private String marker;
+	
 	/**
 	 * role Id
 	 */

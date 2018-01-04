@@ -2,8 +2,8 @@ package comfanlingjun.permission.controller;
 
 import comfanlingjun.commons.controller.BaseController;
 import comfanlingjun.core.mybatis.page.Pagination;
-import comfanlingjun.permission.bo.URoleBo;
-import comfanlingjun.permission.bo.UserRoleAllocationBo;
+import comfanlingjun.permission.vo.URoleVO;
+import comfanlingjun.permission.vo.UserRoleAllocationVO;
 import comfanlingjun.permission.service.PermissionService;
 import comfanlingjun.user.service.UUserService;
 import org.springframework.context.annotation.Scope;
@@ -32,30 +32,22 @@ public class UserRoleAllocationController extends BaseController {
 
 	/**
 	 * 用户角色权限分配
-	 *
-	 * @param modelMap
-	 * @param pageNo
-	 * @param findContent
-	 * @return
 	 */
 	@RequestMapping(value = "allocation")
 	public ModelAndView allocation(ModelMap modelMap, Integer pageNo, String findContent) {
 		modelMap.put("findContent", findContent);
-		Pagination<UserRoleAllocationBo> boPage = userService.findUserAndRole(modelMap, pageNo, pageSize);
+		Pagination<UserRoleAllocationVO> boPage = userService.findUserAndRole(modelMap, pageNo, pageSize);
 		modelMap.put("page", boPage);
 		return new ModelAndView("role/allocation");
 	}
 
 	/**
 	 * 根据用户ID查询权限
-	 *
-	 * @param id
-	 * @return
 	 */
 	@RequestMapping(value = "selectRoleByUserId")
 	@ResponseBody
-	public List<URoleBo> selectRoleByUserId(Long id) {
-		List<URoleBo> bos = userService.selectRoleByUserId(id);
+	public List<URoleVO> selectRoleByUserId(Long id) {
+		List<URoleVO> bos = userService.selectRoleByUserId(id);
 		return bos;
 	}
 

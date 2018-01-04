@@ -1,4 +1,4 @@
-package comfanlingjun.user.bo;
+package comfanlingjun.user.vo;
 
 
 import comfanlingjun.commons.model.UUser;
@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Session  + User Bo
  */
-public class UserOnlineBo extends UUser implements Serializable {
+public class UserOnlineVO extends UUser implements Serializable {
 
 	private static final long serialVersionUID = 4002392015771747L;
 
@@ -26,10 +26,10 @@ public class UserOnlineBo extends UUser implements Serializable {
 	//session 是否踢出
 	private boolean sessionStatus = Boolean.TRUE;
 
-	public UserOnlineBo() {
+	public UserOnlineVO() {
 	}
 
-	public UserOnlineBo(UUser user) {
+	public UserOnlineVO(UUser user) {
 		super(user);
 	}
 
