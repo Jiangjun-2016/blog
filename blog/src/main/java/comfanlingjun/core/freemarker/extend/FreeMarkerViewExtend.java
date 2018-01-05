@@ -21,7 +21,7 @@ public class FreeMarkerViewExtend extends FreeMarkerView {
 		model.putAll(Ferrmarker.initMap);
 
 		//TODO
-		// UUser token = TokenManager.getToken();
+		// UUser token = TokenManager.getUUserToken();
 		// //String ip = IPUtils.getIP(request);
 		// if(TokenManager.isLogin()){
 		// 	model.put("token", token);//登录的token

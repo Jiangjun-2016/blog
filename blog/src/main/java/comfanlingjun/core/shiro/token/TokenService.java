@@ -25,7 +25,7 @@ public class TokenService {
 	/**
 	 * 获取当前登录的用户User对象
 	 */
-	public static UUser getToken() {
+	public static UUser getUUserToken() {
 		UUser token = (UUser) SecurityUtils.getSubject().getPrincipal();
 		return token;
 	}
@@ -34,7 +34,7 @@ public class TokenService {
 	 * 获取当前用户ID
 	 */
 	public static Long getUserId() {
-		return getToken() == null ? null : getToken().getId();
+		return getUUserToken() == null ? null : getUUserToken().getId();
 	}
 
 	/**
@@ -43,8 +43,9 @@ public class TokenService {
 	public static UUser login(UUser user, Boolean rememberMe) {
 		ShiroToken token = new ShiroToken(user.getEmail(), user.getPswd());
 		token.setRememberMe(rememberMe);
+		//此方法会进入SampleRealm.doGetAuthenticationInfo()方法进行认证
 		SecurityUtils.getSubject().login(token);
-		return getToken();
+		return getUUserToken();
 	}
 
 	/**
@@ -58,7 +59,7 @@ public class TokenService {
 	 * 获取当前用户NAME
 	 */
 	public static String getNickname() {
-		return getToken().getNickname();
+		return getUUserToken().getNickname();
 	}
 
 	/**

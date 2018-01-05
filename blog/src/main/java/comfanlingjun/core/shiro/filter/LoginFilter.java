@@ -23,7 +23,7 @@ public class LoginFilter extends AccessControlFilter {
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
 		//调用TokenManager类，用来获取Token实体
-		UUser token = TokenService.getToken();
+		UUser token = TokenService.getUUserToken();
 		// && isEnabled()
 		if (null != token || isLoginRequest(request, response)) {
 			return Boolean.TRUE;

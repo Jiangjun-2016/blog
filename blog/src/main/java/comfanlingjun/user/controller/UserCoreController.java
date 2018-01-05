@@ -58,7 +58,7 @@ public class UserCoreController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> updatePswd(String pswd, String newPswd) {
 		//根据当前登录的用户帐号 + 老密码，查询。
-		String email = TokenService.getToken().getEmail();
+		String email = TokenService.getUUserToken().getEmail();
 		pswd = UserManager.md5Pswd(email, pswd);
 		UUser user = userService.login(email, pswd);
 

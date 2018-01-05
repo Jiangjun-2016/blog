@@ -47,6 +47,7 @@ public class PermissionFilter extends AccessControlFilter {
 		if (null != uri && uri.startsWith(basePath)) {
 			uri = uri.replaceFirst(basePath, "");
 		}
+		//判断身份信息，身份信息是在login方法登录后赋值的
 		if (subject.isPermitted(uri)) {
 			return Boolean.TRUE;
 		}
