@@ -2,13 +2,16 @@ package comfanlingjun.commons.utils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import sun.misc.BASE64Decoder;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.codec.binary.Base64;
+
+import static org.apache.commons.codec.binary.Base64.*;
 
 
 /**
@@ -152,7 +155,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
 	 */
     public static String getBASE64(String str,boolean...bf) {
        if (StringUtils.isBlank(str)) return null;
-       String base64 = new sun.misc.BASE64Encoder().encode(str.getBytes()) ;
+       String base64 = Base64.encodeBase64String(str.getBytes());
        //去掉 '='
        if(isBlank(bf) && bf[0]){
     	   base64 = base64.replaceAll("=", "");
@@ -163,9 +166,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
     /** 将 BASE64 编码的字符串 s 进行解码**/
     public static String getStrByBASE64(String s) {
        if (isBlank(s)) return "";
-       BASE64Decoder decoder = new BASE64Decoder();
        try {
-          byte[] b = decoder.decodeBuffer(s);
+          byte[] b = Base64.decodeBase64(s);
           return new String(b);
        } catch (Exception e) {
           return "";
@@ -176,24 +178,24 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
      * @param map
      * @return
      */
-    public static String mapToGet(Map<? extends Object,? extends Object> map){
-    	String result = "" ;
+    public static String mapToGet(Map<?,?> map){
+    	StringBuilder result = new StringBuilder();
     	if(map == null || map.size() ==0){
-    		return result ;
+    		return result.toString();
     	}
-    	Set<? extends Object> keys = map.keySet();
+    	Set<?> keys = map.keySet();
     	for (Object key : keys ) {
-    		result += ((String)key + "=" + (String)map.get(key) + "&");
+    		result.append((String) key).append("=").append((String) map.get(key)).append("&");
 		}
 
-    	return isBlank(result) ? result : result.substring(0,result.length() - 1);
+    	return isBlank(result.toString()) ? result.toString() : result.substring(0,result.length() - 1);
     }
     /**
      * 把一串参数字符串,转换成Map 如"?a=3&b=4" 转换为Map{a=3,b=4}
      * @param args
      * @return
      */
-    public static Map<String, ? extends Object> getToMap(String args){
+    public static Map<String, ?> getToMap(String args){
     	if(isBlank(args)){
     		return null ;
     	}
@@ -212,12 +214,12 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
 				//如果value或者key值里包含 "="号,以第一个"="号为主 ,如  name=0=3  转换后,{"name":"0=3"}, 如果不满足需求,请勿修改,自行解决.
 
 				String key = keyValue[0];
-				String value = "" ;
+				StringBuilder value = new StringBuilder();
 				for (int i = 1; i < keyValue.length; i++) {
-					value += keyValue[i]  + "=";
+					value.append(keyValue[i]).append("=");
 				}
-				value = value.length() > 0 ? value.substring(0,value.length()-1) : value ;
-				result.put(key,value);
+				value = new StringBuilder(value.length() > 0 ? value.substring(0, value.length() - 1) : value.toString());
+				result.put(key, value.toString());
 
 			}
 		}
@@ -232,17 +234,17 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
 	 */
     public static String toUnicode(String str) {
         String as[] = new String[str.length()];
-        String s1 = "";
+        StringBuilder s1 = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
         	int v = str.charAt(i);
         	if(v >=19968 && v <= 171941){
 	            as[i] = Integer.toHexString(str.charAt(i) & 0xffff);
-	            s1 = s1 + "\\u" + as[i];
+	            s1.append("\\u").append(as[i]);
         	}else{
-        		 s1 = s1 + str.charAt(i);
+        		 s1.append(str.charAt(i));
         	}
         }
-        return s1;
+        return s1.toString();
      }
     /**
      * 合并数据
@@ -250,10 +252,10 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
      * @return
      */
     public static String merge(Object...v){
-    	StringBuffer sb = new StringBuffer();
-    	for (int i = 0; i < v.length; i++) {
-    		sb.append(v[i]);
-		}
+    	StringBuilder sb = new StringBuilder();
+        for (Object aV : v) {
+            sb.append(aV);
+        }
     	return sb.toString() ;
     }
     /**
@@ -301,7 +303,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
 
     		boolean cc = Pattern.matches("[\u4E00-\u9FA5]", bb);
     		if(cc)
-    		return cc ;
+    		return true;
     	}
 		return false;
     }
@@ -391,5 +393,4 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
 			return serializable.toString();
 		}
 	}
-   
 }
