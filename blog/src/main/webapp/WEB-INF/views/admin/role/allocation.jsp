@@ -2,7 +2,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%--shiro 标签 --%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%
     String path = request.getContextPath();
@@ -11,8 +10,6 @@
 <html lang="zh-cn">
 <head>
     <meta charset="utf-8"/>
-    <%--不知道这里的basePath 设置没用 --%>
-    <base href="<%=basePath%>"/>
     <title>用户角色分配 - 权限管理</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
     <link rel="shortcut icon" href="<%=basePath%>/imgs/jun.ico"/>
@@ -41,8 +38,9 @@
             });
             </shiro:hasPermission>
         });
+
+        <!--如果拥有：清空用户角色权限-->
         <shiro:hasPermission name="/role/clearRoleByUserIds.shtml">
-        <%--根据ID数组清空用户的角色--%>
         function deleteById(ids) {
             var index = layer.confirm("确定清除这" + ids.length + "个用户的角色？", function () {
                 var load = layer.load();
@@ -61,10 +59,11 @@
             });
         }
         </shiro:hasPermission>
-        <shiro:hasPermission name="/role/addRole2User.shtml">
-        <%--选择角色后保存--%>
+
+        <!--如果拥有：为用户添加角色的权限-->
+        <shiro:hasPermission name="/role/addRoleForUser.shtml">
         function selectRole() {
-            var checked = $("#boxRoleForm  :checked");
+            var checked = $("#boxRoleForm:checked");
             var ids = [], names = [];
             $.each(checked, function () {
                 ids.push(this.id);
@@ -88,9 +87,7 @@
                 }, 'json');
             });
         }
-        /*
-         *根据角色ID选择权限，分配权限操作。
-         */
+        //选择角色--根据角色ID选择权限，分配权限操作。
         function selectRoleById(id) {
             var load = layer.load();
             $.post("<%=basePath%>/urole/selectRoleByUserId.shtml", {id: id}, function (result) {
@@ -121,11 +118,11 @@
     </script>
 </head>
 <body data-target="#one" data-spy="scroll">
-<%--引入头部<@_top.top 3/>--%>
-<jsp:include page="../common/config/top.jsp"></jsp:include>
+<!--头部-->
+<jsp:include page="../../common/config/adminTop.jsp"/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
     <div class="row">
-        <%--引入左侧菜单--%>
+        <!--左侧菜单-->
         <shiro:hasAnyRoles name='888888,100003'>
             <div id="one" class="col-md-2">
                 <ul data-spy="affix" class="nav nav-list nav-tabs nav-stacked bs-docs-sidenav dropdown affix"
@@ -139,8 +136,8 @@
                     </shiro:hasPermission>
                     <shiro:hasPermission name="/role/allocation.shtml">
                         <li class="active dropdown">
-                            <a href="<%=basePath%>/role/allocation.shtml" title="角色分配（这是个JSP页面）">
-                                <i class="glyphicon glyphicon-chevron-right"></i>角色分配（这是个JSP页面）
+                            <a href="<%=basePath%>/role/allocation.shtml">
+                                <i class="glyphicon glyphicon-chevron-right"></i>角色分配
                             </a>
                         </li>
                     </shiro:hasPermission>
@@ -161,8 +158,9 @@
                 </ul>
             </div>
         </shiro:hasAnyRoles>
+        <!--主界面-->
         <div class="col-md-10">
-            <h2>用户角色分配（这是个JSP页面）</h2>
+            <h2>用户角色分配</h2>
             <hr>
             <form method="post" action="" id="formId" class="form-inline">
                 <div clss="well">
@@ -175,7 +173,7 @@
 				         	<shiro:hasPermission name="/role/clearRoleByUserIds.shtml">
                                 <button type="button" id="deleteAll" class="btn  btn-danger">清空用户角色</button>
                             </shiro:hasPermission>
-				         </span>
+				    </span>
                 </div>
                 <hr>
                 <table class="table table-bordered">
@@ -198,7 +196,7 @@
                                     <td>${it.status==1?'有效':'禁止'}</td>
                                     <td roleIds="${it.roleIds}">${it.roleNames}</td>
                                     <td>
-                                        <shiro:hasPermission name="/role/addRole2User.shtml">
+                                        <shiro:hasPermission name="/role/addRoleForUser.shtml">
                                             <i class="glyphicon glyphicon-share-alt"></i><a
                                                 href="javascript:selectRoleById(${it.id});">选择角色</a>
                                         </shiro:hasPermission>
@@ -222,9 +220,8 @@
             </form>
         </div>
     </div>
-    <%--/row--%>
 
-    <%--弹框--%>
+    <!--选择角色弹出层-->
     <div class="modal fade bs-example-modal-sm" id="selectRole" tabindex="-1" role="dialog"
          aria-labelledby="selectRoleLabel">
         <div class="modal-dialog modal-sm" role="document">
@@ -240,13 +237,13 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="selectRole();" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" onclick="selectRole();" class="btn btn-primary">保存</button>
                 </div>
             </div>
         </div>
     </div>
-    <%----/弹框--%>
+    
 </div>
 </body>
 </html>

@@ -38,13 +38,13 @@ public class UserLoginController extends BaseController {
 	//登录页面跳转
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login() {
-		return new ModelAndView("user/login");
+		return new ModelAndView("/user/login");
 	}
 
 	//注册页面跳转
 	@RequestMapping(value = "register", method = RequestMethod.GET)
 	public ModelAndView register() {
-		return new ModelAndView("user/register");
+		return new ModelAndView("/user/register");
 	}
 
 	/**

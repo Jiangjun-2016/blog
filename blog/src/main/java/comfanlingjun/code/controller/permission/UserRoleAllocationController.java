@@ -38,7 +38,7 @@ public class UserRoleAllocationController extends BaseController {
 		modelMap.put("findContent", findContent);
 		Pagination<UserRoleAllocationVO> userRoleAllocationVO = userService.findUserAndRole(modelMap, pageNo, pageSize);
 		modelMap.put("page", userRoleAllocationVO);
-		return new ModelAndView("role/allocation");
+		return new ModelAndView("admin/role/allocation");
 	}
 
 	/**
@@ -56,7 +56,6 @@ public class UserRoleAllocationController extends BaseController {
 	 *
 	 * @param userId 用户ID
 	 * @param ids    角色ID，以‘,’间隔
-	 * @return
 	 */
 	@RequestMapping(value = "addRoleForUser")
 	@ResponseBody
@@ -68,7 +67,6 @@ public class UserRoleAllocationController extends BaseController {
 	 * 根据用户id清空角色。
 	 *
 	 * @param userIds 用户ID ，以‘,’间隔
-	 * @return
 	 */
 	@RequestMapping(value = "clearRoleByUserIds")
 	@ResponseBody
