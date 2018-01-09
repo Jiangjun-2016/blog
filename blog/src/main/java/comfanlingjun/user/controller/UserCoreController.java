@@ -4,7 +4,7 @@ import comfanlingjun.commons.controller.BaseController;
 import comfanlingjun.commons.model.UUser;
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.core.shiro.token.TokenService;
-import comfanlingjun.user.manager.UserManager;
+import comfanlingjun.commons.utils.UserPwdUtil;
 import comfanlingjun.user.service.UUserService;
 import net.sf.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -40,9 +40,6 @@ public class UserCoreController extends BaseController {
 
 	/**
 	 * 偷懒一下，通用页面跳转
-	 *
-	 * @param page
-	 * @return
 	 */
 	@RequestMapping(value = "{page}", method = RequestMethod.GET)
 	public ModelAndView toPage(@PathVariable("page") String page) {
@@ -51,30 +48,26 @@ public class UserCoreController extends BaseController {
 
 	/**
 	 * 密码修改
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "updatePswd", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> updatePswd(String pswd, String newPswd) {
 		//根据当前登录的用户帐号 + 老密码，查询。
 		String email = TokenService.getUUserToken().getEmail();
-		pswd = UserManager.md5Pswd(email, pswd);
+		pswd = UserPwdUtil.md5Pswd(email, pswd);
 		UUser user = userService.login(email, pswd);
-
 		if ("admin".equals(email)) {
 			resultMap.put("status", 300);
 			resultMap.put("message", "管理员不准修改密码。");
 			return resultMap;
 		}
-
 		if (null == user) {
 			resultMap.put("status", 300);
 			resultMap.put("message", "密码不正确！");
 		} else {
 			user.setPswd(newPswd);
 			//加工密码
-			user = UserManager.md5Pswd(user);
+			user = UserPwdUtil.md5Pswd(user);
 			//修改密码
 			userService.updateByPrimaryKeySelective(user);
 			resultMap.put("status", 200);
@@ -87,8 +80,6 @@ public class UserCoreController extends BaseController {
 
 	/**
 	 * 个人资料修改
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "updateSelf", method = RequestMethod.POST)
 	@ResponseBody

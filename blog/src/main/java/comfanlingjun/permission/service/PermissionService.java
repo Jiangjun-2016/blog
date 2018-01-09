@@ -28,7 +28,7 @@ public interface PermissionService {
 
 	List<UPermissionVO> selectPermissionById(Long id);
 
-	Map<String, Object> addPermission2Role(Long roleId, String ids);
+	Map<String, Object> addPermissionForRole(Long roleId, String ids);
 
 	Map<String, Object> deleteByRids(String roleIds);
 

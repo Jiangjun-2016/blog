@@ -6,7 +6,7 @@ import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.StringUtils;
 import comfanlingjun.commons.utils.VerifyCodeUtils;
 import comfanlingjun.core.shiro.token.TokenService;
-import comfanlingjun.user.manager.UserManager;
+import comfanlingjun.commons.utils.UserPwdUtil;
 import comfanlingjun.user.service.UUserService;
 import net.sf.json.JSONObject;
 import org.apache.shiro.authc.DisabledAccountException;
@@ -35,17 +35,13 @@ public class UserLoginController extends BaseController {
 	@Resource
 	UUserService userService;
 
-	/**
-	 * 登录页面跳转
-	 */
+	//登录页面跳转
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login() {
 		return new ModelAndView("user/login");
 	}
 
-	/**
-	 * 注册页面跳转
-	 */
+	//注册页面跳转
 	@RequestMapping(value = "register", method = RequestMethod.GET)
 	public ModelAndView register() {
 		return new ModelAndView("user/register");
@@ -80,12 +76,12 @@ public class UserLoginController extends BaseController {
 			//设置账号为：有效状态
 			entity.setStatus(UUser._1);
 			//密码md5加密
-			entity = UserManager.md5Pswd(entity);
+			entity = UserPwdUtil.md5Pswd(entity);
 			//插入数据
 			entity = userService.insert(entity);
 			//记录日志
 			LoggerUtils.fmtDebug(getClass(), "注册插入完毕！", JSONObject.fromObject(entity).toString());
-			//TODO shiro操作
+			//shiro操作
 			entity = TokenService.login(entity, Boolean.TRUE);
 			//记录日志
 			LoggerUtils.fmtDebug(getClass(), "注册后，登录完毕！", JSONObject.fromObject(entity).toString());

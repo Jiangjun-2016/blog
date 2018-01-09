@@ -3,7 +3,7 @@ package comfanlingjun.permission.vo;
 import java.io.Serializable;
 
 /**
- * 权限分配 查询列表BO
+ * 权限分配 查询列表VO
  */
 public class RolePermissionAllocationVO implements Serializable {
 

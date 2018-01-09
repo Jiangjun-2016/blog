@@ -4,8 +4,6 @@ import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.commons.utils.StringUtils;
 import comfanlingjun.core.mybatis.page.MysqlDialect;
 import comfanlingjun.core.mybatis.page.Pagination;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.session.Configuration;
@@ -22,18 +20,11 @@ import java.util.Map;
 
 public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 
-	protected final Log logger = LogFactory.getLog(BaseMybatisDao.class);
-	final static Class<? extends Object> SELF = BaseMybatisDao.class;//日志输出类
-	private String NAMESPACE;
-
-	/**
-	 * 默认的查询Sql id
-	 */
-	final static String DEFAULT_SQL_ID = "findAll";
-	/**
-	 * 默认的查询Count sql id
-	 **/
-	final static String DEFAULT_COUNT_SQL_ID = "findCount";
+	// 默认的查询Sql id
+	public final static String DEFAULT_SQL_ID = "findAll";
+	//默认的查询Count sql id
+	public final static String DEFAULT_COUNT_SQL_ID = "findCount";
+	private String name_class;
 
 	public BaseMybatisDao() {
 		try {
@@ -41,11 +32,11 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 			if (genericClz instanceof ParameterizedType) {
 				Class<T> entityClass = (Class<T>) ((ParameterizedType) genericClz)
 						.getActualTypeArguments()[0];
-				NAMESPACE = entityClass.getPackage().getName() + "."
+				name_class = entityClass.getPackage().getName() + "."
 						+ entityClass.getSimpleName();
 			}
 		} catch (RuntimeException e) {
-			LoggerUtils.error(SELF, "初始化失败，继承BaseMybatisDao，没有泛型！");
+			LoggerUtils.error(BaseMybatisDao.class, "初始化失败，继承BaseMybatisDao，没有泛型！");
 		}
 	}
 
@@ -60,9 +51,17 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 	 */
 	public Pagination findByPageBySqlId(String sqlId,
 										Map<String, Object> params, Integer pageNo, Integer pageSize) {
-		pageNo = null == pageNo ? 1 : pageNo;
-		pageSize = null == pageSize ? 10 : pageSize;
-		sqlId = String.format("%s.%s", NAMESPACE, sqlId);
+		if (StringUtils.isNotBlank(String.valueOf(pageNo))) {
+			pageNo = pageNo;
+		} else {
+			pageNo = 1;
+		}
+		if (StringUtils.isNotBlank(String.valueOf(pageSize))) {
+			pageSize = pageSize;
+		} else {
+			pageSize = 10;
+		}
+		sqlId = String.format("%s.%s", name_class, sqlId);
 		Pagination page = new Pagination();
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
@@ -72,7 +71,7 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 		params.put("page_sql", page_sql);
 		BoundSql boundSql = c.getMappedStatement(sqlId).getBoundSql(params);
 		String sqlcode = boundSql.getSql();
-		LoggerUtils.fmtDebug(SELF, "findByPageBySqlId sql : %s", sqlcode);
+		LoggerUtils.fmtDebug(BaseMybatisDao.class, "findByPageBySqlId sql : %s", sqlcode);
 		String countCode = "", countId = "";
 		BoundSql countSql = null;
 		/**
@@ -101,7 +100,7 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 				page.setTotalCount(set.getInt(1));
 			}
 		} catch (Exception e) {
-			LoggerUtils.error(SELF, "jdbc.error.code.findByPageBySqlId", e);
+			LoggerUtils.error(BaseMybatisDao.class, "jdbc.error.code.findByPageBySqlId", e);
 		}
 		return page;
 	}
@@ -117,12 +116,20 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 	 */
 	public List findList(String sqlId, Map<String, Object> params,
 						 Integer pageNo, Integer pageSize) {
-		pageNo = null == pageNo ? 1 : pageNo;
-		pageSize = null == pageSize ? 10 : pageSize;
+		if (StringUtils.isNotBlank(String.valueOf(pageNo))) {
+			pageNo = pageNo;
+		} else {
+			pageNo = 1;
+		}
+		if (StringUtils.isNotBlank(String.valueOf(pageSize))) {
+			pageSize = pageSize;
+		} else {
+			pageSize = 10;
+		}
 		int offset = (pageNo - 1) * pageSize;
 		String page_sql = String.format(" limit %s , %s", offset, pageSize);
 		params.put("page_sql", page_sql);
-		sqlId = String.format("%s.%s", NAMESPACE, sqlId);
+		sqlId = String.format("%s.%s", name_class, sqlId);
 		List resultList = this.getSqlSession().selectList(sqlId, params);
 		return resultList;
 	}
@@ -151,8 +158,16 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 	 */
 	public Pagination findPage(String sqlId, String countId,
 							   Map<String, Object> params, Integer pageNo, Integer pageSize) {
-		pageNo = null == pageNo ? 1 : pageNo;
-		pageSize = null == pageSize ? 10 : pageSize;
+		if (StringUtils.isNotBlank(String.valueOf(pageNo))) {
+			pageNo = pageNo;
+		} else {
+			pageNo = 1;
+		}
+		if (StringUtils.isNotBlank(String.valueOf(pageSize))) {
+			pageSize = pageSize;
+		} else {
+			pageSize = 10;
+		}
 		Pagination page = new Pagination();
 		page.setPageNo(pageNo);
 		page.setPageSize(pageSize);
@@ -160,19 +175,17 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 		int offset = (page.getPageNo() - 1) * page.getPageSize();
 		String page_sql = String.format(" limit  %s , %s ", offset, pageSize);
 		params.put("page_sql", page_sql);
-
-		sqlId = String.format("%s.%s", NAMESPACE, sqlId);
-
+		sqlId = String.format("%s.%s", name_class, sqlId);
 		BoundSql boundSql = c.getMappedStatement(sqlId).getBoundSql(params);
 		String sqlcode = boundSql.getSql();
-		LoggerUtils.fmtDebug(SELF, "findPage sql : %s", sqlcode);
+		LoggerUtils.fmtDebug(BaseMybatisDao.class, "findPage sql : %s", sqlcode);
 		String countCode = "";
 		BoundSql countSql = null;
 		if (StringUtils.isBlank(countId)) {
 			countCode = sqlcode;
 			countSql = boundSql;
 		} else {
-			countId = String.format("%s.%s", NAMESPACE, countId);
+			countId = String.format("%s.%s", name_class, countId);
 			countSql = c.getMappedStatement(countId).getBoundSql(params);
 			countCode = countSql.getSql();
 		}
@@ -191,14 +204,13 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 				page.setTotalCount(set.getInt(1));
 			}
 		} catch (Exception e) {
-			LoggerUtils.error(SELF, "jdbc.error.code.findByPageBySqlId", e);
+			LoggerUtils.error(BaseMybatisDao.class, "jdbc.error.code.findByPageBySqlId", e);
 		}
 		return page;
-
 	}
 
 	/**
-	 * 重载减少参数DEFAULT_SQL_ID, "findCount"
+	 * 重载减少参数 DEFAULT_SQL_ID, "findCount"
 	 *
 	 * @param params
 	 * @param pageNo

@@ -5,7 +5,7 @@ import comfanlingjun.commons.model.URole;
 import comfanlingjun.commons.utils.LoggerUtils;
 import comfanlingjun.core.mybatis.page.Pagination;
 import comfanlingjun.permission.service.RoleService;
-import comfanlingjun.user.manager.UserManager;
+import comfanlingjun.commons.utils.UserPwdUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用户角色管理
+ * 角色管理
  */
 @Controller
 @Scope(value = "prototype")
@@ -83,7 +83,7 @@ public class RoleController extends BaseController {
 		//查询我所有的角色 ---> 权限
 		List<URole> roles = roleService.findNowAllPermission();
 		//把查询出来的roles 转换成bootstarp 的 tree数据
-		List<Map<String, Object>> data = UserManager.toTreeData(roles);
-		return data;
+		List<Map<String, Object>> userList = UserPwdUtil.toTreeData(roles);
+		return userList;
 	}
 }

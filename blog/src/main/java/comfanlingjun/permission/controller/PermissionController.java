@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 用户权限管理
+ * 权限管理
  */
 @Controller
 @Scope(value = "prototype")

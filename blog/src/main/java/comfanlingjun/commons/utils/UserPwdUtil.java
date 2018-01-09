@@ -1,16 +1,15 @@
-package comfanlingjun.user.manager;
+package comfanlingjun.commons.utils;
 
 import comfanlingjun.commons.model.UPermission;
 import comfanlingjun.commons.model.URole;
 import comfanlingjun.commons.model.UUser;
-import comfanlingjun.commons.utils.MathUtil;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class UserManager {
+public class UserPwdUtil {
 
 	/**
 	 * 加工密码，和登录一致。

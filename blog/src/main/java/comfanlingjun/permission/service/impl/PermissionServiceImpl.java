@@ -39,18 +39,8 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 	}
 
 	@Override
-	public UPermission insert(UPermission record) {
-		permissionMapper.insert(record);
-		return record;
-	}
-
-	@Override
-	public UPermission insertSelective(UPermission record) {
-		//添加权限
-		permissionMapper.insertSelective(record);
-		//每添加一个权限，都往【系统管理员 	888888】里添加一次。保证系统管理员有最大的权限
-		executePermission(new Long(1), String.valueOf(record.getId()));
-		return record;
+	public Set<String> findPermissionByUserId(Long userId) {
+		return permissionMapper.findPermissionByUserId(userId);
 	}
 
 	@Override
@@ -66,6 +56,39 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 	@Override
 	public int updateByPrimaryKeySelective(UPermission record) {
 		return permissionMapper.updateByPrimaryKeySelective(record);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Pagination<UPermission> findPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize) {
+		return super.findPage(resultMap, pageNo, pageSize);
+	}
+
+	@Override
+	public List<UPermissionVO> selectPermissionById(Long id) {
+		return permissionMapper.selectPermissionById(id);
+	}
+
+	@Override
+	public Map<String, Object> addPermissionForRole(Long roleId, String ids) {
+		//先删除原有的。
+		rolePermissionMapper.deleteByRid(roleId);
+		return executePermission(roleId, ids);
+	}
+
+	@Override
+	public UPermission insert(UPermission record) {
+		permissionMapper.insert(record);
+		return record;
+	}
+
+	@Override
+	public UPermission insertSelective(UPermission record) {
+		//添加权限
+		permissionMapper.insertSelective(record);
+		//每添加一个权限，都往【系统管理员 	888888】里添加一次。保证系统管理员有最大的权限
+		executePermission(new Long(1), String.valueOf(record.getId()));
+		return record;
 	}
 
 	@Override
@@ -105,24 +128,6 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 		return resultMap;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Pagination<UPermission> findPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize) {
-		return super.findPage(resultMap, pageNo, pageSize);
-	}
-
-	@Override
-	public List<UPermissionVO> selectPermissionById(Long id) {
-		return permissionMapper.selectPermissionById(id);
-	}
-
-	@Override
-	public Map<String, Object> addPermission2Role(Long roleId, String ids) {
-		//先删除原有的。
-		rolePermissionMapper.deleteByRid(roleId);
-		return executePermission(roleId, ids);
-	}
-
 	/**
 	 * 处理权限
 	 */
@@ -141,7 +146,7 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 				}
 				//添加新的。
 				for (String pid : idArray) {
-					//这里严谨点可以判断，也可以不判断。这个{@link StringUtils 我是重写了的} 
+					//这里严谨点可以判断，也可以不判断。这个{@link StringUtils 我是重写了的}
 					if (StringUtils.isNotBlank(pid)) {
 						URolePermission entity = new URolePermission(roleId, new Long(pid));
 						count += rolePermissionMapper.insertSelective(entity);
@@ -174,10 +179,5 @@ public class PermissionServiceImpl extends BaseMybatisDao<UPermissionMapper> imp
 			resultMap.put("message", "操作失败，请重试！");
 		}
 		return resultMap;
-	}
-
-	@Override
-	public Set<String> findPermissionByUserId(Long userId) {
-		return permissionMapper.findPermissionByUserId(userId);
 	}
 }

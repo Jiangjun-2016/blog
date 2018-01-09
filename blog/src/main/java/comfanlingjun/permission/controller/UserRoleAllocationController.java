@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用户角色分配
+ * 角色分配
  */
 @Controller
 @Scope(value = "prototype")
@@ -36,8 +36,8 @@ public class UserRoleAllocationController extends BaseController {
 	@RequestMapping(value = "allocation")
 	public ModelAndView allocation(ModelMap modelMap, Integer pageNo, String findContent) {
 		modelMap.put("findContent", findContent);
-		Pagination<UserRoleAllocationVO> boPage = userService.findUserAndRole(modelMap, pageNo, pageSize);
-		modelMap.put("page", boPage);
+		Pagination<UserRoleAllocationVO> userRoleAllocationVO = userService.findUserAndRole(modelMap, pageNo, pageSize);
+		modelMap.put("page", userRoleAllocationVO);
 		return new ModelAndView("role/allocation");
 	}
 
@@ -47,8 +47,8 @@ public class UserRoleAllocationController extends BaseController {
 	@RequestMapping(value = "selectRoleByUserId")
 	@ResponseBody
 	public List<URoleVO> selectRoleByUserId(Long id) {
-		List<URoleVO> bos = userService.selectRoleByUserId(id);
-		return bos;
+		List<URoleVO> roleList = userService.selectRoleByUserId(id);
+		return roleList;
 	}
 
 	/**
@@ -58,10 +58,10 @@ public class UserRoleAllocationController extends BaseController {
 	 * @param ids    角色ID，以‘,’间隔
 	 * @return
 	 */
-	@RequestMapping(value = "addRole2User")
+	@RequestMapping(value = "addRoleForUser")
 	@ResponseBody
-	public Map<String, Object> addRole2User(Long userId, String ids) {
-		return userService.addRole2User(userId, ids);
+	public Map<String, Object> addRoleForUser(Long userId, String ids) {
+		return userService.addRoleForUser(userId, ids);
 	}
 
 	/**

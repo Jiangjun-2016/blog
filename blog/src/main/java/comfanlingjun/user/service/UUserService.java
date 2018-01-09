@@ -37,7 +37,7 @@ public interface UUserService {
 
 	List<URoleVO> selectRoleByUserId(Long id);
 
-	Map<String, Object> addRole2User(Long userId, String ids);
+	Map<String, Object> addRoleForUser(Long userId, String ids);
 
 	Map<String, Object> deleteRoleByUserIds(String userIds);
 }

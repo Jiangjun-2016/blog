@@ -24,15 +24,18 @@ import java.util.Map;
 @Service
 public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUserService {
 
-	/**
-	 * 用户手动操作Session
-	 */
+	//操作shiro Session
 	@Resource
 	CustomShiroSessionService customShiroSessionService;
 	@Resource
 	UUserMapper userMapper;
 	@Resource
 	UUserRoleMapper userRoleMapper;
+
+	@Override
+	public UUser findUserByEmail(String email) {
+		return userMapper.findUserByEmail(email);
+	}
 
 	@Override
 	public int deleteByPrimaryKey(Long id) {
@@ -51,9 +54,26 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 		return entity;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Pagination<UUser> findByPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize) {
+		return super.findPage(resultMap, pageNo, pageSize);
+	}
+
 	@Override
 	public UUser selectByPrimaryKey(Long id) {
 		return userMapper.selectByPrimaryKey(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Pagination<UserRoleAllocationVO> findUserAndRole(ModelMap modelMap, Integer pageNo, Integer pageSize) {
+		return super.findPage("findUserAndRole", "findCount", modelMap, pageNo, pageSize);
+	}
+
+	@Override
+	public List<URoleVO> selectRoleByUserId(Long id) {
+		return userMapper.selectRoleByUserId(id);
 	}
 
 	@Override
@@ -73,17 +93,6 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 		map.put("pswd", pswd);
 		UUser user = userMapper.login(map);
 		return user;
-	}
-
-	@Override
-	public UUser findUserByEmail(String email) {
-		return userMapper.findUserByEmail(email);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Pagination<UUser> findByPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize) {
-		return super.findPage(resultMap, pageNo, pageSize);
 	}
 
 	@Override
@@ -128,19 +137,8 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 		return resultMap;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Pagination<UserRoleAllocationVO> findUserAndRole(ModelMap modelMap, Integer pageNo, Integer pageSize) {
-		return super.findPage("findUserAndRole", "findCount", modelMap, pageNo, pageSize);
-	}
-
-	@Override
-	public List<URoleVO> selectRoleByUserId(Long id) {
-		return userMapper.selectRoleByUserId(id);
-	}
-
-	@Override
-	public Map<String, Object> addRole2User(Long userId, String ids) {
+	public Map<String, Object> addRoleForUser(Long userId, String ids) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		int count = 0;
 		try {
@@ -179,7 +177,6 @@ public class UUserServiceImpl extends BaseMybatisDao<UUserMapper> implements UUs
 
 	@Override
 	public Map<String, Object> deleteRoleByUserIds(String userIds) {
-
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			resultMap.put("userIds", userIds);

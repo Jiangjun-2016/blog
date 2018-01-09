@@ -18,7 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用户权限分配
+ * Permission 权限 许可
+ * Allocation 分配
+ * <p>
+ * 权限分配
  */
 @Controller
 @Scope(value = "prototype")
@@ -36,8 +39,8 @@ public class PermissionAllocationController extends BaseController {
 	@RequestMapping(value = "allocation")
 	public ModelAndView allocation(ModelMap modelMap, Integer pageNo, String findContent) {
 		modelMap.put("findContent", findContent);
-		Pagination<RolePermissionAllocationVO> boPage = roleService.findRoleAndPermissionPage(modelMap, pageNo, pageSize);
-		modelMap.put("page", boPage);
+		Pagination<RolePermissionAllocationVO> rolePermissionAllocationVO = roleService.findRoleAndPermissionPage(modelMap, pageNo, pageSize);
+		modelMap.put("page", rolePermissionAllocationVO);
 		return new ModelAndView("permission/allocation");
 	}
 
@@ -47,8 +50,8 @@ public class PermissionAllocationController extends BaseController {
 	@RequestMapping(value = "selectPermissionById")
 	@ResponseBody
 	public List<UPermissionVO> selectPermissionById(Long id) {
-		List<UPermissionVO> permissionBos = permissionService.selectPermissionById(id);
-		return permissionBos;
+		List<UPermissionVO> permissionVO = permissionService.selectPermissionById(id);
+		return permissionVO;
 	}
 
 	/**
@@ -56,19 +59,17 @@ public class PermissionAllocationController extends BaseController {
 	 *
 	 * @param roleId 角色ID
 	 * @param ids    权限ID，以‘,’间隔
-	 * @return
 	 */
-	@RequestMapping(value = "addPermission2Role")
+	@RequestMapping(value = "addPermissionForRole")
 	@ResponseBody
-	public Map<String, Object> addPermission2Role(Long roleId, String ids) {
-		return permissionService.addPermission2Role(roleId, ids);
+	public Map<String, Object> addPermissionForRole(Long roleId, String ids) {
+		return permissionService.addPermissionForRole(roleId, ids);
 	}
 
 	/**
 	 * 根据角色id清空权限。
 	 *
 	 * @param roleIds 角色ID ，以‘,’间隔
-	 * @return
 	 */
 	@RequestMapping(value = "clearPermissionByRoleIds")
 	@ResponseBody

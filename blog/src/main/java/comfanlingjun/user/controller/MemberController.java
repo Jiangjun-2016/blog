@@ -27,9 +27,7 @@ import java.util.Map;
 @RequestMapping("member")
 public class MemberController extends BaseController {
 
-	/***
-	 * 用户手动操作Session
-	 * */
+	//用户手动操作Session
 	@Resource
 	CustomShiroSessionService customShiroSessionService;
 	@Resource
@@ -37,8 +35,6 @@ public class MemberController extends BaseController {
 
 	/**
 	 * 用户列表管理
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "list")
 	public ModelAndView list(ModelMap map, Integer pageNo, String findContent) {
@@ -50,8 +46,6 @@ public class MemberController extends BaseController {
 
 	/**
 	 * 在线用户管理
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "online")
 	public ModelAndView online() {
@@ -61,8 +55,6 @@ public class MemberController extends BaseController {
 
 	/**
 	 * 在线用户详情
-	 *
-	 * @return
 	 */
 	@RequestMapping(value = "onlineDetails/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView onlineDetails(@PathVariable("sessionId") String sessionId) {
@@ -72,10 +64,6 @@ public class MemberController extends BaseController {
 
 	/**
 	 * 改变Session状态
-	 *
-	 * @param status
-	 * @param sessionId
-	 * @return
 	 */
 	@RequestMapping(value = "changeSessionStatus", method = RequestMethod.POST)
 	@ResponseBody
@@ -87,7 +75,6 @@ public class MemberController extends BaseController {
 	 * 根据ID删除，
 	 *
 	 * @param ids 如果有多个，以“,”间隔。
-	 * @return
 	 */
 	@RequestMapping(value = "deleteUserById", method = RequestMethod.POST)
 	@ResponseBody
@@ -100,7 +87,6 @@ public class MemberController extends BaseController {
 	 *
 	 * @param id     用户ID
 	 * @param status 1:有效，0:禁止登录
-	 * @return
 	 */
 	@RequestMapping(value = "forbidUserById", method = RequestMethod.POST)
 	@ResponseBody

@@ -13,14 +13,10 @@ public class UPermissionVO extends UPermission implements Serializable {
 
 	private static final long serialVersionUID = 5595282310632066245L;
 
-	/**
-	 * 是否勾选
-	 */
+	//是否勾选
 	private String marker;
-	
-	/**
-	 * role Id
-	 */
+
+	//role Id
 	private String roleId;
 
 	public boolean isCheck() {

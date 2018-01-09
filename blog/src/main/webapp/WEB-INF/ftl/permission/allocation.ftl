@@ -63,7 +63,7 @@
             var index = layer.confirm("确定操作？", function () {
             <#--loding-->
                 var load = layer.load();
-                $.post('${basePath}/permission/addPermission2Role.shtml', {
+                $.post('${basePath}/permission/addPermissionForRole.shtml', {
                     ids: ids.join(','),
                     roleId: $('#selectRoleId').val()
                 }, function (result) {

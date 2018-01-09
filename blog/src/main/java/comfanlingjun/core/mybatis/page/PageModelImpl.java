@@ -1,13 +1,21 @@
 package comfanlingjun.core.mybatis.page;
 
-public class SimplePage implements Paginable {
-	private static final long serialVersionUID = 1L;
-	public static final int DEF_COUNT = 20;
+/**
+ * 分页实体实现类
+ */
+public class PageModelImpl implements PageModelI {
 
-	public SimplePage() {
+	private static final long serialVersionUID = 1L;
+
+	public static final int DEF_COUNT = 20;
+	public int totalCount = 0;
+	public int pageSize = 20;
+	public int pageNo = 1;
+
+	public PageModelImpl() {
 	}
 
-	public SimplePage(int pageNo, int pageSize, int totalCount) {
+	public PageModelImpl(int pageNo, int pageSize, int totalCount) {
 		if (totalCount <= 0) {
 			this.totalCount = 0;
 		} else {
@@ -25,42 +33,18 @@ public class SimplePage implements Paginable {
 		}
 		if ((this.pageNo - 1) * this.pageSize >= totalCount) {
 			this.pageNo = totalCount / pageSize;
-			if(this.pageNo==0){
-				this.pageNo = 1 ;
+			if (this.pageNo == 0) {
+				this.pageNo = 1;
 			}
 		}
 	}
 
-	/**
-	 * 调整分页参数，使合理化
-	 */
-	public void adjustPage() {
-		if (totalCount <= 0) {
-			totalCount = 0;
-		}
-		if (pageSize <= 0) {
-			pageSize = DEF_COUNT;
-		}
-		if (pageNo <= 0) {
-			pageNo = 1;
-		}
-		if ((pageNo - 1) * pageSize >= totalCount) {
-			pageNo = totalCount / pageSize;
-		}
-	}
-
-	public int getPageNo() {
-		return pageNo;
-	}
-
-	public int getPageSize() {
-		return pageSize;
-	}
-
+	//总记录数
 	public int getTotalCount() {
 		return totalCount;
 	}
 
+	//总页数
 	public int getTotalPage() {
 		int totalPage = totalCount / pageSize;
 		if (totalCount % pageSize != 0 || totalPage == 0) {
@@ -69,14 +53,27 @@ public class SimplePage implements Paginable {
 		return totalPage;
 	}
 
+	//当前页号
+	public int getPageNo() {
+		return pageNo;
+	}
+
+	//每页记录数
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	//是否第一页
 	public boolean isFirstPage() {
 		return pageNo <= 1;
 	}
 
+	//是否最后一页
 	public boolean isLastPage() {
 		return pageNo >= getTotalPage();
 	}
 
+	//返回下页的页号
 	public int getNextPage() {
 		if (isLastPage()) {
 			return pageNo;
@@ -85,6 +82,7 @@ public class SimplePage implements Paginable {
 		}
 	}
 
+	//返回上页的页号
 	public int getPrePage() {
 		if (isFirstPage()) {
 			return pageNo;
@@ -92,10 +90,6 @@ public class SimplePage implements Paginable {
 			return pageNo - 1;
 		}
 	}
-
-	protected int totalCount = 0;
-	protected int pageSize = 20;
-	protected int pageNo = 1;
 
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
@@ -108,19 +102,4 @@ public class SimplePage implements Paginable {
 	public void setPageNo(int pageNo) {
 		this.pageNo = pageNo;
 	}
-	
-	
-	protected int filterNo;
-
-	public int getFilterNo() {
-		return filterNo;
-	}
-
-	public void setFilterNo(int filterNo) {
-		this.filterNo = filterNo;
-	}
-
-
-	
-	
 }
