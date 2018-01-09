@@ -25,7 +25,7 @@ public class RoleFilter extends AccessControlFilter {
 		String[] arra = (String[]) mappedValue;
 		Subject subject = getSubject(request, response);
 		for (String role : arra) {
-			if (subject.hasRole("role:" + role)) {
+			if (subject.hasRole("urole:" + role)) {
 				return true;
 			}
 		}

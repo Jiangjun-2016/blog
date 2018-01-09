@@ -1,6 +1,6 @@
 package comfanlingjun.core.shiro.filter;
 
-import comfanlingjun.commons.utils.LoggerUtils;
+import comfanlingjun.code.utils.LoggerUtils;
 import net.sf.json.JSONObject;
 
 import javax.servlet.ServletRequest;

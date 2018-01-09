@@ -12,7 +12,7 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
 >
     <!-- 自动扫描(自动注入) -->
-    <context:component-scan base-package="comfanlingjun.*.service;comfanlingjun.*.*.core"/>
+    <context:component-scan base-package="comfanlingjun.code.service;comfanlingjun.core"/>
 
     <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
         <property name="resultSetLogEnabled" value="true"/>
@@ -54,7 +54,7 @@
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
         <property name="mapperLocations">
             <list>
-                <value>classpath:comfanlingjun/commons/mapper/*.xml</value>
+                <value>classpath:comfanlingjun/code/model/sql/*/*.xml</value>
             </list>
         </property>
     </bean>
@@ -66,7 +66,7 @@
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="comfanlingjun.commons.dao"/>
+        <property name="basePackage" value="comfanlingjun.code.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -89,12 +89,7 @@
     <!-- AOP配置-->
     <aop:config>
         <aop:pointcut id="myPointcut"
-                      expression="execution(public * comfanlingjun.*.service.impl.*.*(..))"/>
+                      expression="execution(public * comfanlingjun.code.service.*.impl.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut"/>
     </aop:config>
-    <!--	<aop:config>-->
-    <!--		<aop:pointcut id="myPointcut"-->
-    <!--			expression="execution(public * net.wenyifan.*.core.*.*(..))" />-->
-    <!--		<aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut" />-->
-    <!--	</aop:config>-->
 </beans>

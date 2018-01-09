@@ -1,8 +1,8 @@
 package comfanlingjun.core.freemarker.extend;
 
-import comfanlingjun.commons.utils.SpringContextUtil;
-import comfanlingjun.commons.utils.StringUtils;
-import comfanlingjun.commons.utils.UtilPath;
+import comfanlingjun.code.utils.SpringContextUtil;
+import comfanlingjun.code.utils.StringUtils;
+import comfanlingjun.code.utils.UtilPath;
 import comfanlingjun.core.tags.APITemplateModel;
 import freemarker.template.*;
 import org.apache.commons.logging.Log;

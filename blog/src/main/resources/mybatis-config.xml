@@ -13,7 +13,7 @@
 
     <!--
     <mappers>
-       <mapper resource="mapper/StudentMapper.xml"/>
+       <sql resource="sql/StudentMapper.xml"/>
     </mappers>
     -->
     <!--

@@ -1,7 +1,7 @@
 package comfanlingjun.core.shiro.utils.redis;
 
-import comfanlingjun.commons.utils.SerializeUtil;
-import comfanlingjun.commons.utils.SpringContextUtil;
+import comfanlingjun.code.utils.SerializeUtil;
+import comfanlingjun.code.utils.SpringContextUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;

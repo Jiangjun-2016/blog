@@ -1,7 +1,7 @@
 package comfanlingjun.core.tags;
 
 
-import comfanlingjun.commons.utils.StringUtils;
+import comfanlingjun.code.utils.StringUtils;
 
 import java.util.Map;
 

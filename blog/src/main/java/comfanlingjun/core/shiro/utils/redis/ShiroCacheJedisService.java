@@ -1,7 +1,7 @@
 package comfanlingjun.core.shiro.utils.redis;
 
-import comfanlingjun.commons.utils.LoggerUtils;
-import comfanlingjun.commons.utils.SerializeUtil;
+import comfanlingjun.code.utils.LoggerUtils;
+import comfanlingjun.code.utils.SerializeUtil;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 

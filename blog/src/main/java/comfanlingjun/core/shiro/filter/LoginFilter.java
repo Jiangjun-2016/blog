@@ -1,7 +1,7 @@
 package comfanlingjun.core.shiro.filter;
 
-import comfanlingjun.commons.model.UUser;
-import comfanlingjun.commons.utils.LoggerUtils;
+import comfanlingjun.code.model.commons.UUser;
+import comfanlingjun.code.utils.LoggerUtils;
 import comfanlingjun.core.shiro.token.TokenService;
 import org.apache.shiro.web.filter.AccessControlFilter;
 

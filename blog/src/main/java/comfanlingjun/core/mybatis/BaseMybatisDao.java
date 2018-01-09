@@ -1,7 +1,7 @@
 package comfanlingjun.core.mybatis;
 
-import comfanlingjun.commons.utils.LoggerUtils;
-import comfanlingjun.commons.utils.StringUtils;
+import comfanlingjun.code.utils.LoggerUtils;
+import comfanlingjun.code.utils.StringUtils;
 import comfanlingjun.core.mybatis.page.MysqlDialect;
 import comfanlingjun.core.mybatis.page.Pagination;
 import org.apache.ibatis.mapping.BoundSql;

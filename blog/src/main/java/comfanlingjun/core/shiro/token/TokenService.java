@@ -1,7 +1,7 @@
 package comfanlingjun.core.shiro.token;
 
-import comfanlingjun.commons.model.UUser;
-import comfanlingjun.commons.utils.SpringContextUtil;
+import comfanlingjun.code.model.commons.UUser;
+import comfanlingjun.code.utils.SpringContextUtil;
 import comfanlingjun.core.shiro.session.core.CustomShiroSessionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;

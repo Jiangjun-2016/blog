@@ -46,7 +46,7 @@
         function deleteById(ids) {
             var index = layer.confirm("确定清除这" + ids.length + "个用户的角色？", function () {
                 var load = layer.load();
-                $.post('<%=basePath%>/role/clearRoleByUserIds.shtml', {userIds: ids.join(',')}, function (result) {
+                $.post('<%=basePath%>/urole/clearRoleByUserIds.shtml', {userIds: ids.join(',')}, function (result) {
                     layer.close(load);
                     if (result && result.status != 200) {
                         return layer.msg(result.message, so.default), !0;
@@ -73,7 +73,7 @@
             var index = layer.confirm("确定操作？", function () {
                 <%--loding--%>
                 var load = layer.load();
-                $.post('<%=basePath%>/role/addRoleForUser.shtml', {
+                $.post('<%=basePath%>/urole/addRoleForUser.shtml', {
                     ids: ids.join(','),
                     userId: $('#selectUserId').val()
                 }, function (result) {
@@ -93,7 +93,7 @@
          */
         function selectRoleById(id) {
             var load = layer.load();
-            $.post("<%=basePath%>/role/selectRoleByUserId.shtml", {id: id}, function (result) {
+            $.post("<%=basePath%>/urole/selectRoleByUserId.shtml", {id: id}, function (result) {
                 layer.close(load);
                 if (result && result.length) {
                     var html = [];

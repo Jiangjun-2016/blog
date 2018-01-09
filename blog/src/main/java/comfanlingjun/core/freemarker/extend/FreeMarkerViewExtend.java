@@ -1,7 +1,7 @@
 package comfanlingjun.core.freemarker.extend;
 
-import comfanlingjun.commons.utils.Constant;
-import comfanlingjun.commons.utils.LoggerUtils;
+import comfanlingjun.code.utils.Constant;
+import comfanlingjun.code.utils.LoggerUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
 import javax.servlet.http.HttpServletRequest;

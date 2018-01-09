@@ -1,7 +1,7 @@
 package comfanlingjun.core.shiro.utils.ini;
 
-import comfanlingjun.commons.utils.INI4j;
-import comfanlingjun.commons.utils.LoggerUtils;
+import comfanlingjun.code.utils.INI4j;
+import comfanlingjun.code.utils.LoggerUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;

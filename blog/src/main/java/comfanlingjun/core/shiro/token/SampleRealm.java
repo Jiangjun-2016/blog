@@ -1,9 +1,9 @@
 package comfanlingjun.core.shiro.token;
 
-import comfanlingjun.commons.model.UUser;
-import comfanlingjun.permission.service.PermissionService;
-import comfanlingjun.permission.service.RoleService;
-import comfanlingjun.user.service.UUserService;
+import comfanlingjun.code.model.commons.UUser;
+import comfanlingjun.code.service.permission.PermissionService;
+import comfanlingjun.code.service.permission.RoleService;
+import comfanlingjun.code.service.user.UUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -70,7 +70,7 @@ public class SampleRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		Long userId = TokenService.getUserId();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		//根据用户ID查询角色（role），放入到Authorization里。
+		//根据用户ID查询角色（urole），放入到Authorization里。
 		Set<String> roles = roleService.findRoleByUserId(userId);
 		info.setRoles(roles);
 		//根据用户ID查询权限（permission），放入到Authorization里。
