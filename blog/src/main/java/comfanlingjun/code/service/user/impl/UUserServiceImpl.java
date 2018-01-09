@@ -1,7 +1,7 @@
 package comfanlingjun.code.service.user.impl;
 
-import comfanlingjun.code.dao.UUserMapper;
-import comfanlingjun.code.dao.UUserRoleMapper;
+import comfanlingjun.code.dao.commons.UUserMapper;
+import comfanlingjun.code.dao.commons.UUserRoleMapper;
 import comfanlingjun.code.model.commons.UUser;
 import comfanlingjun.code.model.commons.UUserRole;
 import comfanlingjun.code.utils.LoggerUtils;

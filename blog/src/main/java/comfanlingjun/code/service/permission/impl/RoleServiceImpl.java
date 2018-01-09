@@ -1,8 +1,8 @@
 package comfanlingjun.code.service.permission.impl;
 
-import comfanlingjun.code.dao.URoleMapper;
-import comfanlingjun.code.dao.URolePermissionMapper;
-import comfanlingjun.code.dao.UUserMapper;
+import comfanlingjun.code.dao.commons.URoleMapper;
+import comfanlingjun.code.dao.commons.URolePermissionMapper;
+import comfanlingjun.code.dao.commons.UUserMapper;
 import comfanlingjun.code.model.commons.URole;
 import comfanlingjun.code.utils.LoggerUtils;
 import comfanlingjun.core.mybatis.BaseMybatisDao;

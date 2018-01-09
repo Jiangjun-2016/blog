@@ -1,4 +1,4 @@
-package comfanlingjun.code.dao;
+package comfanlingjun.code.dao.commons;
 
 
 import comfanlingjun.code.model.commons.UPermission;

@@ -1,9 +1,9 @@
 package comfanlingjun.code.service.permission.impl;
 
-import comfanlingjun.code.dao.UPermissionMapper;
-import comfanlingjun.code.dao.URolePermissionMapper;
-import comfanlingjun.code.dao.UUserMapper;
-import comfanlingjun.code.dao.UUserRoleMapper;
+import comfanlingjun.code.dao.commons.UPermissionMapper;
+import comfanlingjun.code.dao.commons.URolePermissionMapper;
+import comfanlingjun.code.dao.commons.UUserMapper;
+import comfanlingjun.code.dao.commons.UUserRoleMapper;
 import comfanlingjun.code.model.commons.UPermission;
 import comfanlingjun.code.model.commons.URolePermission;
 import comfanlingjun.code.utils.LoggerUtils;
