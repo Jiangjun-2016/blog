@@ -15,10 +15,10 @@
     </script>
 </head>
 <body data-target="#one" data-spy="scroll">
-<@_top.top 1/>
+<@adminTop.top 1/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
     <div class="row">
-    <@_left.user 1/>
+    <@adminLeft.user 1/>
         <div class="col-md-10">
             <h2>密码修改</h2>
             <hr>

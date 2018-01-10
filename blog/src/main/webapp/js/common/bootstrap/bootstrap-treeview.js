@@ -596,7 +596,7 @@
 					.append(node.text);
 			}
 
-			// Add tags as badges
+			// Add customTag as badges
 			if (_this.options.showTags && node.tags) {
 				$.each(node.tags, function addTag(id, tag) {
 					treeItem

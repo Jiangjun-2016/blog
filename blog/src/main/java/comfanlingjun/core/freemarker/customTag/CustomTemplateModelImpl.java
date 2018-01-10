@@ -1,4 +1,4 @@
-package comfanlingjun.core.tags;
+package comfanlingjun.core.freemarker.customTag;
 
 import comfanlingjun.code.utils.Constant;
 import comfanlingjun.code.utils.LoggerUtils;
@@ -12,25 +12,25 @@ import java.util.Map;
 import static freemarker.template.ObjectWrapper.DEFAULT_WRAPPER;
 
 /**
- * Freemarker 自定义标签 API公共入口
+ * 自定义后端宏实现类
  */
-public class APITemplateModel extends WYFTemplateModel {
+public class CustomTemplateModelImpl extends CustomTemplateModel {
 
+	/**
+	 * 预处理模板
+	 */
 	@Override
 	protected Map<String, TemplateModel> putValue(Map params) throws TemplateModelException {
-		Map<String, TemplateModel> paramWrap = null;
+		Map<String, TemplateModel> resultWrap = null;
 		if (null != params && params.size() != 0 || null != params.get(Constant.TARGET)) {
 			String name = params.get(Constant.TARGET).toString();
-			paramWrap = new HashMap<String, TemplateModel>(params);
-			//获取子类，用父类接收，
-			SuperCustomTag tag = SpringContextUtil.getBean(name, SuperCustomTag.class);
-			//父类调用子类方法
+			resultWrap = new HashMap<String, TemplateModel>(params);
+			CustomTag tag = SpringContextUtil.getBean(name, CustomTag.class);
 			Object result = tag.result(params);
-			//输出
-			paramWrap.put(Constant.OUT_TAG_NAME, DEFAULT_WRAPPER.wrap(result));
+			resultWrap.put(Constant.OUT_TAG_NAME, DEFAULT_WRAPPER.wrap(result));
 		} else {
 			LoggerUtils.error(getClass(), "Cannot be null, must include a 'name' attribute!");
 		}
-		return paramWrap;
+		return resultWrap;
 	}
 }

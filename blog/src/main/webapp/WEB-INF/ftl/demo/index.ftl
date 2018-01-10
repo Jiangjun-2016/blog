@@ -11,11 +11,11 @@
 </head>
 <body data-target="#one" data-spy="scroll">
 
-<@_top.top 1/>
+<@adminTop.top 1/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
 <#--row-->
     <div class="row">
-    <@_left.user 2/>
+    <@adminLeft.user 2/>
         <div class="col-md-10">
             <h2>安全提交测试</h2>
             <hr>

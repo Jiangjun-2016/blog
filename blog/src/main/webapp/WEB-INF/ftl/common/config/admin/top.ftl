@@ -1,7 +1,7 @@
+<!--后台管理导航栏宏-->
 <#macro top index>
-<script baseUrl="${basePath}" src="${basePath}/js/user/user.login.js"></script>
 <div class="navbar navbar-inverse navbar-fixed-top animated fadeInDown" style="z-index: 101;height: 41px;">
-    <div class="container" style="padding-left: 0px; padding-right: 0px;">
+    <div class="container" style="padding-left: 0; padding-right: 0;">
         <div class="navbar-header">
             <button data-target=".navbar-collapse" data-toggle="collapse" type="button" class="navbar-toggle collapsed">
                 <span class="sr-only">导航</span>
@@ -11,8 +11,7 @@
             </button>
         </div>
         <div role="navigation" class="navbar-collapse collapse">
-            <a id="_logo" href="${basePath}" style="color:#fff; font-size: 24px;" class="navbar-brand hidden-sm">SSM +
-                Shiro Demo 演示</a>
+            <a id="_logo" href="${basePath}" style="color:#fff; font-size: 24px;" class="navbar-brand hidden-sm">blog后台管理</a>
             <ul class="nav navbar-nav" id="topMenu">
                 <li class="dropdown ${(index==1)?string('active','')}">
                     <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown"
@@ -51,17 +50,17 @@
                             权限管理<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <@shiro.hasPermission name="/role/index.shtml">
-                                <li><a href="${basePath}/role/index.shtml">角色列表</a></li>
-                            </@shiro.hasPermission>
                             <@shiro.hasPermission name="/role/allocation.shtml">
-                                <li><a href="${basePath}/role/allocation.shtml">角色分配（这是个JSP页面）</a></li>
-                            </@shiro.hasPermission>
-                            <@shiro.hasPermission name="/permission/index.shtml">
-                                <li><a href="${basePath}/permission/index.shtml">权限列表</a></li>
+                                <li><a href="${basePath}/role/allocation.shtml">用户-角色</a></li>
                             </@shiro.hasPermission>
                             <@shiro.hasPermission name="/permission/allocation.shtml">
-                                <li><a href="${basePath}/permission/allocation.shtml">权限分配</a></li>
+                                <li><a href="${basePath}/permission/allocation.shtml">角色-权限</a></li>
+                            </@shiro.hasPermission>
+                            <@shiro.hasPermission name="/role/index.shtml">
+                                <li><a href="${basePath}/role/index.shtml">角色管理</a></li>
+                            </@shiro.hasPermission>
+                            <@shiro.hasPermission name="/permission/index.shtml">
+                                <li><a href="${basePath}/permission/index.shtml">权限管理</a></li>
                             </@shiro.hasPermission>
                         </ul>
                     </li>
@@ -83,13 +82,15 @@
                     <@shiro.guest>
                         href="javascript:void(0);" onclick="location.href='${basePath}/u/login.shtml'"
                         class="dropdown-toggle qqlogin" >
-                        <img src="http://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_1.png">&nbsp;登录</a>
+                        <img src="http://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_1.png">&nbsp;登录
                     </@shiro.guest>
                 </li>
             </ul>
-            <style>#topMenu > li > a {
-                padding: 10px 13px
-            }</style>
+            <style>
+                #topMenu > li > a {
+                    padding: 10px 13px
+                }
+            </style>
         </div>
     </div>
 </div>

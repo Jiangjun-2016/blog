@@ -79,13 +79,10 @@ public class UserLoginController extends BaseController {
 			entity = UserPwdUtil.md5Pswd(entity);
 			//插入数据
 			entity = userService.insert(entity);
-			//记录日志
 			LoggerUtils.fmtDebug(getClass(), "注册插入完毕！", JSONObject.fromObject(entity).toString());
 			//shiro操作
 			entity = TokenService.login(entity, Boolean.TRUE);
-			//记录日志
 			LoggerUtils.fmtDebug(getClass(), "注册后，登录完毕！", JSONObject.fromObject(entity).toString());
-			//修改默认状态为200
 			resultMap.put("status", 200);
 			resultMap.put("message", "注册成功！");
 		} catch (Exception e) {
@@ -121,12 +118,10 @@ public class UserLoginController extends BaseController {
 			if (StringUtils.isBlank(url)) {
 				url = request.getContextPath() + "/user/index.shtml";
 			}
-			//跳转地址
 			resultMap.put("status", 200);
 			resultMap.put("message", "登录成功");
 			resultMap.put("back_url", url);
 		} catch (DisabledAccountException e) {
-			// 其实可以直接catch Exception，然后抛出 message即可，但是最好各种明细catch
 			resultMap.put("status", 500);
 			resultMap.put("message", "帐号已经禁用。");
 		} catch (Exception e) {

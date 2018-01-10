@@ -90,7 +90,7 @@
         //选择角色--根据角色ID选择权限，分配权限操作。
         function selectRoleById(id) {
             var load = layer.load();
-            $.post("<%=basePath%>/urole/selectRoleByUserId.shtml", {id: id}, function (result) {
+            $.post("<%=basePath%>/role/selectRoleByUserId.shtml", {id: id}, function (result) {
                 layer.close(load);
                 if (result && result.length) {
                     var html = [];
@@ -127,31 +127,31 @@
             <div id="one" class="col-md-2">
                 <ul data-spy="affix" class="nav nav-list nav-tabs nav-stacked bs-docs-sidenav dropdown affix"
                     style="top: 100px; z-index: 100;">
-                    <shiro:hasPermission name="/role/index.shtml">
-                        <li class="">
-                            <a href="<%=basePath%>/role/index.shtml">
-                                <i class="glyphicon glyphicon-chevron-right"></i>角色列表
-                            </a>
-                        </li>
-                    </shiro:hasPermission>
                     <shiro:hasPermission name="/role/allocation.shtml">
                         <li class="active dropdown">
                             <a href="<%=basePath%>/role/allocation.shtml">
-                                <i class="glyphicon glyphicon-chevron-right"></i>角色分配
-                            </a>
-                        </li>
-                    </shiro:hasPermission>
-                    <shiro:hasPermission name="/permission/index.shtml">
-                        <li class=" dropdown">
-                            <a href="<%=basePath%>/permission/index.shtml">
-                                <i class="glyphicon glyphicon-chevron-right"></i>权限列表
+                                <i class="glyphicon glyphicon-chevron-right"></i>用户-角色
                             </a>
                         </li>
                     </shiro:hasPermission>
                     <shiro:hasPermission name="/permission/allocation.shtml">
                         <li class="  dropdown">
                             <a href="<%=basePath%>/permission/allocation.shtml">
-                                <i class="glyphicon glyphicon-chevron-right"></i>权限分配
+                                <i class="glyphicon glyphicon-chevron-right"></i>角色-权限
+                            </a>
+                        </li>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="/role/index.shtml">
+                        <li class="">
+                            <a href="<%=basePath%>/role/index.shtml">
+                                <i class="glyphicon glyphicon-chevron-right"></i>角色管理
+                            </a>
+                        </li>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="/permission/index.shtml">
+                        <li class=" dropdown">
+                            <a href="<%=basePath%>/permission/index.shtml">
+                                <i class="glyphicon glyphicon-chevron-right"></i>权限管理
                             </a>
                         </li>
                     </shiro:hasPermission>
@@ -243,7 +243,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 </body>
 </html>

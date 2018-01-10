@@ -11,8 +11,8 @@
         <result column="status" property="status" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, nickname, email, pswd, create_time, last_login_time,status
-  </sql>
+        id, nickname, email, pswd, create_time, last_login_time,status
+    </sql>
     <sql id="limit_sql">
         <if test="page_sql != null and page_sql != ''">
             ${page_sql}
@@ -59,16 +59,10 @@
         group by u.id
     </select>
     <select id="selectRoleByUserId" resultType="comfanlingjun.code.vo.permission.URoleVO">
-
-        select ur.id,ur.name,ur.type,ifnull(uu.id,0)marker,uu.id userId from u_role ur
-        left join u_user_role uur on uur.rid = ur.id
-        left join (select id from u_user where id =#{id,jdbcType=BIGINT}) uu on uu.id = uur.uid
-        group by ur.id
-        <!--
-        勾选不上自己调整sql语句，由于mysql版本不同，所以不支持，可以看看Demo项目 http://shiro.itboy.net
-        select ur.id,ur.name,ur.type,ifnull(uur.uid,0) marker from u_role ur
-      left join(select * from u_user_role where uid=#{id,jdbcType=BIGINT}) uur on uur.rid = ur.id
-       -->
+        select ur.id,ur.name,ur.type,ifnull(uur.uid,0) marker
+        from u_role ur
+        left join(select * from u_user_role where uid=#{id,jdbcType=BIGINT}) uur
+        on uur.rid = ur.id
     </select>
 
     <!-- 登录 -->
@@ -93,18 +87,20 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from u_user
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete from u_user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="comfanlingjun.code.model.commons.UUser">
-    insert into u_user (id, nickname, email, 
-      pswd, create_time, last_login_time,status
-      )
-    values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{pswd,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP},#{status,jdbcType=BIGINT}
-      )
-  </insert>
-    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="comfanlingjun.code.model.commons.UUser">
+        insert into u_user (id, nickname, email,
+        pswd, create_time, last_login_time,status
+        )
+        values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+        #{pswd,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{lastLoginTime,jdbcType=TIMESTAMP},#{status,jdbcType=BIGINT}
+        )
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="comfanlingjun.code.model.commons.UUser">
         insert into u_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -178,13 +174,13 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="comfanlingjun.code.model.commons.UUser">
-    update u_user
-    set nickname = #{nickname,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      pswd = #{pswd,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        update u_user
+        set nickname = #{nickname,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        pswd = #{pswd,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+        status = #{status,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

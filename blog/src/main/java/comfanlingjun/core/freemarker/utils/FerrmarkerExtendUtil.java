@@ -1,54 +1,41 @@
-package comfanlingjun.core.freemarker.extend;
+package comfanlingjun.core.freemarker.utils;
 
+import comfanlingjun.code.utils.LoggerUtils;
 import comfanlingjun.code.utils.SpringContextUtil;
 import comfanlingjun.code.utils.StringUtils;
 import comfanlingjun.code.utils.UtilPath;
-import comfanlingjun.core.tags.APITemplateModel;
+import comfanlingjun.core.freemarker.core.FreeMarkerExtendConfig;
+import comfanlingjun.core.freemarker.customTag.CustomTemplateModelImpl;
 import freemarker.template.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
 /**
  * freemarker 工具类
  */
-public class Ferrmarker {
-	//HTML输出目录
-	protected static String HTML_PATH = UtilPath.getHTMLPath();
-	//FTL输入目录
-	protected static String FTL_PATH = UtilPath.getFTLPath();
-	private static Configuration cfg = null;
-	private static Log logger = LogFactory.getLog(Ferrmarker.class);
+public class FerrmarkerExtendUtil {
 
-	static Map<String, Object> initMap;
+	private static Configuration cfg = null;
+	public static Map<String, Object> initMap;
+	//HTML输出目录
+	public static String HTML_PATH = UtilPath.getHTMLPath();
+	//FTL输入目录
+	public static String FTL_PATH = UtilPath.getFTLPath();
 
 	static {
 		initMap = new LinkedHashMap<String, Object>();
-		/**项目静态地址*/
-		// String jsPath = WYFConfig.get("js_path");
-		// String csspath = WYFConfig.get("css_path");
-		// String imgpath = WYFConfig.get("img_path");
-		// String path    = WYFConfig.get("path");
-		// initMap.put("jspath", jsPath);
-		// initMap.put("csspath", csspath);
-		// initMap.put("imgpath", imgpath);
-		// initMap.put("path", path);
-		/**Freemarker Config*/
 		//1、创建Cfg
 		cfg = new Configuration();
 		//2、设置编码
 		cfg.setLocale(Locale.getDefault());
 		cfg.setEncoding(Locale.getDefault(), "UTF-8");
-
-		/**添加自定义标签*/
-		APITemplateModel api = SpringContextUtil.getBean("api", APITemplateModel.class);
+		//添加自定义标签
+		CustomTemplateModelImpl api = SpringContextUtil.getBean("api", CustomTemplateModelImpl.class);
 		cfg.setSharedVariable("api", api);
 
-		FreeMarkerConfigExtend ext = SpringContextUtil.getBean("freemarkerConfig", FreeMarkerConfigExtend.class);
+		FreeMarkerExtendConfig ext = SpringContextUtil.getBean("freemarkerConfig", FreeMarkerExtendConfig.class);
 
 		Configuration vcfg = ext.getConfiguration();
 		Set<String> keys = vcfg.getSharedVariableNames();
@@ -57,20 +44,11 @@ public class Ferrmarker {
 			cfg.setSharedVariable(key, value);
 		}
 		try {
-			FreeMarkerConfigExtend.putInitShared(cfg);
+			//添加shiro标签
+			FreeMarkerExtendConfig.putShiroTag(cfg);
 		} catch (TemplateModelException e) {
-			logger.error("添加Freemarker自定义方法失败;", e);
+			LoggerUtils.fmtError(FerrmarkerExtendUtil.class, e, "添加Freemarker自定义标签失败!");
 		}
-		/**获取配置文件里的 Configuration.settings 设到当前Cfg里
-		 Properties setting = new Properties();
-		 Map<String,String> sets = vcfg.getSettings();
-		 setting.putAll(sets);
-		 try {
-		 cfg.setSettings(setting);
-		 } catch (TemplateException e) {
-		 logger.error("添加settings error;" ,e);
-		 }
-		 */
 	}
 
 
@@ -79,16 +57,12 @@ public class Ferrmarker {
 	 * @param inFile  模版文件
 	 * @param outPath 输出html路径
 	 * @param outFile 输出html NAME+后缀
-	 * @param map     只是一个传值的对象，可以为空
-	 * @throws IOException
-	 * @throws TemplateException
-	 * @throws Exception
+	 * @param outMap  只是一个传值的对象，可以为空
 	 */
 	public void outHtml(String path, String inFile, String outPath, String outFile, Map<String, Object> outMap) throws IOException, TemplateException {
 		FileOutputStream fos = null;
 		OutputStreamWriter osw = null;
 		BufferedWriter bw = null;
-
 		try {
 			//3、加载模板目录
 			File filex = new File(path);
@@ -105,9 +79,7 @@ public class Ferrmarker {
 			//6、准备数据模型
 			// 模版方法模式,子类实现
 			Map<String, Object> resultMap = doOutMap(outMap);
-
 			resultMap.putAll(initMap);
-
 			//7、调用Template对象的process方法来输出文件
 			temp.process(resultMap, bw);
 		} finally {
@@ -117,10 +89,9 @@ public class Ferrmarker {
 				if (osw != null) osw.close();
 				if (bw != null) bw.close();
 			} catch (IOException e) {
-				logger.error("创建 [" + outFile + "] . io close exception" + e.getMessage());
+				LoggerUtils.fmtError(FerrmarkerExtendUtil.class, e, "创建 [" + outFile + "] . io close exception");
 			}
 		}
-
 	}
 
 	/**
@@ -137,18 +108,17 @@ public class Ferrmarker {
 		if (StringUtils.isBlank(fileName))
 			return;
 		File[] files = UtilPath.getFiles(HTML_PATH);
-		b:
 		for (File file : files) {
-			/***备份原来文件**/
+			//备份原来文件
 			if ((fileName).equals(file.getName())) {
 				String newName = fileName + "-" + new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()) + ".html";
 				String parentPath = file.getParent();
 				File xfile = new File(parentPath + "/" + newName);
 				if (xfile.exists()) {
-					break b;
+					break;
 				} else {
 					file.renameTo(xfile);
-					break b;
+					break;
 				}
 			}
 		}

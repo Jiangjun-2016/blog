@@ -54,5 +54,4 @@ public class SpringContextUtil implements ApplicationContextAware {
 		return applicationContext.getAliases(name);
 	}
 
-
 }

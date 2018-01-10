@@ -1,4 +1,4 @@
-package comfanlingjun.core.tags;
+package comfanlingjun.core.freemarker.customTag;
 
 
 import comfanlingjun.code.utils.StringUtils;
@@ -8,9 +8,9 @@ import java.util.Map;
 /**
  * 自定义标签的父类
  * <p>
- * 用于 APITemplateModel  Freemarker的自定义标签转换数据
+ * 用于 CustomTemplateModelImpl  Freemarker的自定义标签转换数据
  */
-public abstract class SuperCustomTag {
+public abstract class CustomTag {
 
 	/**
 	 * 本方法采用多态集成的方式，然后用父类接收，用父类调用子类的

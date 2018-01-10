@@ -13,10 +13,10 @@
     <script src="${basePath}/js/common/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body data-target="#one" data-spy="scroll">
-<@_top.top 1/>
+<@adminTop.top 1/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
     <div class="row">
-    <@_left.user 1/>
+    <@adminLeft.user 1/>
         <div class="col-md-10">
             <h2>个人资料</h2>
             <hr>
@@ -31,11 +31,11 @@
                 </tr>
                 <tr>
                     <th>创建时间</th>
-                    <td>${(token.createTime?string('yyyy-MM-dd HH:mm'))!""}</td>
+                    <td>${(token.createTime?string('yyyy-MM-dd HH:mm'))!}</td>
                 </tr>
                 <tr>
                     <th>最后登录时间</th>
-                    <td>${(token.lastLoginTime?string('yyyy-MM-dd HH:mm'))!""}</td>
+                    <td>${(token.lastLoginTime?string('yyyy-MM-dd HH:mm'))!}</td>
                 </tr>
             </table>
         </div>

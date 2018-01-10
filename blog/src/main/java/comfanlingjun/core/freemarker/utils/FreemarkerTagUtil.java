@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
 /**
  * freemarker工具类
  */
@@ -19,11 +18,6 @@ public class FreemarkerTagUtil {
 
 	/**
 	 * 统一转换模型
-	 *
-	 * @param env
-	 * @param maps
-	 * @return
-	 * @throws TemplateException
 	 */
 	public static Map<String, TemplateModel> convertToTemplateModel(
 			Environment env, Map<String, TemplateModel> maps)
@@ -48,14 +42,9 @@ public class FreemarkerTagUtil {
 
 	/**
 	 * 复制到新的Object
-	 *
-	 * @param env
-	 * @param maps
-	 * @param origMap
-	 * @return
-	 * @throws TemplateModelException
 	 */
-	public static Map<String, TemplateModel> setTemplateModel(Environment env, Map<String, TemplateModel> maps, Map<String, TemplateModel> origMap) throws TemplateModelException {
+	public static Map<String, TemplateModel> setTemplateModel(Environment env, Map<String, TemplateModel> maps,
+															  Map<String, TemplateModel> origMap) throws TemplateModelException {
 		Set<Map.Entry<String, TemplateModel>> entrySet = maps.entrySet();
 		String key;
 		TemplateModel value;
@@ -68,19 +57,12 @@ public class FreemarkerTagUtil {
 			env.setVariable(key, entry.getValue());
 		}
 		return origMap;
-
 	}
 
 	/**
 	 * 清除变量值
-	 *
-	 * @param env
-	 * @param params
-	 * @param origMap
-	 * @throws TemplateException
 	 */
-	public static void clearTempleModel(Environment env,
-										Map<String, TemplateModel> params,
+	public static void clearTempleModel(Environment env, Map<String, TemplateModel> params,
 										Map<String, TemplateModel> origMap) throws TemplateException {
 		if (params.size() <= 0) {
 			return;
@@ -89,5 +71,4 @@ public class FreemarkerTagUtil {
 			env.setVariable(key, origMap.get(key));
 		}
 	}
-
 }

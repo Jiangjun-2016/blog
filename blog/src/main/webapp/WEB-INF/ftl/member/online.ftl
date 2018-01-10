@@ -50,10 +50,10 @@
 </head>
 <body data-target="#one" data-spy="scroll">
 
-<@_top.top 2/>
+<@adminTop.top 2/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
     <div class="row">
-    <@_left.member 2/>
+    <@adminLeft.member 2/>
         <div class="col-md-10">
             <h2>当前在线用户</h2>
             <hr>

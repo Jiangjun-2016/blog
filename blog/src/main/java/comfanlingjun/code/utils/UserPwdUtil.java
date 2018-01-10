@@ -48,7 +48,7 @@ public class UserPwdUtil {
 					Map<String, Object> mapx = new LinkedHashMap<String, Object>();
 					mapx.put("text", up.getName());//权限名称
 					mapx.put("href", up.getUrl());//权限url
-					//mapx.put("tags", "0");//没有下一级
+					//mapx.put("customTag", "0");//没有下一级
 					list.add(mapx);
 				}
 				map.put("nodes", list);

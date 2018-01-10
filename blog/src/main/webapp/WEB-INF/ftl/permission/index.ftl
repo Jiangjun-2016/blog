@@ -80,11 +80,11 @@
 </head>
 <body data-target="#one" data-spy="scroll">
 <#--引入头部-->
-<@_top.top 3/>
+<@adminTop.top 3/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
     <div class="row">
     <#--引入左侧菜单-->
-    <@_left.role 3/>
+    <@adminLeft.role 3/>
         <div class="col-md-10">
             <h2>权限列表</h2>
             <hr>

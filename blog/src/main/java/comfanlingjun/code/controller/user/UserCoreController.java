@@ -39,7 +39,7 @@ public class UserCoreController extends BaseController {
 
 
 	/**
-	 * 偷懒一下，通用页面跳转
+	 * 通用页面跳转
 	 */
 	@RequestMapping(value = "{page}", method = RequestMethod.GET)
 	public ModelAndView toPage(@PathVariable("page") String page) {

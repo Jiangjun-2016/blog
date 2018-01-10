@@ -15,7 +15,7 @@
     </script>
 </head>
 <body data-target="#one" data-spy="scroll">
-<@_top.top 0/>
+<@adminTop.top 0/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
     <div class="row">
         <div class="col-md-12">
