@@ -5,8 +5,6 @@ package comfanlingjun.core.mybatis.page;
  */
 public class PageModelImpl implements PageModelI {
 
-	private static final long serialVersionUID = 1L;
-
 	public static final int DEF_COUNT = 20;
 	public int totalCount = 0;
 	public int pageSize = 20;
